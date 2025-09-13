@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Interactive - OpenAI Clean</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid #16213e;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #8892b0;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .chat-container {
+            height: 400px;
+            border: 1px solid #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0f0f23;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.assistant {
+            text-align: left;
+        }
+
+        .message-content {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+        }
+
+        .message.assistant .message-content {
+            background: #1a1a2e;
+            color: #ccd6f6;
+            border: 1px solid #16213e;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #16213e;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: #ccd6f6;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            border-color: #00d2ff;
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+        }
+
+        #sendButton {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #sendButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: loading 1.4s infinite ease-in-out both;
+            background: #64748b;
+            border-radius: 50%;
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            margin: 0 1px;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            } 40% {
+                transform: scale(1);
+            }
+        }
+
+        .version-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .feedback-container {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-start;
+            opacity: 0.3;
+            transition: opacity 0.2s ease;
+        }
+
+        .feedback-container:hover {
+            opacity: 0.7;
+        }
+
+        .feedback-emoji {
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 2px;
+            border-radius: 4px;
+            user-select: none;
+        }
+
+        .feedback-emoji:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .feedback-emoji.selected {
+            opacity: 1;
+            transform: scale(1.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="version-badge">OpenAI Clean v1</div>
+    <div class="container">
+        <div class="header">
+            <h1>FAQ Interactive</h1>
+            <p class="subtitle">Assistant IA de Sofiane - Version Clean</p>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message assistant">
+                <div class="message-content">
+                    Bonjour ! Je suis l'assistante de Sofiane. Posez-moi vos questions sur ses services d'automatisation et data analytics ! 😊
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Tapez votre question ici..." autocomplete="off">
+            <button id="sendButton" onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        class ChatbotClean {
+            constructor() {
+                this.openaiApiKey = 'your_openai_api_key_here';
+                this.openaiModel = 'gpt-4o-mini';
+                
+                // Logging simple
+                this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbxIb6O7pyfRfFwWkzIkZ1xxhbpg0zwdeB-nmnC8eADxRMj-GunMniIoEoMOR7ZQRJuz/exec';
+                this.conversationID = this.generateConversationID();
+                
+                this.setupEventListeners();
+                console.log('🤖 Chatbot OpenAI Clean initialisé avec logging complet');
+            }
+
+            generateConversationID() {
+                return 'conv-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            setupEventListeners() {
+                const userInput = document.getElementById('userInput');
+                userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessage();
+                    }
+                });
+            }
+
+            async sendMessage() {
+                const userInput = document.getElementById('userInput');
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                this.addMessage('user', message);
+                userInput.value = '';
+
+                const sendButton = document.getElementById('sendButton');
+                sendButton.disabled = true;
+                sendButton.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+                try {
+                    const response = await this.getOpenAIResponse(message);
+                    const messageId = Date.now().toString();
+                    this.addMessage('assistant', response, messageId);
+                    
+                    // Logger vers Google Sheets
+                    await this.logToGoogleSheets(message, response);
+                    
+                    console.log('✅ Réponse reçue avec succès');
+                } catch (error) {
+                    console.error('❌ Erreur:', error);
+                    this.addMessage('assistant', 'Désolée, j\'ai eu un petit souci technique ! Pourriez-vous réessayer votre question ? 😊');
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = 'Envoyer';
+                    userInput.focus();
+                }
+            }
+
+            async getOpenAIResponse(userMessage) {
+                const systemPrompt = `Tu es l'assistante professionnelle de Sofiane.
+
+🚨 RÈGLES ABSOLUES :
+- INTERDIT de couper tes phrases ! TERMINE TOUJOURS complètement !
+- Tu es SON ASSISTANTE, parle TOUJOURS de Sofiane à la 3ème personne (IL/LUI)
+- JAMAIS en tant que Sofiane (JE/MOI) - tu es son assistante, pas lui !
+- Parle UNIQUEMENT en bien de Sofiane, jamais de points faibles
+- Utilise SEULEMENT les infos ci-dessous, AUCUNE invention
+- Réponses adaptées : courtes pour questions simples, complètes pour complexes
+
+PROFIL SOFIANE :
+- Spécialiste automatisation & data PME
+- 25 ans, Master Mgt & Commerce Int., Spé Data/IA, Polytechnique HdF
+- Français natif, Anglais C1, Espagnol B1
+- 6 mois école internationale Tokyo(stage)
+- Formation 15 professeurs, 100% adoption
+
+PROJETS & RÉSULTATS :
+- Tokyo EIFJ : bulletins & formation
+- Hubi Paris : e-commerce 483€ CA, 11 commandes
+- SafeCharm : 2e place concours entrepreneurial, leadership équipe
+- Compétences : Power BI, Excel avancé, automatisation, WP/Woo
+
+SERVICES & TARIFS FIXES (non négociables) :
+- 🔍 Audit & Diagnostic 250€ (48h-1 semaine)
+- 🤖 Automatisation 500€ (1-2 semaines)
+- 📊 Dashboard BI 800€ (1-3 semaines)  
+- 💬 Assistant IA 600€ (3-7 jours)
+
+CONTACT : Ne donne JAMAIS l'email direct ! Redirige vers le formulaire de contact sur le site.
+
+Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", jamais "JE fais" ! 😊`;
+
+                const response = await fetch('http://localhost:3003/openai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        apiKey: this.openaiApiKey,
+                        model: this.openaiModel,
+                        max_tokens: 200,
+                        temperature: 0.7,
+                        system: systemPrompt,
+                        message: userMessage
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                return data.content;
+            }
+
+            detectResponseStatus(response) {
+                const uncertainKeywords = ['je ne sais pas', 'je ne suis pas sûr', 'désolé', 'je n\'ai pas cette information'];
+                const lowerResponse = response.toLowerCase();
+                
+                for (let keyword of uncertainKeywords) {
+                    if (lowerResponse.includes(keyword)) {
+                        return 'Réponse_Incertaine';
+                    }
+                }
+                
+                return 'Réponse_Fournie';
+            }
+
+            detectIntent(userQuestion) {
+                const lowerQuestion = userQuestion.toLowerCase();
+                
+                // VÉRIFICATION PRIORITAIRE pour DELAIS (pour éviter confusion avec PRIX)
+                if (lowerQuestion.includes('combien de temps') || 
+                    lowerQuestion.includes('délai') || 
+                    lowerQuestion.includes('durée') ||
+                    lowerQuestion.includes('livraison') ||
+                    (lowerQuestion.includes('temps') && lowerQuestion.includes('prend'))) {
+                    return 'DELAIS';
+                }
+                
+                // Définition des intentions avec mots-clés
+                const intentKeywords = {
+                    'PRIX': ['prix', 'tarif', 'coût', 'combien ça coûte', 'budget', '€', 'euro', 'payer', 'facture'],
+                    'SERVICES': ['service', 'que fait', 'que propose', 'spécialité', 'expertise', 'automatisation', 'dashboard', 'audit'],
+                    'PROCESSUS': ['comment', 'méthode', 'processus', 'étape', 'procédure', 'workflow'],
+                    'CONTACT': ['contact', 'rdv', 'rendez-vous', 'rencontrer', 'appel', 'téléphone', 'email'],
+                    'COMPETENCES': ['compétence', 'expérience', 'formation', 'diplôme', 'expertise', 'savoir'],
+                    'REFERENCES': ['exemple', 'client', 'projet', 'référence', 'témoignage', 'portfolio', 'résultat'],
+                    'SUPPORT': ['problème', 'bug', 'erreur', 'marche pas', 'aide', 'support', 'difficulté']
+                };
+                
+                // Analyser la question pour trouver l'intention
+                for (let intent in intentKeywords) {
+                    for (let keyword of intentKeywords[intent]) {
+                        if (lowerQuestion.includes(keyword)) {
+                            return intent;
+                        }
+                    }
+                }
+                
+                return 'AUTRE';
+            }
+
+            async logToGoogleSheets(userQuestion, aiResponse) {
+                try {
+                    const timestamp = new Date().toLocaleString('fr-FR');
+                    const responseStatus = this.detectResponseStatus(aiResponse);
+                    const detectedIntent = this.detectIntent(userQuestion);
+                    
+                    const logData = {
+                        Timestamp: timestamp,
+                        UserQuestion: userQuestion,
+                        AIResponse: aiResponse,
+                        ConversationID: this.conversationID,
+                        ResponseStatus: responseStatus,
+                        UserSatisfaction: '', // Vide par défaut
+                        Flag_Hallucination: '', // Vide par défaut
+                        DetectedIntent: detectedIntent
+                    };
+                    
+                    console.log('📊 DONNÉES À ENVOYER:', logData);
+                    
+                    const response = await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(logData)
+                    });
+                    
+                    console.log('✅ LOGGING COMPLET - Toutes les données envoyées !');
+                    
+                } catch (error) {
+                    console.error('❌ ERREUR LOGGING:', error);
+                }
+            }
+
+            addMessage(role, content, messageId = null) {
+                const chatContainer = document.getElementById('chatContainer');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}`;
+                if (messageId) messageDiv.setAttribute('data-message-id', messageId);
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = content;
+                
+                messageDiv.appendChild(messageContent);
+
+                // Ajouter feedback discret pour réponses assistant
+                if (role === 'assistant' && messageId) {
+                    const feedbackContainer = document.createElement('div');
+                    feedbackContainer.className = 'feedback-container';
+                    
+                    // Smiley content (positif) 
+                    const positiveEmoji = document.createElement('span');
+                    positiveEmoji.className = 'feedback-emoji';
+                    positiveEmoji.innerHTML = '😊';
+                    positiveEmoji.onclick = () => this.submitFeedback(messageId, 'Positif', positiveEmoji, feedbackContainer);
+                    
+                    // Smiley triste (négatif)
+                    const negativeEmoji = document.createElement('span');
+                    negativeEmoji.className = 'feedback-emoji';
+                    negativeEmoji.innerHTML = '😞';
+                    negativeEmoji.onclick = () => this.submitFeedback(messageId, 'Négatif', negativeEmoji, feedbackContainer);
+                    
+                    feedbackContainer.appendChild(positiveEmoji);
+                    feedbackContainer.appendChild(negativeEmoji);
+                    messageDiv.appendChild(feedbackContainer);
+                }
+                
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            async submitFeedback(messageId, satisfaction, clickedEmoji, feedbackContainer) {
+                // Marquer l'emoji sélectionné et désactiver tous les emojis
+                const allEmojis = feedbackContainer.querySelectorAll('.feedback-emoji');
+                allEmojis.forEach(emoji => {
+                    emoji.classList.remove('selected');
+                    emoji.style.pointerEvents = 'none';
+                });
+                
+                clickedEmoji.classList.add('selected');
+                
+                try {
+                    // Envoyer feedback vers Google Sheets
+                    await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'updateFeedback',
+                            ConversationID: this.conversationID,
+                            MessageID: messageId,
+                            UserSatisfaction: satisfaction
+                        })
+                    });
+                    
+                    console.log(`✅ Feedback: ${satisfaction} pour message ${messageId}`);
+                    
+                } catch (error) {
+                    console.error('❌ Erreur feedback:', error);
+                }
+            }
+        }
+
+        // Initialisation
+        const chatbot = new ChatbotClean();
+
+        function sendMessage() {
+            chatbot.sendMessage();
+        }
+    </script>
+</body>
+</html>

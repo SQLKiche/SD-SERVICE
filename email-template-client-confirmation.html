@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4C2A85, #0A2342);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .intro {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .next-steps {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4C2A85;
+            margin-bottom: 25px;
+        }
+        
+        .next-steps-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #475569;
+        }
+        
+        .step-number {
+            background-color: #4C2A85;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .contact-info {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .contact-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #475569;
+        }
+        
+        .contact-label {
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .signature {
+            text-align: center;
+            padding: 20px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .signature-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 5px;
+        }
+        
+        .signature-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            background-color: #0A2342;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .footer-brand {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .footer-link {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">Demande Reçue avec Succès</h1>
+            <div class="header-subtitle">Sofiane Automation - Spécialiste IA & PME</div>
+        </div>
+        
+        <div class="content">
+            <div class="success-box">
+                ● DEMANDE CONFIRMÉE
+            </div>
+            
+            <div class="greeting">Bonjour {{to_name}},</div>
+            
+            <div class="intro">
+                Merci pour votre confiance ! J'ai bien reçu votre demande d'audit gratuit.<br>
+                Votre projet m'intéresse beaucoup et j'ai hâte d'échanger avec vous sur vos défis d'automatisation.
+            </div>
+            
+            <div class="next-steps">
+                <div class="next-steps-title">Prochaines étapes :</div>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>Je vais analyser votre secteur et préparer des recommandations personnalisées</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>Je vous recontacte sous 24h pour planifier notre appel découverte</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>Nous échangeons 15 minutes sur vos besoins et objectifs</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-title">Vos informations :</div>
+                <div class="contact-item">
+                    <span class="contact-label">Secteur :</span> {{sector}}
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">Priorité :</span> {{priority}}
+                </div>
+            </div>
+            
+            <div class="signature">
+                <div class="signature-name">Sofiane Dehaffreingue</div>
+                <div class="signature-title">Spécialiste en Automatisation IA pour PME</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 10px;">
+                    Des solutions concrètes pour gagner du temps et optimiser vos processus
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-brand">SOFIANE AUTOMATION</div>
+            <div>
+                <a href="https://68c44320492114118b071226--sofiane-automation-portfolio.netlify.app" class="footer-link">sofiane-automation.com</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

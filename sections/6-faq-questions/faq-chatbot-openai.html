@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Interactive - OpenAI Version</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid #16213e;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #8892b0;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .chat-container {
+            height: 400px;
+            border: 1px solid #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0f0f23;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.assistant {
+            text-align: left;
+        }
+
+        .message-content {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+        }
+
+        .message.assistant .message-content {
+            background: #1a1a2e;
+            color: #ccd6f6;
+            border: 1px solid #16213e;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #16213e;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: #ccd6f6;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            border-color: #00d2ff;
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+        }
+
+        #sendButton {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #sendButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: loading 1.4s infinite ease-in-out both;
+            background: #64748b;
+            border-radius: 50%;
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            margin: 0 1px;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            } 40% {
+                transform: scale(1);
+            }
+        }
+
+        .version-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .feedback-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .feedback-btn {
+            background: transparent;
+            border: 1px solid #16213e;
+            border-radius: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            color: #8892b0;
+        }
+
+        .feedback-btn:hover {
+            background: #16213e;
+            color: #ccd6f6;
+        }
+
+        .feedback-btn.selected {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border-color: #00d2ff;
+        }
+
+        .feedback-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="version-badge">OpenAI Version</div>
+    <div class="container">
+        <div class="header">
+            <h1>FAQ Interactive</h1>
+            <p class="subtitle">👋 Salut ! Je suis l'IA créée par Sofiane pour répondre à vos questions !</p>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message assistant">
+                <div class="message-content">
+                    Bonjour ! 😊 Je suis ravie de vous aider ! Posez-moi toutes vos questions sur Sofiane et ses services !
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Tapez votre question ici..." autocomplete="off">
+            <button id="sendButton" onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        class ChatbotOpenAI {
+            constructor() {
+                this.openaiApiKey = 'your_openai_api_key_here';
+                this.openaiModel = 'gpt-4o-mini';
+                this.conversation = [];
+                this.conversationID = this.generateConversationID();
+                this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbxCHihI16acV9EEYZwmKm_8fzhmljVJ3QLpzfV72kFRTM0ogC7s4qfZRFXbX9jGqKzP/exec';
+                this.userEmail = null; // Stockage de l'email utilisateur
+                this.setupEventListeners();
+                this.trackAnalytics();
+            }
+
+            setupEventListeners() {
+                const userInput = document.getElementById('userInput');
+                userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessage();
+                    }
+                });
+            }
+
+            generateConversationID() {
+                return 'conv-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            async sendMessage() {
+                const userInput = document.getElementById('userInput');
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                // Détecter et stocker l'email
+                const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+                if (emailRegex.test(message) && !this.userEmail) {
+                    this.userEmail = message.match(emailRegex)[0];
+                    console.log('📧 Email utilisateur détecté:', this.userEmail);
+                }
+
+                this.addMessage('user', message);
+                this.conversation.push({role: 'user', content: message});
+                userInput.value = '';
+
+                const sendButton = document.getElementById('sendButton');
+                sendButton.disabled = true;
+                sendButton.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+                try {
+                    const response = await this.getOpenAIResponse(message);
+                    const messageId = Date.now().toString();
+                    this.conversation.push({role: 'assistant', content: response});
+                    this.addMessage('assistant', response, messageId);
+                    
+                    // Logging Google Sheets
+                    const responseStatus = this.detectResponseStatus(response);
+                    await this.logToGoogleSheets(message, response, responseStatus);
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    this.addMessage('assistant', 'Désolée, j\'ai eu un petit souci technique ! Pourriez-vous réessayer votre question ? 😊');
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = 'Envoyer';
+                    userInput.focus();
+                }
+            }
+
+            async getOpenAIResponse(userMessage) {
+                const systemPrompt = `Tu es l'assistante professionnelle de Sofiane.
+
+🚨 RÈGLES ABSOLUES :
+- INTERDIT de couper tes phrases ! TERMINE TOUJOURS complètement !
+- Tu es SON ASSISTANTE, parle TOUJOURS de Sofiane à la 3ème personne (IL/LUI)
+- JAMAIS en tant que Sofiane (JE/MOI) - tu es son assistante, pas lui !
+- Parle UNIQUEMENT en bien de Sofiane, jamais de points faibles
+- Utilise SEULEMENT les infos ci-dessous, AUCUNE invention
+- Réponses adaptées : courtes pour questions simples, complètes pour complexes
+
+PROFIL SOFIANE :
+- Spécialiste automatisation & data PME
+- 25 ans, Master Mgt & Commerce Int., Spé Data/IA, Polytechnique HdF
+- Français natif, Anglais C1, Espagnol B1
+- 6 mois école internationale Tokyo(stage)
+- Formation 15 professeurs, 100% adoption
+
+PROJETS & RÉSULTATS :
+- Tokyo EIFJ : bulletins & formation
+- Hubi Paris : e-commerce 483€ CA, 11 commandes
+- SafeCharm : 2e place concours entrepreneurial, leadership équipe
+- Compétences : Power BI, Excel avancé, automatisation, WP/Woo
+
+SPÉCIALISATIONS :
+- PME sans équipe tech dédiée
+- Traducteur business-tech, complexité → simplicité
+- Méthodologie EIFJ : Analyse → Conception → Implémentation
+- Secteurs : e-commerce, éducation, services, conseil
+
+SERVICES & TARIFS FIXES (non négociables) :
+- 🔍 Audit & Diagnostic 250€ (48h-1 semaine)
+- 🤖 Automatisation 500€ (1-2 semaines)
+- 📊 Dashboard BI 800€ (1-3 semaines)  
+- 💬 Assistant IA 600€ (3-7 jours)
+
+Contact : sofianedehaf@gmail.com
+
+IMPORTANT : Si l'utilisateur pose des questions spécifiques ou veut être recontacté, demande son email pour que Sofiane puisse le recontacter personnellement.
+
+Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", jamais "JE fais" ! 😊`;
+
+                const response = await fetch('http://localhost:3003/openai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        apiKey: this.openaiApiKey,
+                        model: this.openaiModel,
+                        max_tokens: 200,
+                        temperature: 0.7,
+                        system: systemPrompt,
+                        message: userMessage,
+                        conversation: this.conversation,
+                        userEmail: this.userEmail
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                return data.content;
+            }
+
+            detectResponseStatus(response) {
+                const uncertainKeywords = ['je ne sais pas', 'je ne suis pas sûr', 'désolé', 'je n\'ai pas cette information'];
+                const lowerResponse = response.toLowerCase();
+                
+                for (let keyword of uncertainKeywords) {
+                    if (lowerResponse.includes(keyword)) {
+                        return 'Réponse_Incertaine';
+                    }
+                }
+                
+                return 'Réponse_Fournie';
+            }
+
+            async logToGoogleSheets(userQuestion, aiResponse, responseStatus) {
+                const timestamp = new Date().toLocaleString('fr-FR');
+                
+                console.log('📊 LOGGING TO SHEETS:', {
+                    timestamp: timestamp,
+                    conversationID: this.conversationID,
+                    userQuestion: userQuestion,
+                    responseStatus: responseStatus,
+                    userEmail: this.userEmail
+                });
+
+                try {
+                    // Format JSON exact pour votre Google Apps Script
+                    const logData = {
+                        Timestamp: timestamp,
+                        ConversationID: this.conversationID,
+                        UserQuestion: userQuestion,
+                        AIResponse: aiResponse,
+                        ResponseStatus: responseStatus,
+                        UserSatisfaction: '',
+                        Flag_Hallucination: '',
+                        UserEmail: this.userEmail || ''
+                    };
+
+                    const response = await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(logData)
+                    });
+                    
+                    console.log('✅ GOOGLE SHEETS - Envoyé (no-cors mode)');
+                    
+                } catch (error) {
+                    console.error('❌ GOOGLE SHEETS ERROR:', error);
+                }
+            }
+
+            addMessage(role, content, messageId = null) {
+                const chatContainer = document.getElementById('chatContainer');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}`;
+                if (messageId) messageDiv.setAttribute('data-message-id', messageId);
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = content;
+                
+                messageDiv.appendChild(messageContent);
+
+                // Ajouter boutons feedback pour réponses assistant
+                if (role === 'assistant') {
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'feedback-buttons';
+                    
+                    const thumbsUpBtn = document.createElement('button');
+                    thumbsUpBtn.className = 'feedback-btn';
+                    thumbsUpBtn.innerHTML = '👍 Utile';
+                    thumbsUpBtn.onclick = () => this.submitFeedback(messageId, 'Positif', thumbsUpBtn, feedbackDiv);
+                    
+                    const thumbsDownBtn = document.createElement('button');
+                    thumbsDownBtn.className = 'feedback-btn';
+                    thumbsDownBtn.innerHTML = '👎 Pas utile';
+                    thumbsDownBtn.onclick = () => this.submitFeedback(messageId, 'Négatif', thumbsDownBtn, feedbackDiv);
+                    
+                    feedbackDiv.appendChild(thumbsUpBtn);
+                    feedbackDiv.appendChild(thumbsDownBtn);
+                    messageDiv.appendChild(feedbackDiv);
+                }
+                
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            async submitFeedback(messageId, satisfaction, clickedBtn, feedbackDiv) {
+                // Désactiver tous les boutons
+                const buttons = feedbackDiv.querySelectorAll('.feedback-btn');
+                buttons.forEach(btn => btn.disabled = true);
+                
+                // Marquer le bouton sélectionné
+                clickedBtn.classList.add('selected');
+                
+                try {
+                    // Mettre à jour Google Sheets avec le feedback
+                    await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'updateFeedback',
+                            ConversationID: this.conversationID,
+                            MessageID: messageId,
+                            UserSatisfaction: satisfaction
+                        })
+                    });
+                    
+                    console.log(`Feedback envoyé: ${satisfaction} pour message ${messageId}`);
+                    
+                    // Afficher confirmation visuelle
+                    setTimeout(() => {
+                        clickedBtn.innerHTML = satisfaction === 'Positif' ? '✓ Merci!' : '✓ Noté!';
+                    }, 200);
+                    
+                } catch (error) {
+                    console.error('Erreur envoi feedback:', error);
+                    buttons.forEach(btn => btn.disabled = false);
+                    clickedBtn.classList.remove('selected');
+                }
+            }
+
+            trackAnalytics() {
+                // Google Analytics désactivé temporairement
+                console.log('📈 Analytics: Version OpenAI chargée');
+            }
+        }
+
+        // Initialisation
+        const chatbot = new ChatbotOpenAI();
+
+        function sendMessage() {
+            chatbot.sendMessage();
+        }
+
+        // Google Analytics désactivé temporairement
+        console.log('🔧 Version de test sans Google Analytics');
+    </script>
+</body>
+</html>

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Boule Flottante - Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            padding: 20px;
+            color: #ccd6f6;
+        }
+
+        /* DEMO CONTENT */
+        .demo-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .demo-content h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .demo-section {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #16213e;
+        }
+
+        .demo-section h2 {
+            color: #00d2ff;
+            margin-bottom: 15px;
+        }
+
+        .demo-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* BOULE FLOTTANTE */
+        .floating-chat-ball {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2a2d3a, #16213e);
+            border: 2px solid rgba(0, 210, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: none; /* Caché par défaut, apparaît après 5s */
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+
+        .floating-chat-ball.visible {
+            display: flex;
+            animation: fadeInUp 0.6s ease forwards, subtlePulse 3s ease-in-out infinite 0.6s;
+        }
+
+        .floating-chat-ball img {
+            width: 50px;
+            height: auto;
+            transition: all 0.2s ease;
+            filter: brightness(1.1);
+        }
+
+        .floating-chat-ball:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 210, 255, 0.7);
+            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.2);
+        }
+
+        .floating-chat-ball:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.3) drop-shadow(0 0 8px rgba(0, 210, 255, 0.6));
+        }
+
+        /* BADGE NOTIFICATION */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f97316;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            border: 2px solid #1a1a2e;
+            animation: bounceIn 0.4s ease;
+        }
+
+        .notification-badge.show {
+            display: flex;
+        }
+
+        /* BULLE MESSAGE */
+        .message-bubble {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: linear-gradient(135deg, #2a2d3a, #16213e);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 18px;
+            padding: 12px 16px;
+            color: #ccd6f6;
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 280px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .message-bubble.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 25px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #2a2d3a;
+        }
+
+        /* ANIMATIONS */
+        @keyframes subtlePulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(0, 210, 255, 0.4); 
+            }
+            50% { 
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(0, 210, 255, 0.1); 
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* MODAL CHATBOT */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(2px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-modal.active {
+            display: flex;
+        }
+
+        .chat-container {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border: 1px solid #16213e;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            position: relative;
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .chat-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .chat-header .subtitle {
+            color: #8892b0;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .close-button {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #8892b0;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .messages-container {
+            height: 320px;
+            border: 1px solid #16213e;
+            border-radius: 15px;
+            padding: 15px;
+            overflow-y: auto;
+            background: #0f0f23;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.assistant {
+            text-align: left;
+        }
+
+        .message-content {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+        }
+
+        .message.assistant .message-content {
+            background: #1a1a2e;
+            color: #ccd6f6;
+            border: 1px solid #16213e;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #16213e;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: #ccd6f6;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            border-color: #00d2ff;
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+        }
+
+        #sendButton {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        #sendButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: loading 1.4s infinite ease-in-out both;
+            background: #64748b;
+            border-radius: 50%;
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            margin: 0 1px;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            } 40% {
+                transform: scale(1);
+            }
+        }
+
+        .feedback-container {
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+            justify-content: flex-start;
+            opacity: 0.3;
+            transition: opacity 0.2s ease;
+        }
+
+        .feedback-container:hover {
+            opacity: 0.7;
+        }
+
+        .feedback-emoji {
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 2px;
+            border-radius: 4px;
+            user-select: none;
+        }
+
+        .feedback-emoji:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .feedback-emoji.selected {
+            opacity: 1;
+            transform: scale(1.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .chat-container {
+                max-width: 95vw;
+                max-height: 85vh;
+                padding: 20px;
+            }
+            
+            .floating-chat-ball {
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- CONTENU DEMO -->
+    <div class="demo-content">
+        <h1>Demo - Boule Flottante Chatbot</h1>
+        
+        <div class="demo-section">
+            <h2>Section Hero</h2>
+            <p>Ceci est une simulation de votre site web. La boule flottante en bas à droite est votre assistant IA qui accompagne les visiteurs sur toutes les pages.</p>
+            <p>L'assistant peut répondre aux questions sur les services, tarifs, délais, processus, et plus encore.</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Section Services</h2>
+            <p>Vos services d'automatisation et data analytics sont présentés ici. Les visiteurs peuvent à tout moment cliquer sur la boule pour poser des questions spécifiques.</p>
+            <p>Scrollez vers le bas - la boule flottante reste toujours accessible !</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Section Performance</h2>
+            <p>Vos résultats et performances sont détaillés dans cette section. Le chatbot peut expliquer ces métriques aux prospects intéressés.</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Section Processus</h2>
+            <p>Votre workflow et méthodologie sont présentés ici. La boule flottante permet aux visiteurs de poser des questions sur votre façon de travailler.</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Section FAQ/Contact</h2>
+            <p>Cette section final invite au contact. Le chatbot peut aider à franchir les dernières objections avant la conversion.</p>
+        </div>
+    </div>
+
+    <!-- BOULE FLOTTANTE -->
+    <div class="floating-chat-ball" id="chatBall">
+        <img src="../../shared/assets/images/EVE.png" alt="EVE Assistant" style="width: 50px; height: auto; filter: brightness(1.1);">
+        <div class="notification-badge" id="notificationBadge">!</div>
+    </div>
+
+    <!-- BULLE MESSAGE -->
+    <div class="message-bubble" id="messageBubble"></div>
+
+    <!-- MODAL CHATBOT -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-container">
+            <div class="chat-header">
+                <button class="close-button" id="closeButton">×</button>
+                <h1>Assistant IA</h1>
+                <p class="subtitle">Assistant de Sofiane - Posez vos questions !</p>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="message assistant">
+                    <div class="message-content">
+                        Bonjour ! Je suis l'assistante de Sofiane. Posez-moi vos questions, je serais ravie d'y répondre ! 💬
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="Tapez votre question ici..." autocomplete="off">
+                <button id="sendButton" onclick="sendMessage()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class FloatingChatbot {
+            constructor() {
+                this.openaiApiKey = 'your_openai_api_key_here';
+                this.openaiModel = 'gpt-4o-mini';
+                
+                this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbxIb6O7pyfRfFwWkzIkZ1xxhbpg0zwdeB-nmnC8eADxRMj-GunMniIoEoMOR7ZQRJuz/exec';
+                this.conversationID = this.generateConversationID();
+                
+                this.chatOpened = false;
+                this.currentMessageIndex = 0;
+                this.pageStartTime = Date.now();
+                
+                this.contextualMessages = [
+                    "Une question sur l'automatisation ?",
+                    "Besoin d'infos sur nos services ?", 
+                    "Audit gratuit en 15 minutes"
+                ];
+                
+                this.setupEventListeners();
+                this.initializeEngagementSystem();
+                console.log('🤖 Chatbot Flottant initialisé avec système d\'engagement');
+            }
+
+            generateConversationID() {
+                return 'conv-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            setupEventListeners() {
+                const chatBall = document.getElementById('chatBall');
+                const chatModal = document.getElementById('chatModal');
+                const closeButton = document.getElementById('closeButton');
+                const userInput = document.getElementById('userInput');
+
+                // Ouvrir modal au clic sur la boule
+                chatBall.addEventListener('click', () => {
+                    this.chatOpened = true;
+                    this.hideMessageBubble();
+                    this.hideBadge();
+                    chatModal.classList.add('active');
+                    userInput.focus();
+                });
+
+                // Fermer modal
+                closeButton.addEventListener('click', () => {
+                    chatModal.classList.remove('active');
+                });
+
+                // Fermer modal en cliquant en dehors
+                chatModal.addEventListener('click', (e) => {
+                    if (e.target === chatModal) {
+                        chatModal.classList.remove('active');
+                    }
+                });
+
+                // Envoyer message avec Enter
+                userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessage();
+                    }
+                });
+
+                // Empêcher la fermeture accidentelle avec Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && chatModal.classList.contains('active')) {
+                        chatModal.classList.remove('active');
+                    }
+                });
+            }
+
+            initializeEngagementSystem() {
+                // Apparition de la boule après 5 secondes
+                setTimeout(() => {
+                    this.showChatBall();
+                }, 5000);
+
+                // Messages contextuels programmés
+                setTimeout(() => {
+                    if (!this.chatOpened) {
+                        this.showContextualMessage(this.contextualMessages[0]);
+                        this.showBadge();
+                    }
+                }, 25000); // 25 secondes
+
+                setTimeout(() => {
+                    if (!this.chatOpened) {
+                        this.showContextualMessage(this.contextualMessages[1]);
+                        this.showBadge();
+                    }
+                }, 45000); // 45 secondes
+
+                setTimeout(() => {
+                    if (!this.chatOpened) {
+                        this.showContextualMessage(this.contextualMessages[2]);
+                        this.showBadge();
+                    }
+                }, 70000); // 70 secondes
+            }
+
+            showChatBall() {
+                const chatBall = document.getElementById('chatBall');
+                chatBall.classList.add('visible');
+            }
+
+            showContextualMessage(message) {
+                const messageBubble = document.getElementById('messageBubble');
+                messageBubble.textContent = message;
+                messageBubble.classList.add('show');
+                
+                // Cacher le message après 6 secondes
+                setTimeout(() => {
+                    this.hideMessageBubble();
+                }, 6000);
+            }
+
+            hideMessageBubble() {
+                const messageBubble = document.getElementById('messageBubble');
+                messageBubble.classList.remove('show');
+            }
+
+            showBadge() {
+                const badge = document.getElementById('notificationBadge');
+                badge.classList.add('show');
+            }
+
+            hideBadge() {
+                const badge = document.getElementById('notificationBadge');
+                badge.classList.remove('show');
+            }
+
+            async sendMessage() {
+                const userInput = document.getElementById('userInput');
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                this.addMessage('user', message);
+                userInput.value = '';
+
+                const sendButton = document.getElementById('sendButton');
+                sendButton.disabled = true;
+                sendButton.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+                try {
+                    const response = await this.getOpenAIResponse(message);
+                    const messageId = Date.now().toString();
+                    this.addMessage('assistant', response, messageId);
+                    
+                    await this.logToGoogleSheets(message, response);
+                    
+                    console.log('✅ Réponse reçue avec succès');
+                } catch (error) {
+                    console.error('❌ Erreur:', error);
+                    this.addMessage('assistant', 'Désolée, j\'ai eu un petit souci technique ! Pourriez-vous réessayer votre question ? 😊');
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = 'Envoyer';
+                    userInput.focus();
+                }
+            }
+
+            async getOpenAIResponse(userMessage) {
+                const systemPrompt = `Tu es l'assistante professionnelle de Sofiane.
+
+🚨 RÈGLES ABSOLUES :
+- INTERDIT de couper tes phrases ! TERMINE TOUJOURS complètement !
+- Tu es SON ASSISTANTE, parle TOUJOURS de Sofiane à la 3ème personne (IL/LUI)
+- JAMAIS en tant que Sofiane (JE/MOI) - tu es son assistante, pas lui !
+- Parle UNIQUEMENT en bien de Sofiane, jamais de points faibles
+- Utilise SEULEMENT les infos ci-dessous, AUCUNE invention
+- Réponses adaptées : courtes pour questions simples, complètes pour complexes
+
+PROFIL SOFIANE :
+- Spécialiste automatisation & data PME
+- 25 ans, Master Mgt & Commerce Int., Spé Data/IA, Polytechnique HdF
+- Français natif, Anglais C1, Espagnol B1
+- 6 mois école internationale Tokyo(stage)
+- Formation 15 professeurs, 100% adoption
+
+PROJETS & RÉSULTATS :
+- Tokyo EIFJ : bulletins & formation
+- Hubi Paris : e-commerce 483€ CA, 11 commandes
+- SafeCharm : 2e place concours entrepreneurial, leadership équipe
+- Compétences : Power BI, Excel avancé, automatisation, WP/Woo
+
+SERVICES & TARIFS FIXES (non négociables) :
+- 🔍 Audit & Diagnostic 250€ (48h-1 semaine)
+- 🤖 Automatisation 500€ (1-2 semaines)
+- 📊 Dashboard BI 800€ (1-3 semaines)  
+- 💬 Assistant IA 600€ (3-7 jours)
+
+CONTACT : Ne donne JAMAIS l'email direct ! Redirige vers le formulaire de contact sur le site.
+
+Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", jamais "JE fais" ! 😊`;
+
+                const response = await fetch('http://localhost:3003/openai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        apiKey: this.openaiApiKey,
+                        model: this.openaiModel,
+                        max_tokens: 200,
+                        temperature: 0.7,
+                        system: systemPrompt,
+                        message: userMessage
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                return data.content;
+            }
+
+            detectResponseStatus(response) {
+                const uncertainKeywords = ['je ne sais pas', 'je ne suis pas sûr', 'désolé', 'je n\'ai pas cette information'];
+                const lowerResponse = response.toLowerCase();
+                
+                for (let keyword of uncertainKeywords) {
+                    if (lowerResponse.includes(keyword)) {
+                        return 'Réponse_Incertaine';
+                    }
+                }
+                
+                return 'Réponse_Fournie';
+            }
+
+            detectIntent(userQuestion) {
+                const lowerQuestion = userQuestion.toLowerCase();
+                
+                // VÉRIFICATION PRIORITAIRE pour DELAIS (pour éviter confusion avec PRIX)
+                if (lowerQuestion.includes('combien de temps') || 
+                    lowerQuestion.includes('délai') || 
+                    lowerQuestion.includes('durée') ||
+                    lowerQuestion.includes('livraison') ||
+                    (lowerQuestion.includes('temps') && lowerQuestion.includes('prend'))) {
+                    return 'DELAIS';
+                }
+                
+                // Définition des intentions avec mots-clés
+                const intentKeywords = {
+                    'PRIX': ['prix', 'tarif', 'coût', 'combien ça coûte', 'budget', '€', 'euro', 'payer', 'facture'],
+                    'SERVICES': ['service', 'que fait', 'que propose', 'spécialité', 'expertise', 'automatisation', 'dashboard', 'audit'],
+                    'PROCESSUS': ['comment', 'méthode', 'processus', 'étape', 'procédure', 'workflow'],
+                    'CONTACT': ['contact', 'rdv', 'rendez-vous', 'rencontrer', 'appel', 'téléphone', 'email'],
+                    'COMPETENCES': ['compétence', 'expérience', 'formation', 'diplôme', 'expertise', 'savoir'],
+                    'REFERENCES': ['exemple', 'client', 'projet', 'référence', 'témoignage', 'portfolio', 'résultat'],
+                    'SUPPORT': ['problème', 'bug', 'erreur', 'marche pas', 'aide', 'support', 'difficulté']
+                };
+                
+                // Analyser la question pour trouver l'intention
+                for (let intent in intentKeywords) {
+                    for (let keyword of intentKeywords[intent]) {
+                        if (lowerQuestion.includes(keyword)) {
+                            return intent;
+                        }
+                    }
+                }
+                
+                return 'AUTRE';
+            }
+
+            async logToGoogleSheets(userQuestion, aiResponse) {
+                try {
+                    const timestamp = new Date().toLocaleString('fr-FR');
+                    const responseStatus = this.detectResponseStatus(aiResponse);
+                    const detectedIntent = this.detectIntent(userQuestion);
+                    
+                    const logData = {
+                        Timestamp: timestamp,
+                        UserQuestion: userQuestion,
+                        AIResponse: aiResponse,
+                        ConversationID: this.conversationID,
+                        ResponseStatus: responseStatus,
+                        UserSatisfaction: '',
+                        Flag_Hallucination: '',
+                        DetectedIntent: detectedIntent
+                    };
+                    
+                    console.log('📊 DONNÉES À ENVOYER:', logData);
+                    
+                    const response = await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(logData)
+                    });
+                    
+                    console.log('✅ LOGGING COMPLET - Toutes les données envoyées !');
+                    
+                } catch (error) {
+                    console.error('❌ ERREUR LOGGING:', error);
+                }
+            }
+
+            addMessage(role, content, messageId = null) {
+                const messagesContainer = document.getElementById('messagesContainer');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}`;
+                if (messageId) messageDiv.setAttribute('data-message-id', messageId);
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = content;
+                
+                messageDiv.appendChild(messageContent);
+
+                // Ajouter feedback discret pour réponses assistant
+                if (role === 'assistant' && messageId) {
+                    const feedbackContainer = document.createElement('div');
+                    feedbackContainer.className = 'feedback-container';
+                    
+                    const positiveEmoji = document.createElement('span');
+                    positiveEmoji.className = 'feedback-emoji';
+                    positiveEmoji.innerHTML = '👍';
+                    positiveEmoji.onclick = () => this.submitFeedback(messageId, 'Positif', positiveEmoji, feedbackContainer);
+                    
+                    const negativeEmoji = document.createElement('span');
+                    negativeEmoji.className = 'feedback-emoji';
+                    negativeEmoji.innerHTML = '👎';
+                    negativeEmoji.onclick = () => this.submitFeedback(messageId, 'Négatif', negativeEmoji, feedbackContainer);
+                    
+                    feedbackContainer.appendChild(positiveEmoji);
+                    feedbackContainer.appendChild(negativeEmoji);
+                    messageDiv.appendChild(feedbackContainer);
+                }
+                
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            async submitFeedback(messageId, satisfaction, clickedEmoji, feedbackContainer) {
+                const allEmojis = feedbackContainer.querySelectorAll('.feedback-emoji');
+                allEmojis.forEach(emoji => {
+                    emoji.classList.remove('selected');
+                    emoji.style.pointerEvents = 'none';
+                });
+                
+                clickedEmoji.classList.add('selected');
+                
+                try {
+                    await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'updateFeedback',
+                            ConversationID: this.conversationID,
+                            MessageID: messageId,
+                            UserSatisfaction: satisfaction
+                        })
+                    });
+                    
+                    console.log(`✅ Feedback: ${satisfaction} pour message ${messageId}`);
+                    
+                } catch (error) {
+                    console.error('❌ Erreur feedback:', error);
+                }
+            }
+        }
+
+        // Initialisation
+        const floatingChatbot = new FloatingChatbot();
+
+        function sendMessage() {
+            floatingChatbot.sendMessage();
+        }
+    </script>
+</body>
+</html>

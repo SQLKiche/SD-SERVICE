@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Client Réel - Simulation</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .scenario {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        .question-log {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .results {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        button {
+            background: #4caf50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #45a049; }
+        .category-display {
+            display: inline-block;
+            background: #2196f3;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .log-entry {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .analytics-display {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎯 Test Simulation Client Réel</h1>
+        
+        <div class="scenario">
+            <h3>📋 Scénario: Directeur PME recherche automatisation</h3>
+            <p><strong>Profil:</strong> Marc Dubois, Directeur d'une PME de 50 employés dans le secteur manufacturier</p>
+            <p><strong>Besoin:</strong> Automatiser les processus internes, créer des dashboards, réduire les tâches manuelles</p>
+            <p><strong>Budget:</strong> 15-25k€, délai souhaité: 2-3 mois</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="startRealClientTest()">🚀 Lancer Test Client Réel</button>
+            <button onclick="testSingleQuestion()">❓ Test Question Simple</button>
+            <button onclick="showCurrentAnalytics()">📊 Voir Analytics</button>
+            <button onclick="clearAnalytics()">🗑️ Reset Analytics</button>
+        </div>
+
+        <div id="testResults" class="results" style="display: none;">
+            <h3>📈 Résultats du Test</h3>
+            <div id="logContainer"></div>
+        </div>
+
+        <div id="analyticsDisplay" class="analytics-display" style="display: none;">
+            <h3>📊 Analytics Actuelles</h3>
+            <div id="analyticsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const CHATBOT_API_URL = 'http://localhost:3001/api/claude';
+        const API_KEY = 'your_anthropic_api_key_here';
+        
+        // Questions réalistes d'un vrai prospect
+        const realClientQuestions = [
+            {
+                question: "Bonjour, je suis directeur d'une PME de 50 personnes dans le manufacturier. J'aimerais automatiser nos processus internes car on perd beaucoup de temps en tâches manuelles. Pouvez-vous m'aider ?",
+                expectedCategory: "AUTOMATISATION",
+                context: "Première approche - besoin général"
+            },
+            {
+                question: "Concrètement, combien ça coûterait pour automatiser la gestion de nos commandes et la facturation ? On traite environ 200 commandes par mois.",
+                expectedCategory: "PRIX_TARIFS", 
+                context: "Demande de devis précis"
+            },
+            {
+                question: "Dans quels délais pourriez-vous livrer ce genre de projet ? On aurait besoin que ce soit opérationnel avant la fin du trimestre.",
+                expectedCategory: "DELAIS_TIMING",
+                context: "Contrainte temporelle"
+            },
+            {
+                question: "Est-ce que vous faites aussi des dashboards Power BI ? On aimerait visualiser nos données de production et ventes en temps réel.",
+                expectedCategory: "DASHBOARD_BI",
+                context: "Besoin spécifique BI"
+            },
+            {
+                question: "Avez-vous déjà travaillé avec des entreprises du secteur manufacturier ? Quelles sont vos références ?",
+                expectedCategory: "PROFIL_CREDIBILITE",
+                context: "Vérification crédibilité"
+            },
+            {
+                question: "Si le projet ne nous convient pas, y a-t-il une garantie ou possibilité de remboursement ?",
+                expectedCategory: "GARANTIES_SECURITE",
+                context: "Gestion des risques"
+            },
+            {
+                question: "Pourriez-vous former nos équipes sur les nouveaux outils ? Et quel support proposez-vous après la mise en place ?",
+                expectedCategory: "FORMATION_SUPPORT", 
+                context: "Support post-projet"
+            },
+            {
+                question: "J'aimerais organiser un rendez-vous pour discuter de tout cela en détail. Comment peut-on programmer ça ?",
+                expectedCategory: "PRISE_CONTACT",
+                context: "Conversion - prise de RDV"
+            }
+        ];
+
+        let testResults = [];
+        let currentTestIndex = 0;
+
+        async function startRealClientTest() {
+            document.getElementById('testResults').style.display = 'block';
+            document.getElementById('logContainer').innerHTML = '<p>🚀 Démarrage du test client réel...</p>';
+            
+            testResults = [];
+            currentTestIndex = 0;
+            
+            for (let i = 0; i < realClientQuestions.length; i++) {
+                await testSingleRealQuestion(realClientQuestions[i], i);
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Pause entre questions
+            }
+            
+            displayFinalResults();
+        }
+
+        async function testSingleRealQuestion(questionData, index) {
+            const logDiv = document.getElementById('logContainer');
+            
+            // Log de la question
+            logDiv.innerHTML += `
+                <div class="log-entry">
+                    <strong>Question ${index + 1}:</strong> ${questionData.context}<br>
+                    <div class="question-log">"${questionData.question}"</div>
+                    <span class="category-display">Catégorie attendue: ${questionData.expectedCategory}</span>
+                    <div id="response-${index}">⏳ Envoi en cours...</div>
+                </div>
+            `;
+
+            try {
+                const response = await sendToChatbot(questionData.question);
+                const detectedCategory = categorizeQuestion(questionData.question);
+                
+                const result = {
+                    question: questionData.question,
+                    expectedCategory: questionData.expectedCategory,
+                    detectedCategory: detectedCategory,
+                    response: response,
+                    correct: detectedCategory === questionData.expectedCategory,
+                    context: questionData.context
+                };
+                
+                testResults.push(result);
+                
+                // Update display
+                document.getElementById(`response-${index}`).innerHTML = `
+                    ✅ Réponse reçue (${response.length} caractères)<br>
+                    <span class="category-display ${result.correct ? '' : 'incorrect'}">
+                        Catégorie détectée: ${detectedCategory} ${result.correct ? '✅' : '❌'}
+                    </span><br>
+                    <div style="max-height: 100px; overflow-y: auto; background: #f9f9f9; padding: 10px; margin-top: 5px; border-radius: 4px;">
+                        <small>${response}</small>
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById(`response-${index}`).innerHTML = `❌ Erreur: ${error.message}`;
+            }
+        }
+
+        async function sendToChatbot(question) {
+            const response = await fetch(CHATBOT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    apiKey: API_KEY,
+                    model: "claude-3-haiku-20240307",
+                    max_tokens: 120,
+                    system: "Tu es l'assistant virtuel de Sofiane Dehaf, consultant en automatisation et Power BI.",
+                    messages: [{ role: "user", content: question }]
+                })
+            });
+
+            if (!response.ok) throw new Error('Erreur API');
+            
+            const data = await response.json();
+            return data.content[0].text;
+        }
+
+        // Copie de la fonction de catégorisation du chatbot
+        function categorizeQuestion(question) {
+            const q = question.toLowerCase();
+            
+            if (q.includes('combien') || q.includes('prix') || q.includes('tarif') || q.includes('coût') || q.includes('budget') || q.includes('€')) {
+                return 'PRIX_TARIFS';
+            }
+            
+            if (q.includes('délai') || q.includes('temps') || q.includes('rapide') || q.includes('durée') || q.includes('quand')) {
+                return 'DELAIS_TIMING';
+            }
+            
+            if (q.includes('automatisation') || q.includes('automatique') || q.includes('workflow') || q.includes('processus')) {
+                return 'AUTOMATISATION';
+            }
+            
+            if (q.includes('dashboard') || q.includes('power bi') || q.includes('tableau') || q.includes('rapport') || q.includes('données')) {
+                return 'DASHBOARD_BI';
+            }
+            
+            if (q.includes('formation') || q.includes('accompagne') || q.includes('apprendre') || q.includes('support') || q.includes('aide')) {
+                return 'FORMATION_SUPPORT';
+            }
+            
+            if (q.includes('sofiane') || q.includes('parcours') || q.includes('expérience') || q.includes('compétence') || q.includes('profil')) {
+                return 'PROFIL_CREDIBILITE';
+            }
+            
+            if (q.includes('contact') || q.includes('rdv') || q.includes('rencontre') || q.includes('email') || q.includes('tel')) {
+                return 'PRISE_CONTACT';
+            }
+            
+            if (q.includes('garantie') || q.includes('remboursement') || q.includes('sécurité') || q.includes('risque')) {
+                return 'GARANTIES_SECURITE';
+            }
+            
+            if (q.includes('concurrent') || q.includes('différence') || q.includes('pourquoi') || q.includes('avantage')) {
+                return 'COMPARAISON_CONCURRENCE';
+            }
+            
+            if (q.includes('pme') || q.includes('entreprise') || q.includes('secteur') || q.includes('domaine') || q.includes('industrie')) {
+                return 'SECTEUR_CIBLE';
+            }
+            
+            return 'QUESTION_GENERALE';
+        }
+
+        function displayFinalResults() {
+            const correctCategories = testResults.filter(r => r.correct).length;
+            const totalQuestions = testResults.length;
+            const accuracy = (correctCategories / totalQuestions * 100).toFixed(1);
+            
+            document.getElementById('logContainer').innerHTML += `
+                <div class="results" style="margin-top: 20px; padding: 20px; background: #e8f5e8; border-radius: 8px;">
+                    <h3>🎯 Résultats Finaux du Test</h3>
+                    <p><strong>Précision de catégorisation:</strong> ${accuracy}% (${correctCategories}/${totalQuestions})</p>
+                    <p><strong>Questions traitées:</strong> ${totalQuestions}</p>
+                    <p><strong>Statut:</strong> ${accuracy >= 80 ? '✅ Excellent' : accuracy >= 60 ? '⚠️ À améliorer' : '❌ Problématique'}</p>
+                </div>
+            `;
+        }
+
+        async function testSingleQuestion() {
+            const question = prompt("Entrez votre question de test:");
+            if (!question) return;
+            
+            try {
+                const response = await sendToChatbot(question);
+                const category = categorizeQuestion(question);
+                
+                alert(`Réponse: ${response}\n\nCatégorie détectée: ${category}`);
+            } catch (error) {
+                alert(`Erreur: ${error.message}`);
+            }
+        }
+
+        function showCurrentAnalytics() {
+            const analytics = localStorage.getItem('chatbot_analytics');
+            const analyticsDiv = document.getElementById('analyticsDisplay');
+            
+            if (analytics) {
+                const data = JSON.parse(analytics);
+                let html = '<h4>📊 Données Analytics Actuelles:</h4>';
+                
+                for (const [category, count] of Object.entries(data)) {
+                    html += `<div><strong>${category}:</strong> ${count} questions</div>`;
+                }
+                
+                document.getElementById('analyticsContent').innerHTML = html;
+                analyticsDiv.style.display = 'block';
+            } else {
+                alert('Aucune donnée analytics trouvée');
+            }
+        }
+
+        function clearAnalytics() {
+            localStorage.removeItem('chatbot_analytics');
+            document.getElementById('analyticsDisplay').style.display = 'none';
+            alert('Analytics effacées');
+        }
+    </script>
+</body>
+</html>

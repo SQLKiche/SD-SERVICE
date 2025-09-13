@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Questions Fréquentes | Sofiane - Expert Automatisation PME</title>
+    <meta name="description" content="Toutes les réponses à vos questions sur l'automatisation PME, data analytics et processus d'accompagnement. Tarifs transparents et méthode éprouvée.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* HEADER SECTION */
+        .faq-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .faq-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .faq-header .subtitle {
+            font-size: 1.25rem;
+            color: #8892b0;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* FAQ SECTIONS */
+        .faq-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ccd6f6;
+            margin-bottom: 40px;
+            text-align: left;
+            border-left: 3px solid #00d2ff;
+            padding-left: 20px;
+        }
+
+        /* FAQ ITEMS */
+        .faq-item {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 210, 255, 0.1);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(0, 210, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: rgba(0, 210, 255, 0.02);
+        }
+
+        .faq-question h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ccd6f6;
+            margin-right: 20px;
+            flex: 1;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-icon::before {
+            content: '+';
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon::before {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            background: rgba(15, 15, 35, 0.4);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 30px;
+            color: #8892b0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .faq-answer-content strong {
+            color: #00d2ff;
+            font-weight: 600;
+        }
+
+        .faq-answer-content .highlight {
+            color: #ccd6f6;
+            font-weight: 500;
+        }
+
+        /* CALL TO ACTION */
+        .faq-cta {
+            text-align: center;
+            margin-top: 80px;
+            padding: 50px 30px;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 25px;
+        }
+
+        .faq-cta h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ccd6f6;
+            margin-bottom: 15px;
+        }
+
+        .faq-cta p {
+            font-size: 1.2rem;
+            color: #8892b0;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.4);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 15px;
+            }
+
+            .faq-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .faq-header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .faq-question {
+                padding: 20px 25px;
+            }
+
+            .faq-question h3 {
+                font-size: 1.1rem;
+            }
+
+            .faq-answer-content {
+                padding: 25px;
+                font-size: 1rem;
+            }
+
+            .faq-cta {
+                padding: 40px 25px;
+            }
+
+            .faq-cta h2 {
+                font-size: 1.8rem;
+            }
+
+            .faq-cta p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="faq-header">
+            <h1>Questions Fréquentes</h1>
+            <p class="subtitle">Toutes les réponses sur l'automatisation PME, data analytics et notre processus d'accompagnement</p>
+        </div>
+
+        <!-- SECTION 1: AUTOMATISATION -->
+        <div class="faq-section">
+            <h2 class="section-title">Automatisation PME</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Quels gains concrets puis-je attendre de l'automatisation ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        D'après nos projets récents : <strong>93% de temps économisé</strong> à l'École Internationale Franco-Japonaise de Tokyo, <strong>100% du flux e-commerce automatisé</strong> chez Hubi Paris (483€ de CA en 11 commandes). <br><br>
+                        <span class="highlight">En moyenne, nos clients PME gagnent 2-3 heures par jour</span> grâce à l'automatisation de leurs processus répétitifs : gestion emails, facturation, relances clients, reporting, etc. <br><br>
+                        Le ROI est généralement <strong>positif dès le premier mois</strong> comparé au coût du temps perdu quotidiennement.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Comment savoir quels processus automatiser dans mon entreprise ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Je commence toujours par un <strong>audit complet de vos processus (250€)</strong> pour identifier les tâches répétitives, chronophages et sources d'erreurs.<br><br>
+                        <span class="highlight">Mes critères de priorité :</span><br>
+                        • Tâches répétées plus de 5 fois par semaine<br>
+                        • Processus manuels sujets aux erreurs<br>
+                        • Actions qui interrompent votre cœur de métier<br>
+                        • Gestion de données entre plusieurs outils<br><br>
+                        L'audit révèle généralement <strong>3-5 processus prioritaires</strong> avec un potentiel de gain immédiat.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Combien coûte réellement l'automatisation pour une PME ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>Tarifs transparents et fixes :</strong><br><br>
+                        • <span class="highlight">Audit & Diagnostic : 250€</span> (48h à 1 semaine)<br>
+                        • <span class="highlight">Automatisation complète : 500€</span> (1 à 2 semaines)<br>
+                        • <span class="highlight">Formation et support 30j inclus</span><br><br>
+                        Comparé au coût de l'inaction (temps perdu quotidien valorisé), l'investissement se rentabilise généralement <strong>en moins de 30 jours</strong>.<br><br>
+                        Exemple : 2h/jour économisées × 22 jours × taux horaire = ROI largement positif.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Quels outils utilisez-vous pour automatiser sans coder ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Je privilégie des solutions <strong>no-code accessibles aux PME :</strong><br><br>
+                        • <span class="highlight">Make.com</span> : automatisation de workflows complexes<br>
+                        • <span class="highlight">Power BI & Excel avancé</span> : reporting automatique<br>
+                        • <span class="highlight">Intégrations API</span> : connexion entre vos outils existants<br>
+                        • <span class="highlight">WordPress/WooCommerce</span> : automatisation e-commerce<br><br>
+                        <strong>Avantages :</strong> Pas de développement coûteux, maintenance simple, évolutivité garantie. Vous gardez le contrôle total sur vos processus.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Comment garantissez-vous la sécurité de nos données ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>Sécurité et confidentialité prioritaires :</strong><br><br>
+                        • <span class="highlight">Conformité RGPD</span> : toutes les automatisations respectent la réglementation<br>
+                        • <span class="highlight">Chiffrement des données</span> : connexions sécurisées SSL/TLS<br>
+                        • <span class="highlight">Accès restreints</span> : authentification à deux facteurs<br>
+                        • <span class="highlight">Sauvegardes automatiques</span> : récupération garantie<br><br>
+                        <strong>Engagement :</strong> Confidentialité totale sur vos processus métier. Aucune donnée partagée. Documentation complète pour votre équipe.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: DATA ANALYTICS -->
+        <div class="faq-section">
+            <h2 class="section-title">Data Analytics</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Quels bénéfices concrets l'analyse de données peut-elle apporter ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>ROI mesurable sur vos décisions business :</strong><br><br>
+                        • <span class="highlight">Visibilité temps réel</span> : KPI automatiques, fini les rapports manuels<br>
+                        • <span class="highlight">Détection opportunités</span> : tendances cachées, optimisations possibles<br>
+                        • <span class="highlight">Prédiction performances</span> : anticipation des pics/baisses d'activité<br>
+                        • <span class="highlight">Décisions éclairées</span> : données factuelles vs intuition<br><br>
+                        Résultat concret : <strong>+15-30% d'efficacité opérationnelle</strong> grâce aux insights data-driven. Mes dashboards Power BI transforment vos données brutes en intelligence business actionnable.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Comment commencer la data analytics sans expertise technique ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>Approche progressive et accompagnée :</strong><br><br>
+                        • <span class="highlight">Dashboard BI clé en main (800€)</span> : 1 à 3 semaines de développement<br>
+                        • <span class="highlight">Formation incluse</span> : prise en main Power BI pour votre équipe<br>
+                        • <span class="highlight">Support 30 jours</span> : assistance technique garantie<br>
+                        • <span class="highlight">Documentation complète</span> : guides utilisateur personnalisés<br><br>
+                        <strong>Résultat :</strong> Vous exploitez vos données immédiatement, sans compétences techniques préalables. 100% des équipes formées adoptent les outils (statistique personnelle).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PROCESSUS -->
+        <div class="faq-section">
+            <h2 class="section-title">Processus d'Accompagnement</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Comment se déroule concrètement notre collaboration ?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>Méthode éprouvée en 6 étapes :</strong><br><br>
+                        <span class="highlight">1. Diagnostic (48h)</span> : Audit complet de vos processus<br>
+                        <span class="highlight">2. Analyse & Priorités</span> : Identification des gains rapides<br>
+                        <span class="highlight">3. Proposition personnalisée</span> : Solution adaptée à vos besoins<br>
+                        <span class="highlight">4. Développement</span> : Mise en place des automatisations<br>
+                        <span class="highlight">5. Formation équipe</span> : Prise en main garantie<br>
+                        <span class="highlight">6. Support & Optimisation</span> : Suivi 30 jours inclus<br><br>
+                        <strong>Garanties :</strong> Communication continue, validation à chaque étape, transparence totale sur l'avancement. Aucune surprise, délais respectés.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALL TO ACTION -->
+        <div class="faq-cta">
+            <h2>D'autres questions ?</h2>
+            <p>Démarrons par un audit gratuit de 15 minutes pour identifier vos opportunités d'automatisation</p>
+            <a href="#contact" class="cta-button">Audit Gratuit 15min</a>
+        </div>
+    </div>
+
+    <script>
+        // FAQ Accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+
+            // Smooth scroll for CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Add smooth scroll to contact section when implemented
+                    console.log('Scroll to contact section');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

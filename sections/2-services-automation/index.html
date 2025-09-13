@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions pour Automatiser Votre Business - Sofiane Dehaffreingue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    <link rel="stylesheet" href="../../shared/global-utils.css">
+    
+    <!-- Styles Spécifiques Section 2 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Styles pour les problem-hooks marketing */
+        .problem-hook {
+            color: #EF4444;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+        
+        /* Optimisation du titre section */
+        .section-title {
+            background: linear-gradient(135deg, #4F46E5, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Amélioration des taglines */
+        .tagline {
+            color: #10B981 !important;
+            font-weight: 700;
+        }
+        
+        /* CTA buttons différenciés */
+        .cta-button[data-service="audit"] {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+        
+        .cta-button[data-service="automation"] {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+        
+        .cta-button[data-service="powerbi"] {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+        }
+        
+        .cta-button[data-service="ia"] {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Services Section -->
+    <section class="services section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Récupérez 20h/semaine sans embaucher</h2>
+                <p class="section-subtitle">
+                    4 solutions concrètes pour automatiser votre business selon vos besoins
+                </p>
+            </div>
+            
+            <div class="spacer"></div>
+            <div class="wrapper">
+                <div class="cards">
+                    <!-- Card 1: Audit Découverte -->
+                    <div class="card-wrapper visible">
+                        <div class="card card-one">
+                            <video class="card-video" autoplay muted loop playsinline>
+                                <source src="../../shared/assets/automation-visual.mp4" type="video/mp4">
+                            </video>
+                            <div class="card-overlay"></div>
+                            <div class="card-content">
+                                <h3>Audit & Diagnostic Stratégique</h3>
+                                <p class="problem-hook">Vous perdez du temps sans savoir par où commencer ?</p>
+                                <p class="availability">Disponible maintenant — 2 jours</p>
+                                <p class="price">250€</p>
+                                <p class="tagline">Roadmap claire en 48h</p>
+                                <div class="includes">
+                                    <p>• Gains potentiels chiffrés</p>
+                                    <p>• Recommandations priorisées</p>
+                                    <p>• Plan d'action concret</p>
+                                    <p>• Session de présentation incluse</p>
+                                </div>
+                                <p class="result">Incertitude totale → Plan d'action précis</p>
+                                <button class="cta-button" data-service="audit">Réserver mon audit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Automatisation Simple -->
+                    <div class="card-wrapper">
+                        <div class="card card-two">
+                            <video class="card-video" autoplay muted loop playsinline>
+                                <source src="../../shared/assets/data-analytics-visual.mp4" type="video/mp4">
+                            </video>
+                            <div class="card-overlay"></div>
+                            <div class="card-content">
+                                <h3>Automatisation Processus Métier</h3>
+                                <p class="problem-hook">20h/semaine perdues en tâches répétitives ?</p>
+                                <p class="availability">Disponible maintenant — 3-5 jours</p>
+                                <p class="price">500€</p>
+                                <p class="tagline">ROI visible en 2 mois maximum</p>
+                                <div class="includes">
+                                    <p>• Formation équipe incluse</p>
+                                    <p>• Maintenance 30 jours offerte</p>
+                                    <p>• Processus documentés</p>
+                                    <p>• Solution clé en main</p>
+                                </div>
+                                <p class="result">Tâches répétitives → Temps libéré pour l'essentiel</p>
+                                <button class="cta-button" data-service="automation">Automatiser maintenant</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Dashboard Power BI -->
+                    <div class="card-wrapper">
+                        <div class="card card-three">
+                            <video class="card-video" autoplay muted loop playsinline>
+                                <source src="../../shared/assets/ai-integration-visual.mp4" type="video/mp4">
+                            </video>
+                            <div class="card-overlay"></div>
+                            <div class="card-content">
+                                <h3>Business Intelligence & Pilotage</h3>
+                                <p class="problem-hook">Données partout, visibilité nulle part ?</p>
+                                <p class="availability">Disponible maintenant — 5-7 jours</p>
+                                <p class="price">800€</p>
+                                <p class="tagline">Pilotage temps réel garanti</p>
+                                <div class="includes">
+                                    <p>• Décisions basées données réelles</p>
+                                    <p>• Indicateurs clés centralisés</p>
+                                    <p>• Alertes automatiques</p>
+                                    <p>• Accès mobile inclus</p>
+                                </div>
+                                <p class="result">Décisions au feeling → Pilotage data-driven</p>
+                                <button class="cta-button" data-service="powerbi">Voir mes données</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Assistant IA Basique -->
+                    <div class="card-wrapper">
+                        <div class="card card-four">
+                            <video class="card-video" autoplay muted loop playsinline>
+                                <source src="../../shared/assets/hero-background.mp4" type="video/mp4">
+                            </video>
+                            <div class="card-overlay"></div>
+                            <div class="card-content">
+                                <h3>Assistant IA Conversationnel</h3>
+                                <p class="problem-hook">Support client chronophage et répétitif ?</p>
+                                <p class="availability">Disponible maintenant — 2-4 jours</p>
+                                <p class="price">600€</p>
+                                <p class="tagline">Réponses 24/7 garanties</p>
+                                <div class="includes">
+                                    <p>• Disponibilité 24/7 garantie</p>
+                                    <p>• Réponses cohérentes et précises</p>
+                                    <p>• Escalade automatique si besoin</p>
+                                    <p>• Intégration site web simple</p>
+                                </div>
+                                <p class="result">Support chronophage → Assistance automatisée</p>
+                                <button class="cta-button" data-service="ia">Créer mon assistant</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            
+            <!-- Guarantee Section -->
+            <div class="guarantee">
+                <p>Satisfaction ou remboursé sous 7 jours</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="scripts.js"></script>
+</body>
+</html>

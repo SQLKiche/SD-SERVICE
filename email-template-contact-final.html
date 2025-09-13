@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4C2A85, #0A2342);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .intro {
+            text-align: center;
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+        
+        .info-table {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .info-row {
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4C2A85;
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .message-box {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .message-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 10px;
+        }
+        
+        .message-content {
+            color: #475569;
+            font-style: italic;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #D08C60;
+        }
+        
+        .timestamp {
+            text-align: center;
+            padding: 15px;
+            background-color: #f1f5f9;
+            color: #64748b;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+        
+        .footer {
+            background-color: #0A2342;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .footer-brand {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .footer-link {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">Nouvelle Demande d'Audit</h1>
+            <div class="header-subtitle">Sofiane Automation - Spécialiste IA & PME</div>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                ● NOUVEAU PROSPECT QUALIFIÉ
+            </div>
+            
+            <div class="intro">
+                <strong>Salut Sofiane !</strong><br>
+                Un nouveau prospect vient de demander un audit gratuit.
+            </div>
+            
+            <div class="info-table">
+                <div class="info-item">
+                    <div class="info-label">▸ Nom</div>
+                    <div class="info-value">{{from_name}}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">▸ Email</div>
+                    <div class="info-value">{{from_email}}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">▸ Secteur</div>
+                    <div class="info-value">{{sector}}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">▸ Priorité</div>
+                    <div class="info-value">{{priority}}</div>
+                </div>
+            </div>
+            
+            <div class="message-box">
+                <div class="message-title">
+                    ▸ Message du prospect
+                </div>
+                <div class="message-content">
+                    "{{message}}"
+                </div>
+            </div>
+            
+            <div class="timestamp">
+                ▸ Reçu le {{timestamp}}
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-brand">SOFIANE AUTOMATION</div>
+            <div>
+                Formulaire depuis 
+                <a href="https://68c44320492114118b071226--sofiane-automation-portfolio.netlify.app" class="footer-link">sofiane-automation.com</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

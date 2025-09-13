@@ -1,0 +1,21 @@
+{
+  "name": "sofiane-automation-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio professionnel de Sofiane - Expert en automatisation PME et IA",
+  "main": "site-complet.html",
+  "scripts": {
+    "dev": "live-server",
+    "build": "echo 'No build step required'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["portfolio", "automation", "AI", "PME", "freelance"],
+  "author": "Sofiane Dehaffreingue",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^128.0.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

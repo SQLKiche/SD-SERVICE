@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4C2A85, #0A2342);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .intro {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .appointment-card {
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .appointment-date {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .appointment-time {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .appointment-duration {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .meeting-details {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4C2A85;
+            margin-bottom: 25px;
+        }
+        
+        .detail-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #475569;
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-icon {
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .preparation-box {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .prep-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 15px;
+        }
+        
+        .prep-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #475569;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .prep-bullet {
+            margin-right: 8px;
+            color: #D08C60;
+            font-weight: bold;
+        }
+        
+        .contact-emergency {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .emergency-text {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .signature {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .signature-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4C2A85;
+            margin-bottom: 5px;
+        }
+        
+        .signature-title {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .footer {
+            background-color: #0A2342;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .footer-brand {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .footer-link {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">Rendez-vous Confirmé !</h1>
+            <div class="header-subtitle">Sofiane Automation - Spécialiste IA & PME</div>
+        </div>
+        
+        <div class="content">
+            <div class="success-box">
+                ● RENDEZ-VOUS CONFIRMÉ
+            </div>
+            
+            <div class="greeting">Parfait {{client_name}} !</div>
+            
+            <div class="intro">
+                Votre audit gratuit d'automatisation est maintenant planifié.<br>
+                J'ai hâte d'analyser vos processus et de vous présenter des solutions concrètes.
+            </div>
+            
+            <div class="appointment-card">
+                <div class="appointment-date">{{appointment_date}}</div>
+                <div class="appointment-time">{{appointment_time}}</div>
+                <div class="appointment-duration">Durée : 15 minutes</div>
+            </div>
+            
+            <div class="meeting-details">
+                <div class="detail-title">Détails de notre échange :</div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">▸</div>
+                    <div><strong>Format :</strong> Appel téléphonique ou visioconférence</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">▸</div>
+                    <div><strong>Objectif :</strong> Identifier vos défis d'automatisation</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">▸</div>
+                    <div><strong>Résultat :</strong> Recommandations personnalisées</div>
+                </div>
+            </div>
+            
+            <div class="preparation-box">
+                <div class="prep-title">Comment bien vous préparer :</div>
+                
+                <div class="prep-item">
+                    <div class="prep-bullet">•</div>
+                    <div>Identifiez les tâches répétitives qui vous font perdre du temps</div>
+                </div>
+                
+                <div class="prep-item">
+                    <div class="prep-bullet">•</div>
+                    <div>Listez vos principaux défis opérationnels actuels</div>
+                </div>
+                
+                <div class="prep-item">
+                    <div class="prep-bullet">•</div>
+                    <div>Pensez à vos objectifs de croissance pour 2024</div>
+                </div>
+            </div>
+            
+            <div class="contact-emergency">
+                <div class="emergency-text">
+                    En cas d'empêchement, contactez-nous via le formulaire sur le site<br>
+                    Je vous recontacterai rapidement pour reporter le rendez-vous.
+                </div>
+            </div>
+            
+            <div class="signature">
+                <div class="signature-name">Sofiane Dehaffreingue</div>
+                <div class="signature-title">Spécialiste en Automatisation IA pour PME</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-brand">SOFIANE AUTOMATION</div>
+            <div>
+                <a href="https://68c44320492114118b071226--sofiane-automation-portfolio.netlify.app" class="footer-link">sofiane-automation.com</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

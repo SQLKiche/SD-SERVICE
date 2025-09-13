@@ -1,0 +1,15 @@
+[build]
+  publish = "."
+  
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/"
+  to = "/site-complet.html"
+  status = 200
+
+[[redirects]]
+  from = "/index.html"
+  to = "/site-complet.html"
+  status = 301

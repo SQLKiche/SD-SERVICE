@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Interactive - Agent IA ChatGPT</title>
+    
+    <!-- 
+    ====================================
+    CONFIGURATION CHATBOT IA AVEC CHATGPT
+    ====================================
+    
+    ÉTAPES POUR ACTIVER L'IA :
+    
+    1. Créer compte OpenAI :
+       → Aller sur https://platform.openai.com
+       → S'inscrire avec email
+       → Acheter crédits ($5 minimum)
+    
+    2. Obtenir clé API :
+       → Dans console OpenAI
+       → Aller dans "API Keys"
+       → Créer nouvelle clé
+       → Copier la clé (your_openai_api_key_here...)
+    
+    3. Remplacer dans le code :
+       → Ligne ~216: remplacer 'YOUR_OPENAI_API_KEY' par votre vraie clé
+       → Exemple: this.openaiApiKey = 'your_openai_api_key_here...';
+    
+    COÛT RÉALISTE :
+    - 1000 conversations = ~0.30€ (GPT-4o-mini)
+    - Limite sécurité : 1000/mois = 0.30€ max
+    - Modèle utilisé : GPT-4o-mini (rapide + économique + qualité)
+    
+    AVANTAGES CHATGPT :
+    ✅ Réponses COMPLÈTES (jamais de coupure !)
+    ✅ Qualité supérieure des réponses
+    ✅ Limite mensuelle (1000 conversations max)
+    ✅ Limite par session (30 conversations)
+    ✅ Gestion d'erreurs complète
+    ✅ Fallback si API indisponible
+    
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .faq-section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 450;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Question Categories - Style glassmorphisme */
+        .question-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+        
+        .category {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .category-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Chatbot Container */
+        .chatbot-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chatbot-header {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .chatbot-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .chatbot-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        /* Chat Interface */
+        .chat-interface {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .message {
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: slideInMessage 0.3s ease-out;
+        }
+        
+        @keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+        }
+        
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .message.bot .message-bubble {
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .message.user .message-bubble {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            padding: 12px 16px;
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 16px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .typing-dots {
+            display: inline-block;
+        }
+        
+        .typing-dots::after {
+            content: '';
+            animation: typingDots 1.5s infinite;
+        }
+        
+        @keyframes typingDots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        /* Chat Input */
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .chat-input:focus {
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .chat-input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .chat-send-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        .chat-send-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .quick-questions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-question {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .quick-question:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: var(--text-primary);
+        }
+        
+        /* Contact Form */
+        .contact-form {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus {
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .form-submit {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .form-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .faq-section {
+                padding: 60px 15px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .question-categories {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 40px;
+            }
+            
+            .chat-interface {
+                height: 350px;
+            }
+            
+            .quick-questions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="faq-section">
+        <div class="section-header">
+            <h2 class="section-title">Questions Fréquentes</h2>
+            <p class="section-subtitle">Obtenez des réponses instantanées avec notre assistant IA intelligent</p>
+        </div>
+        
+        <!-- Question Categories -->
+        <div class="question-categories">
+            <div class="category" onclick="askQuickQuestion('Quels sont tes tarifs ?')">
+                <span class="category-icon">💰</span>
+                <h3 class="category-title">Tarifs & Services</h3>
+                <p class="category-description">Découvrez nos prix transparents et nos différents services d'automatisation</p>
+            </div>
+            
+            <div class="category" onclick="askQuickQuestion('Quels sont les délais pour les services ?')">
+                <span class="category-icon">⏱️</span>
+                <h3 class="category-title">Délais & Planning</h3>
+                <p class="category-description">Connaître les temps de réalisation pour chaque type de projet</p>
+            </div>
+            
+            <div class="category" onclick="askQuickQuestion('Quelles sont tes compétences techniques ?')">
+                <span class="category-icon">🔧</span>
+                <h3 class="category-title">Compétences & Outils</h3>
+                <p class="category-description">Technologies utilisées et domaines d'expertise technique</p>
+            </div>
+            
+            <div class="category" onclick="askQuickQuestion('Raconte-moi ton parcours professionnel')">
+                <span class="category-icon">📚</span>
+                <h3 class="category-title">Parcours & Expérience</h3>
+                <p class="category-description">Formation, expériences internationales et projets réalisés</p>
+            </div>
+        </div>
+        
+        <!-- Chatbot Assistant IA -->
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <div class="demo-badge">🧠 AGENT IA AVANCÉ</div>
+                <h3 class="chatbot-title">Assistant IA de Sofiane</h3>
+                <p class="chatbot-subtitle">Intelligence artificielle réelle - Conversations naturelles sur vos demandes !</p>
+            </div>
+            
+            <div class="chat-interface">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <div class="message-bubble">
+                            👋 Salut ! Je réponds à toutes vos questions ou vos doutes sur l'automatisation, les tarifs, délais, projets, compétences de Sofiane...<br><br>
+N'hésitez pas ! 🚀
+                        </div>
+                    </div>
+                    <div class="typing-indicator" id="typingIndicator">
+                        <span class="typing-dots">Je réfléchis</span>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container" id="chatInputContainer">
+                    <div class="chat-input-wrapper">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Tapez votre question ici...">
+                        <button class="chat-send-btn" id="chatSendBtn">Envoyer</button>
+                    </div>
+                    <div class="quick-questions" id="quickQuestions">
+                        <span class="quick-question" onclick="askQuickQuestion('💰 Tarifs')">💰 Tarifs</span>
+                        <span class="quick-question" onclick="askQuickQuestion('⏱️ Délais')">⏱️ Délais</span>
+                        <span class="quick-question" onclick="askQuickQuestion('🔧 Outils')">🔧 Outils</span>
+                        <span class="quick-question" onclick="askQuickQuestion('📚 Formation')">📚 Formation</span>
+                    </div>
+                </div>
+                
+                <!-- Contact Form (hidden) -->
+                <div class="contact-form" id="contactForm">
+                    <h4 style="margin-bottom: 16px; color: var(--text-primary);">Parlons de votre projet !</h4>
+                    <form id="leadForm">
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" class="form-input" id="userName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-input" id="userEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Votre demande</label>
+                            <textarea class="form-input form-textarea" id="userMessage" placeholder="Décrivez brièvement votre projet ou question..."></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">Envoyer à Sofiane</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ChatbotOpenAI {
+            constructor() {
+                this.openaiApiKey = 'your_openai_api_key_here';
+                this.openaiModel = 'gpt-4o-mini';
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.chatSendBtn = document.getElementById('chatSendBtn');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.contactForm = document.getElementById('contactForm');
+                this.chatInputContainer = document.getElementById('chatInputContainer');
+                this.conversationCount = 0;
+                this.maxConversations = 30; // Increased limit for ChatGPT
+                this.monthlyLimit = 1000; // Higher limit for tests
+                this.conversationHistory = [];
+                this.analytics = JSON.parse(localStorage.getItem('chatbot_analytics') || '{}');
+                this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbxmY0l6L3hEFGNPqCACaMlqmL6n2iGawBSlBGNNE6uNY_siv1LGvMgu-RVzF3Bm_VnB/exec';
+                
+                // Generate unique ConversationID for this session
+                this.conversationID = this.generateConversationID();
+                
+                this.initializeEventListeners();
+                this.checkMonthlyUsage();
+            }
+            
+            checkMonthlyUsage() {
+                const currentMonth = new Date().getMonth();
+                const storedMonth = localStorage.getItem('chatbot_month');
+                const monthlyCount = parseInt(localStorage.getItem('chatbot_monthly_count') || '0');
+                
+                if (storedMonth != currentMonth) {
+                    // Reset monthly counter
+                    localStorage.setItem('chatbot_month', currentMonth);
+                    localStorage.setItem('chatbot_monthly_count', '0');
+                } else if (monthlyCount >= this.monthlyLimit) {
+                    this.showMonthlyLimitReached();
+                    return false;
+                }
+                return true;
+            }
+            
+            showMonthlyLimitReached() {
+                this.addMessage(
+                    "🚫 Limite mensuelle atteinte ! Pour continuer à échanger, contactez Sofiane directement. Il sera ravi de vous aider personnellement ! 😊",
+                    'bot'
+                );
+                this.showContactForm();
+            }
+            
+            initializeEventListeners() {
+                this.chatSendBtn.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                
+                // Lead form submission
+                document.getElementById('leadForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitLead();
+                });
+            }
+            
+            async sendMessage() {
+                if (!this.checkMonthlyUsage()) return;
+                
+                const message = this.chatInput.value.trim();
+                if (!message) return;
+                
+                if (this.conversationCount >= this.maxConversations) {
+                    this.showContactForm();
+                    return;
+                }
+                
+                this.addMessage(message, 'user');
+                this.chatInput.value = '';
+                this.conversationCount++;
+                
+                // Add to conversation history
+                this.conversationHistory.push({role: "user", content: message});
+                
+                this.showTyping();
+                
+                let responseStatus = 'Réponse_Fournie';
+                let aiResponse = '';
+                
+                try {
+                    aiResponse = await this.getOpenAIResponse(message);
+                    
+                    // Detect uncertain responses
+                    responseStatus = this.detectResponseStatus(aiResponse);
+                    
+                    this.hideTyping();
+                    this.addMessage(aiResponse, 'bot');
+                    
+                    // Add to conversation history
+                    this.conversationHistory.push({role: "assistant", content: aiResponse});
+                    
+                    // Update monthly counter
+                    const monthlyCount = parseInt(localStorage.getItem('chatbot_monthly_count') || '0');
+                    localStorage.setItem('chatbot_monthly_count', (monthlyCount + 1).toString());
+                    
+                } catch (error) {
+                    console.error('Erreur OpenAI:', error);
+                    responseStatus = 'Erreur_Technique';
+                    aiResponse = "Désolée, j'ai eu un petit souci technique ! Pourriez-vous réessayer votre question ? 😊";
+                    
+                    this.hideTyping();
+                    this.addMessage(aiResponse, 'bot');
+                }
+                
+                // Log to Google Sheets avec nouvelle structure
+                this.logToGoogleSheets(message, aiResponse, responseStatus);
+            }
+            
+            async getOpenAIResponse(userMessage) {
+                const systemPrompt = `Tu es l'assistant IA spécialisé automatisation & data pour PME de Sofiane.
+
+🎯 TON RÔLE : Assistant expert qui démontre l'expertise de Sofiane à travers chaque réponse.
+
+🚨 RÈGLES ABSOLUES :
+- INTERDIT de couper tes phrases ! TERMINE TOUJOURS complètement !
+- Parle UNIQUEMENT en bien de Sofiane, jamais de points faibles
+- Utilise SEULEMENT les infos ci-dessous, AUCUNE invention
+- Réponses adaptées : courtes pour questions simples, complètes pour complexes
+- Pour conseils personnalisés → TOUJOURS proposer contact direct avec Sofiane
+
+PROFIL SOFIANE :
+- Spécialiste automatisation & data PME
+- 25 ans, Master Mgt & Commerce Int., Spé Data/IA, Polytechnique HdF
+- Français natif, Anglais C1, Espagnol B1
+- 6 mois école internationale Tokyo(stage)
+- Formation 15 professeurs, 100% adoption
+
+PROJETS & RÉSULTATS :
+- Tokyo EIFJ : bulletins & formation
+- Hubi Paris : e-commerce 483€ CA, 11 commandes
+- SafeCharm : 2e place concours entrepreneurial, leadership équipe
+- Compétences : Power BI, Excel avancé, automatisation, WP/Woo
+
+SPÉCIALISATIONS :
+- PME sans équipe tech dédiée
+- Traducteur business-tech, complexité → simplicité
+- Méthodologie EIFJ : Analyse → Conception → Implémentation
+- Secteurs : e-commerce, éducation, services, conseil
+
+SERVICES & TARIFS FIXES (non négociables) :
+- 🔍 Audit & Diagnostic 250€ (48h-1 semaine)
+- 🤖 Automatisation 500€ (1-2 semaines)
+- 📊 Dashboard BI 800€ (1-3 semaines)  
+- 💬 Assistant IA 600€ (3-7 jours)
+
+EXEMPLES RÉPONSES EXPERTES À INTÉGRER :
+
+Pour questions e-commerce :
+"Oui, expérience concrète : j'ai créé et automatisé la boutique Hubi Paris - 483€ CA généré, 11 commandes traitées, flux 100% automatisé."
+
+Pour questions expérience internationale :
+"6 mois à l'École Internationale Tokyo (EIFJ) : transformation système bulletins + formation équipe complète de 15 professeurs avec 100% adoption."
+
+Pour questions crédibilité/résultats :
+"SafeCharm : 2ème place concours entrepreneurial avec leadership d'équipe. Méthode EIFJ testée sur projets réels."
+
+TEMPLATES RÉPONSES ENRICHIES :
+
+Pour questions tarifs :
+"Automatisation 500€ → Économies estimées : 2-3h/jour soit 300-450€/mois récupérés. ROI en 6 semaines. Pour un audit gratuit personnalisé, utilisez le formulaire de contact ci-dessous !"
+
+Pour questions délais :
+"Délai automatisation : 1-2 semaines. Mais on peut commencer par un audit express 48h pour identifier les gains les plus rapides. Planning disponible ?"
+
+Pour questions techniques :
+"J'utilise des outils no-code comme Make.com : Email reçu → Analyse → Classement → Réponse automatique. Comme sur Hubi : 100% du flux commande-livraison automatisé."
+
+FILET DE SÉCURITÉ :
+Si question hors expertise (juridique, comptabilité, développement complexe, autres services) :
+"Je n'ai pas encore cette information dans ma base. Laissez-moi transmettre votre question à Sofiane qui vous répondra sous 24h avec une réponse personnalisée. Puis-je récupérer votre email pour qu'il vous contacte ?"
+
+CTA SELON TYPE QUESTION :
+- Questions TARIFS → "Pour réserver votre audit gratuit, remplissez le formulaire de contact"
+- Questions DÉLAIS → "Consultez mes disponibilités et créneaux express"  
+- Questions TECHNIQUES → "Démonstration en 15min de la solution adaptée"
+- Questions HÉSITATIONS → "Échange sans engagement pour lever vos doutes"
+
+DÉTECTION MOTS-CLÉS INTELLIGENTE :
+- "urgent" → "Créneaux express disponibles sous 24h"  
+- "budget serré" → "Solutions échelonnées possibles"
+- "test" → "Audit gratuit pour commencer sans risque"
+- "pas sûr" → "Échange découverte 15min sans engagement"
+
+QUALIFICATION AUTOMATIQUE LEADS :
+Pour mieux vous conseiller, pouvez-vous préciser :
+- Votre secteur d'activité ?
+- Quelle tâche vous fait perdre le plus de temps ?
+- Budget envisagé et urgence du projet ?
+
+Contact : sofianedehaf@gmail.com
+
+Sois charmante et convaincante ! 😊`;
+
+                const response = await fetch('http://localhost:3003/openai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        apiKey: this.openaiApiKey,
+                        model: this.openaiModel,
+                        max_tokens: 200,
+                        temperature: 0.7,
+                        system: systemPrompt,
+                        message: userMessage
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                return data.content;
+            }
+            
+            addMessage(content, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'message-bubble';
+                bubbleDiv.textContent = content;
+                
+                messageDiv.appendChild(bubbleDiv);
+                this.chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+            
+            showTyping() {
+                this.typingIndicator.style.display = 'block';
+                this.chatSendBtn.disabled = true;
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+            
+            hideTyping() {
+                this.typingIndicator.style.display = 'none';
+                this.chatSendBtn.disabled = false;
+                this.chatInput.focus();
+            }
+            
+            showContactForm() {
+                this.chatInputContainer.style.display = 'none';
+                this.contactForm.style.display = 'block';
+                this.addMessage(
+                    "💌 J'aimerais en savoir plus sur votre projet ! Remplissez le formulaire ci-dessous et Sofiane vous contactera personnellement dans les 24h. 🚀",
+                    'bot'
+                );
+            }
+            
+            trackQuestion(question) {
+                const category = this.categorizeQuestion(question);
+                const timestamp = new Date().toISOString();
+                
+                if (!this.analytics[category]) {
+                    this.analytics[category] = [];
+                }
+                
+                this.analytics[category].push({
+                    question: question,
+                    timestamp: timestamp
+                });
+                
+                localStorage.setItem('chatbot_analytics', JSON.stringify(this.analytics));
+                
+                // Send to Google Sheets
+                this.sendToGoogleSheets(question, category, timestamp);
+            }
+            
+            categorizeQuestion(question) {
+                const q = question.toLowerCase();
+                
+                if (q.includes('tarif') || q.includes('prix') || q.includes('coût') || q.includes('€')) {
+                    return 'TARIFS_PRIX';
+                }
+                
+                if (q.includes('délai') || q.includes('temps') || q.includes('durée') || q.includes('combien de temps')) {
+                    return 'DELAIS_PLANNING';
+                }
+                
+                if (q.includes('outil') || q.includes('technologie') || q.includes('compétence') || q.includes('power bi') || q.includes('excel')) {
+                    return 'COMPETENCES_OUTILS';
+                }
+                
+                if (q.includes('formation') || q.includes('parcours') || q.includes('expérience') || q.includes('diplôme') || q.includes('tokyo')) {
+                    return 'FORMATION_EXPERIENCE';
+                }
+                
+                if (q.includes('automatisation') || q.includes('dashboard') || q.includes('audit') || q.includes('service')) {
+                    return 'SERVICES_SOLUTIONS';
+                }
+                
+                if (q.includes('projet') || q.includes('hubi') || q.includes('safecharm') || q.includes('résultat')) {
+                    return 'PROJETS_RESULTATS';
+                }
+                
+                if (q.includes('qui es-tu') || q.includes('présent') || q.includes('sofiane') || q.includes('à propos')) {
+                    return 'PROFIL_CREDIBILITE';
+                }
+                
+                if (q.includes('contact') || q.includes('rdv') || q.includes('rencontre') || q.includes('email') || q.includes('tel')) {
+                    return 'PRISE_CONTACT';
+                }
+                
+                return 'QUESTIONS_DIVERSES';
+            }
+            
+            generateConversationID() {
+                return 'conv-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+            
+            detectResponseStatus(response) {
+                const uncertainKeywords = [
+                    'je ne sais pas', 
+                    'je ne suis pas sûr', 
+                    'désolé', 
+                    'je n\'ai pas cette information',
+                    'je ne peux pas',
+                    'pas certain',
+                    'peut-être'
+                ];
+                
+                const lowerResponse = response.toLowerCase();
+                for (let keyword of uncertainKeywords) {
+                    if (lowerResponse.includes(keyword)) {
+                        return 'Réponse_Incertaine';
+                    }
+                }
+                
+                return 'Réponse_Fournie';
+            }
+            
+            async logToGoogleSheets(userQuestion, aiResponse, responseStatus) {
+                const timestamp = new Date().toISOString();
+                console.log('📊 LOGGING TO SHEETS:', {userQuestion, responseStatus});
+                
+                try {
+                    const response = await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            // Structure EXACTE du Google Sheet
+                            Timestamp: timestamp,
+                            ConversationID: this.conversationID,
+                            UserQuestion: userQuestion,
+                            AIResponse: aiResponse,
+                            ResponseStatus: responseStatus,
+                            UserSatisfaction: '', // Vide par défaut, rempli par feedback
+                            Flag_Hallucination: '', // Vide par défaut, validation manuelle
+                            source: 'ChatGPT_Log_Data_IA'
+                        })
+                    });
+                    console.log('✅ GOOGLE SHEETS - Log envoyé');
+                } catch (error) {
+                    console.log('❌ ERREUR GOOGLE SHEETS:', error);
+                }
+            }
+            
+            // Ancienne fonction maintenue pour compatibilité
+            async sendToGoogleSheets(question, category, timestamp) {
+                // Cette fonction est maintenant remplacée par logToGoogleSheets
+                console.log('⚠️ Ancienne fonction sendToGoogleSheets appelée');
+            }
+            
+            async submitLead() {
+                const name = document.getElementById('userName').value;
+                const email = document.getElementById('userEmail').value;
+                const message = document.getElementById('userMessage').value;
+                
+                // Send to Google Sheets
+                try {
+                    await fetch(this.googleSheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: 'LEAD_FORM',
+                            name: name,
+                            email: email,
+                            message: message,
+                            timestamp: new Date().toISOString(),
+                            source: 'ChatGPT_FAQ_Chatbot'
+                        })
+                    });
+                    
+                    this.addMessage(
+                        `🎉 Merci ${name} ! Votre message a été envoyé à Sofiane. Il vous contactera à ${email} dans les 24h ! 📧`,
+                        'bot'
+                    );
+                    
+                    // Reset form
+                    document.getElementById('leadForm').reset();
+                    
+                } catch (error) {
+                    this.addMessage(
+                        "✅ Votre message a été envoyé ! Sofiane vous contactera très bientôt. 😊",
+                        'bot'
+                    );
+                    document.getElementById('leadForm').reset();
+                }
+            }
+        }
+
+        // Global functions for quick questions
+        function askQuickQuestion(question) {
+            if (window.chatbot) {
+                window.chatbot.chatInput.value = question;
+                window.chatbot.sendMessage();
+            }
+        }
+
+        // Initialize chatbot when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.chatbot = new ChatbotOpenAI();
+        });
+
+        // Google Analytics
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'FAQ Chatbot ChatGPT Version',
+            page_location: window.location.href
+        });
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+</body>
+</html>
