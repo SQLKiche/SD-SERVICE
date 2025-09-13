@@ -44,6 +44,58 @@ exports.handler = async (event, context) => {
         timestamp: new Date().toISOString()
       });
       
+      // Envoyer les emails de confirmation
+      try {
+        // Format data for email templates
+        const appointmentDate = new Date(datetime).toLocaleDateString('fr-FR', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        const appointmentTime = new Date(datetime).toLocaleTimeString('fr-FR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        // 1. Email de notification au propriétaire (Sofiane)
+        await fetch(`${process.env.SITE_URL}/.netlify/functions/send-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            templateType: 'appointment-owner',
+            data: {
+              appointmentDate,
+              appointmentTime,
+              clientName,
+              clientEmail,
+              clientPhone: 'Non fourni',
+              clientCompany: 'Non fournie',
+              clientSector: 'Non spécifié',
+              clientMessage: clientMessage || 'Aucun message'
+            }
+          })
+        });
+
+        // 2. Email de confirmation au client
+        await fetch(`${process.env.SITE_URL}/.netlify/functions/send-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            templateType: 'appointment-client',
+            data: {
+              clientName,
+              clientEmail,
+              appointmentDate,
+              appointmentTime
+            }
+          })
+        });
+      } catch (emailError) {
+        console.error('Email sending failed for appointment:', emailError);
+        // Continue even if email fails - appointment is still booked
+      }
+      
       return {
         statusCode: 200,
         headers,
