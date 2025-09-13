@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Node.js v18+ has native fetch
 
 exports.handler = async (event, context) => {
   // CORS Headers
