@@ -8264,7 +8264,7 @@ CONTACT : Ne donne JAMAIS l'email direct ! Redirige vers le formulaire de contac
 
 Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", jamais "JE fais" ! 😊`;
 
-                const response = await fetch('/.netlify/functions/chatbot', {
+                const response = await fetch('/api/chatbot', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8492,7 +8492,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 container.innerHTML = '<p class="loading-slots">Chargement des créneaux...</p>';
 
                 try {
-                    const response = await fetch('/.netlify/functions/calendar', {
+                    const response = await fetch('/api/calendar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -8589,7 +8589,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 confirmBtn.disabled = true;
 
                 try {
-                    const response = await fetch('/.netlify/functions/calendar', {
+                    const response = await fetch('/api/calendar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
