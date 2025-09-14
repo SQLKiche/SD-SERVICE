@@ -33,8 +33,31 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString()
     });
 
-    // TODO: Integrate with Brevo email service
-    // Send emails via send-email API route
+    // Send emails via Brevo
+    try {
+      // Email de notification pour toi
+      await fetch(`${req.headers.origin}/api/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          templateType: 'contact-form',
+          data: { fullName, email, sector, priority, description }
+        })
+      });
+
+      // Email de confirmation pour le client
+      await fetch(`${req.headers.origin}/api/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          templateType: 'client-confirmation',
+          data: { fullName, email, sector, priority }
+        })
+      });
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Continue anyway, don't fail the form submission
+    }
 
     return res.status(200).json({
       success: true,
