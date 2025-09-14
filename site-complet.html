@@ -26,7 +26,6 @@
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XWZE1D5N1"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -7477,31 +7476,31 @@ RÉSERVER MON AUDIT GRATUIT
                     return;
                 }
 
-                // Envoyer via EmailJS
+                // Envoyer via API Brevo
                 submitBtn.disabled = true;
                 submitBtn.classList.add('loading');
                 submitBtn.textContent = '';
 
-                // Configuration EmailJS (tu devras remplacer ces IDs)
-                const serviceID = 'YOUR_SERVICE_ID'; // À remplacer
-                const templateID = 'YOUR_TEMPLATE_ID'; // À remplacer
-                const publicKey = 'YOUR_PUBLIC_KEY'; // À remplacer
-
                 // Données du formulaire
-                const templateParams = {
-                    from_name: fullName,
-                    from_email: email,
+                const formData = {
+                    fullName: fullName,
+                    email: email,
                     sector: sector || 'Non spécifié',
                     priority: priority || 'Non spécifié',
-                    message: document.getElementById('description')?.value || 'Aucun message',
-                    to_email: 'contact@sofiane-automation.com', // Ton email
-                    timestamp: new Date().toLocaleString('fr-FR')
+                    description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
-                // Envoyer avec EmailJS
-                emailjs.send(serviceID, templateID, templateParams, publicKey)
-                .then((response) => {
-                    console.log('✅ Email envoyé avec succès!', response.status, response.text);
+                // Envoyer avec l'API contact Vercel
+                fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then((data) => {
+                    console.log('✅ Email envoyé avec succès!', data);
                     
                     // Cacher le formulaire et afficher le message de succès
                     formSection.style.display = 'none';
@@ -7517,7 +7516,7 @@ RÉSERVER MON AUDIT GRATUIT
                     });
                 })
                 .catch((error) => {
-                    console.error('❌ Erreur EmailJS:', error);
+                    console.error('❌ Erreur envoi:', error);
                     alert('Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter directement.');
                 })
                 .finally(() => {
