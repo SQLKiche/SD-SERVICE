@@ -1,0 +1,874 @@
+/* 🎨 SECTION 4 - PROCESSUS WORKFLOW - TIMELINE INTERACTIVE PREMIUM */
+
+/* === BASE SECTION === */
+.processus-section {
+    background: var(--background-dark);
+    min-height: 100vh;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.processus-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* === HEADER === */
+.processus-header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.processus-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+.processus-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.processus-intro {
+    font-size: 1rem;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* === PROGRESS BAR INTERACTIVE === */
+.processus-progress-container {
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    position: relative;
+    z-index: 3;
+}
+
+.progress-bar-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    padding: 16px;
+    margin-bottom: 40px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-cyan) 100%);
+    border-radius: 10px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 25%;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-top: 20px;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.progress-step.active {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.step-marker {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-step.active .step-marker {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    border-color: var(--primary-blue);
+    color: white;
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+}
+
+.step-marker::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.progress-step:hover .step-marker::after,
+.progress-step.active .step-marker::after {
+    opacity: 1;
+    animation: markerShine 1.5s ease-in-out infinite;
+}
+
+@keyframes markerShine {
+    0% { transform: rotate(45deg) translate(-50%, -50%); }
+    100% { transform: rotate(45deg) translate(50%, 50%); }
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.progress-step.active .step-label {
+    color: var(--primary-blue);
+}
+
+/* === TIMELINE INTERACTIVE === */
+.processus-timeline {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* === ÉTAPES EXPANDABLES === */
+.processus-step {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    position: relative;
+}
+
+.processus-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.processus-step:hover {
+    border-color: rgba(79, 70, 229, 0.3);
+    box-shadow: 0 20px 60px rgba(79, 70, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+.processus-step.active {
+    border-color: var(--primary-blue);
+    box-shadow: 0 25px 80px rgba(79, 70, 229, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Header cliquable de l'étape */
+.processus-step .step-header {
+    display: flex;
+    align-items: center;
+    padding: 32px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.processus-step.expandable:not(.active) .step-content > *:not(.step-header) {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.processus-step.active .step-content > *:not(.step-header) {
+    max-height: 1000px;
+    opacity: 1;
+    transition: all 0.6s ease;
+}
+
+.step-number {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: white;
+    margin-right: 24px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+}
+
+.step-number::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.processus-step:hover .step-number::before,
+.processus-step.active .step-number::before {
+    left: 100%;
+}
+
+.step-content {
+    flex: 1;
+    padding: 0 32px 32px;
+}
+
+.step-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.step-problem {
+    background: rgba(185, 28, 28, 0.1);
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.step-problem p {
+    color: #FCA5A5;
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.step-problem strong {
+    color: #FEE2E2;
+}
+
+.step-description {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.step-details {
+    margin-bottom: 24px;
+}
+
+.step-details h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.step-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-details li {
+    display: flex;
+    align-items: flex-start;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.step-details li::before {
+    content: '✓';
+    color: var(--primary-blue);
+    font-weight: bold;
+    margin-right: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.step-deliverable,
+.step-duration,
+.step-duration-options,
+.step-method,
+.step-guarantee {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 3px solid var(--primary-blue);
+}
+
+.step-deliverable strong,
+.step-guarantee strong,
+.step-method strong,
+.step-duration-options strong {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.step-duration {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.step-duration-options ul {
+    margin-top: 12px;
+}
+
+.step-duration-options li::before {
+    content: '⏱️';
+    margin-right: 8px;
+}
+
+/* === STEP ICON === */
+.step-icon {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+}
+
+.processus-step:hover .step-icon,
+.processus-step.active .step-icon {
+    background: rgba(79, 70, 229, 0.1);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    transform: scale(1.05);
+}
+
+/* === STEP CTA === */
+.step-cta {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cta-step-button {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-step-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cta-step-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+}
+
+.cta-step-button:hover::before {
+    left: 100%;
+}
+
+/* === PREUVES SOCIALES TOKYO === */
+.processus-proof {
+    margin: 80px 0 60px;
+    text-align: center;
+}
+
+.proof-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+}
+
+.proof-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(6, 182, 212, 0.05));
+    pointer-events: none;
+}
+
+.proof-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.proof-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.proof-metrics {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.proof-metric {
+    display: flex;
+    flex-direction: column;
+}
+
+.proof-metric .metric-number {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.proof-metric .metric-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.proof-testimonial {
+    text-align: left;
+    position: relative;
+    padding: 32px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.proof-testimonial p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.testimonial-author .author-name {
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.testimonial-author .author-role {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* === CTA FINAL === */
+.processus-cta {
+    text-align: center;
+    margin-top: 80px;
+    padding: 60px 40px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.processus-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(6, 182, 212, 0.05));
+    pointer-events: none;
+}
+
+.cta-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.cta-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    padding: 16px 32px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button.primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+    color: white;
+}
+
+.cta-button.primary.large {
+    padding: 20px 48px;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.cta-button.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+}
+
+.cta-button.primary:hover {
+    box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+}
+
+.cta-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cta-button:hover::before {
+    left: 100%;
+}
+
+.cta-note {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+    .processus-step .step-header {
+        padding: 28px;
+    }
+    
+    .step-content {
+        padding: 0 28px 28px;
+    }
+    
+    .step-icon {
+        top: 28px;
+        right: 28px;
+        width: 48px;
+        height: 48px;
+    }
+    
+    .proof-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        text-align: center;
+    }
+    
+    .proof-testimonial {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .processus-section {
+        padding: 60px 0;
+    }
+    
+    .processus-title {
+        font-size: 2.4rem;
+    }
+    
+    .processus-header {
+        margin-bottom: 48px;
+    }
+    
+    .processus-progress-container {
+        margin-bottom: 60px;
+    }
+    
+    .progress-steps {
+        gap: 16px;
+    }
+    
+    .step-marker {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    .step-label {
+        font-size: 0.8rem;
+    }
+    
+    .processus-step .step-header {
+        padding: 24px;
+        flex-direction: row;
+        text-align: left;
+        gap: 16px;
+        justify-content: flex-start;
+    }
+    
+    .step-number {
+        width: 56px;
+        height: 56px;
+        font-size: 1.5rem;
+        margin-right: 0;
+        margin-bottom: 12px;
+    }
+    
+    .step-content {
+        padding: 0 24px 24px;
+    }
+    
+    .step-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .step-icon {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 16px;
+    }
+    
+    .proof-container {
+        padding: 32px 24px;
+    }
+    
+    .proof-title {
+        font-size: 1.8rem;
+    }
+    
+    .proof-metrics {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .proof-metric .metric-number {
+        font-size: 2.4rem;
+    }
+    
+    .processus-cta {
+        padding: 40px 24px;
+        margin-top: 60px;
+    }
+    
+    .cta-title {
+        font-size: 1.8rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-button {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .processus-title {
+        font-size: 2rem;
+    }
+    
+    .progress-bar-container {
+        padding: 12px;
+    }
+    
+    .processus-step .step-header {
+        padding: 20px;
+    }
+    
+    .step-content {
+        padding: 0 20px 20px;
+    }
+    
+    .step-number {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    
+    .step-title {
+        font-size: 1.3rem;
+    }
+    
+    .proof-container {
+        padding: 24px 20px;
+    }
+    
+    .proof-testimonial {
+        padding: 24px;
+    }
+    
+    .processus-cta {
+        padding: 32px 20px;
+    }
+}
+
+/* === ANIMATIONS ENTRANCE === */
+.processus-step {
+    transition-delay: calc(var(--index) * 0.1s);
+}
+
+.processus-step:nth-child(1) { --index: 0; }
+.processus-step:nth-child(2) { --index: 1; }
+.processus-step:nth-child(3) { --index: 2; }
+.processus-step:nth-child(4) { --index: 3; }
+
+/* Amélioration des transitions entre étapes actives */
+.processus-step.active {
+    animation: stepActivate 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes stepActivate {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0 20px 60px rgba(79, 70, 229, 0.1);
+    }
+    50% {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 80px rgba(79, 70, 229, 0.2);
+    }
+    100% {
+        transform: translateY(0);
+        box-shadow: 0 25px 80px rgba(79, 70, 229, 0.2);
+    }
+}

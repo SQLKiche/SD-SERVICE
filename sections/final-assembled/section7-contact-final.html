@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Audit Gratuit 15min | Sofiane - Expert Automatisation PME</title>
+    <meta name="description" content="Réservez votre audit gratuit 15min. Découvrez votre potentiel d'économie de temps avec l'automatisation PME. Réponse garantie sous 24h.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: #ccd6f6;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* LEFT SIDE - CONTENT */
+        .content-section {
+            max-width: 500px;
+        }
+
+        .content-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .content-section .subtitle {
+            font-size: 1.3rem;
+            color: #8892b0;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .benefits-list li {
+            font-size: 1.1rem;
+            color: #ccd6f6;
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .benefits-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            font-size: 1rem;
+            color: #00d2ff;
+        }
+
+        .stats-highlight {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 210, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .stats-highlight h3 {
+            color: #00d2ff;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .stats-highlight p {
+            color: #8892b0;
+            font-size: 0.95rem;
+        }
+
+        /* RIGHT SIDE - FORM */
+        .form-section {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 210, 255, 0.1);
+            color: #ccd6f6;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ccd6f6;
+            margin-bottom: 8px;
+        }
+
+        .form-header .tagline {
+            font-size: 1rem;
+            color: #8892b0;
+            font-weight: 500;
+        }
+
+        /* FORM FIELDS */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ccd6f6;
+            margin-bottom: 8px;
+        }
+
+        .form-group label .required {
+            color: #e53e3e;
+            margin-left: 3px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(136, 146, 176, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(136, 146, 176, 0.1);
+            color: #ccd6f6;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+            background: rgba(136, 146, 176, 0.15);
+        }
+
+        .form-input.error {
+            border-color: #e53e3e;
+            background: rgba(229, 62, 62, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #8892b0;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300d2ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            appearance: none;
+        }
+
+        select.form-input option {
+            background: rgba(26, 26, 46, 0.95);
+            color: #ccd6f6;
+            padding: 10px;
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+            color: #e53e3e;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* PRIVACY NOTE */
+        .privacy-note {
+            background: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .privacy-note p {
+            font-size: 0.9rem;
+            color: #8892b0;
+            margin: 0;
+        }
+
+        /* CTA BUTTON */
+        .cta-button {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.4);
+        }
+
+        .cta-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cta-button.loading {
+            position: relative;
+        }
+
+        .cta-button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* MICRO-COPY */
+        .form-benefits {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8892b0;
+            margin-bottom: 20px;
+        }
+
+        .form-benefits span {
+            display: inline-block;
+            margin: 0 8px;
+        }
+
+        /* PHONE ALTERNATIVE */
+        .phone-alternative {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(136, 146, 176, 0.2);
+        }
+
+        .phone-alternative h4 {
+            font-size: 1rem;
+            color: #ccd6f6;
+            margin-bottom: 10px;
+        }
+
+        .phone-link {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d2ff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .phone-link:hover {
+            text-decoration: underline;
+        }
+
+        .phone-hours {
+            font-size: 0.85rem;
+            color: #8892b0;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: rgba(56, 161, 105, 0.1);
+            border: 2px solid #38a169;
+            border-radius: 15px;
+            color: #38a169;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 210, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 210, 255, 0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .content-section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .form-section {
+            animation: slideInRight 0.8s ease-out 0.2s both;
+        }
+
+        .benefits-list li {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .benefits-list li:nth-child(1) { animation-delay: 0.4s; }
+        .benefits-list li:nth-child(2) { animation-delay: 0.6s; }
+        .benefits-list li:nth-child(3) { animation-delay: 0.8s; }
+        .benefits-list li:nth-child(4) { animation-delay: 1s; }
+
+        .stats-highlight {
+            animation: fadeInUp 0.8s ease-out 1.2s both, float 3s ease-in-out 2s infinite;
+        }
+
+        .cta-button {
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .form-group {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.6s; }
+        .form-group:nth-child(2) { animation-delay: 0.8s; }
+        .form-group:nth-child(3) { animation-delay: 1s; }
+        .form-group:nth-child(4) { animation-delay: 1.2s; }
+
+        /* RESPONSIVE MOBILE FIRST */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+            }
+            
+            .container {
+                gap: 30px;
+            }
+            
+            .content-section h1 {
+                font-size: 1.8rem;
+                line-height: 1.1;
+            }
+            
+            .content-section .subtitle {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+            
+            .benefits-list li {
+                font-size: 1rem;
+                margin-bottom: 10px;
+                padding-left: 25px;
+            }
+            
+            .stats-highlight {
+                padding: 20px;
+                margin-top: 25px;
+            }
+            
+            .stats-highlight h3 {
+                font-size: 1.1rem;
+            }
+            
+            .stats-highlight p {
+                font-size: 0.9rem;
+            }
+            
+            .form-section {
+                padding: 25px 20px;
+                border-radius: 20px;
+            }
+            
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .form-input {
+                padding: 16px;
+                font-size: 16px; /* Empêche le zoom sur iOS */
+                border-radius: 10px;
+            }
+            
+            .cta-button {
+                padding: 16px 20px;
+                font-size: 1rem;
+                border-radius: 12px;
+            }
+            
+            .form-benefits {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .form-benefits span {
+                margin: 0;
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+            
+            .content-section {
+                text-align: center;
+                max-width: 100%;
+                order: 1;
+            }
+            
+            .form-section {
+                order: 2;
+                padding: 35px 25px;
+            }
+            
+            .content-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .content-section .subtitle {
+                font-size: 1.15rem;
+            }
+            
+            .form-input {
+                font-size: 16px; /* Empêche le zoom sur iOS */
+            }
+            
+            /* Amélioration tactile */
+            .cta-button {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+            
+            .form-input {
+                -webkit-appearance: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            /* Espacements mobile optimisés */
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .privacy-note {
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .content-section {
+                text-align: center;
+                max-width: 100%;
+            }
+            
+            .content-section h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Amélioration pour les écrans tactiles */
+        @media (hover: none) {
+            .cta-button:hover {
+                transform: none;
+            }
+            
+            .cta-button:active {
+                transform: scale(0.98);
+            }
+            
+            .phone-link:hover {
+                text-decoration: none;
+            }
+            
+            .phone-link:active {
+                opacity: 0.7;
+            }
+        }
+
+        /* Optimisation pour les petits écrans en mode paysage */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                gap: 20px;
+            }
+            
+            .content-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content-section .subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 15px;
+            }
+            
+            .benefits-list {
+                margin-bottom: 15px;
+            }
+            
+            .stats-highlight {
+                padding: 15px;
+                margin-top: 15px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT SIDE - CONTENT -->
+        <div class="content-section">
+            <h1>Audit Gratuit 15min</h1>
+            <p class="subtitle">Transformez votre PME en entreprise ultra-performante grâce à l'IA</p>
+            
+            <ul class="benefits-list">
+                <li>Diagnostic complet de vos processus</li>
+                <li>Identification des gains possibles</li>
+                <li>Recommandations personnalisées</li>
+                <li>Aucun engagement, 100% gratuit</li>
+            </ul>
+            
+            <div class="stats-highlight">
+                <h3>Résultats prouvés</h3>
+                <p>93% de temps économisé à l'École de Tokyo • 100% des formations adoptées • 15+ PME accompagnées avec succès</p>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE - FORM -->
+        <div class="form-section">
+            <div class="form-header">
+                <h2>Réservez votre créneau</h2>
+                <p class="tagline">Premier échange gratuit, sans engagement</p>
+            </div>
+
+            <form id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="fullName">Prénom + Nom <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullName" class="form-input" placeholder="Pierre Martin" required>
+                    <div class="error-message" id="fullNameError">Ce champ est obligatoire</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email professionnel <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="pierre@monentreprise.fr" required>
+                    <div class="error-message" id="emailError">Format email requis</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sector">Votre secteur d'activité</label>
+                    <select id="sector" name="sector" class="form-input">
+                        <option value="">Sélectionnez votre secteur...</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="services">Services / Conseil</option>
+                        <option value="education">Éducation / Formation</option>
+                        <option value="sante">Santé / Bien-être</option>
+                        <option value="industrie">Industrie / Manufacturing</option>
+                        <option value="autre">Autre secteur</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Votre priorité actuelle</label>
+                    <select id="priority" name="priority" class="form-input">
+                        <option value="">Votre besoin principal...</option>
+                        <option value="emails">Automatiser mes emails</option>
+                        <option value="dashboard">Créer des tableaux de bord</option>
+                        <option value="crm">Optimiser ma gestion client</option>
+                        <option value="assistant">Développer un assistant IA</option>
+                        <option value="data">Analyser mes données</option>
+                        <option value="autre">Autre projet</option>
+                    </select>
+                </div>
+
+                <div class="privacy-note">
+                    <p>Confidentialité garantie - Vos données ne seront jamais partagées</p>
+                </div>
+
+                <button type="submit" class="cta-button" id="submitBtn">
+RÉSERVER MON AUDIT GRATUIT
+                </button>
+
+                <div class="form-benefits">
+                    <span>▸ 15min gratuit</span>
+                    <span>▸ Réponse sous 24h</span>
+                    <span>▸ Aucun engagement</span>
+                </div>
+
+                <div class="phone-alternative">
+                    <h4>Vous préférez appeler directement ?</h4>
+                    <a href="tel:+33699213447" class="phone-link">06.99.21.34.47</a>
+                    <p class="phone-hours">Disponible 7j/7 • Réponse garantie</p>
+                </div>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>Merci ! Votre demande a été envoyée</h3>
+                <p>Je vous contacte sous 24h pour programmer notre échange gratuit de 15min.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const formSection = document.querySelector('.form-section form');
+
+            // Validation en temps réel
+            function validateField(field, errorElement, validationFn) {
+                const isValid = validationFn(field.value);
+                
+                if (!isValid && field.value.length > 0) {
+                    field.classList.add('error');
+                    errorElement.classList.add('show');
+                } else {
+                    field.classList.remove('error');
+                    errorElement.classList.remove('show');
+                }
+                
+                return isValid || field.value.length === 0;
+            }
+
+            // Validation nom
+            const fullNameField = document.getElementById('fullName');
+            const fullNameError = document.getElementById('fullNameError');
+            fullNameField.addEventListener('blur', function() {
+                validateField(this, fullNameError, (value) => value.trim().length >= 2);
+            });
+
+            // Validation email
+            const emailField = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            emailField.addEventListener('blur', function() {
+                validateField(this, emailError, (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+            });
+
+            // Soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validation complète
+                const fullName = fullNameField.value.trim();
+                const email = emailField.value.trim();
+                const sector = document.getElementById('sector').value;
+                const priority = document.getElementById('priority').value;
+
+                let isValid = true;
+
+                // Vérifier nom
+                if (fullName.length < 2) {
+                    fullNameField.classList.add('error');
+                    fullNameError.classList.add('show');
+                    isValid = false;
+                } else {
+                    fullNameField.classList.remove('error');
+                    fullNameError.classList.remove('show');
+                }
+
+                // Vérifier email
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    emailField.classList.add('error');
+                    emailError.classList.add('show');
+                    isValid = false;
+                } else {
+                    emailField.classList.remove('error');
+                    emailError.classList.remove('show');
+                }
+
+                if (!isValid) {
+                    return;
+                }
+
+                // Simuler envoi (remplacer par vraie soumission)
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+                submitBtn.textContent = '';
+
+                // Simulation délai envoi
+                setTimeout(function() {
+                    // Cacher le formulaire et afficher le message de succès
+                    formSection.style.display = 'none';
+                    successMessage.classList.add('show');
+
+                    // Log des données (remplacer par envoi réel)
+                    console.log('Données du formulaire:', {
+                        fullName: fullName,
+                        email: email,
+                        sector: sector || 'Non spécifié',
+                        priority: priority || 'Non spécifié',
+                        timestamp: new Date().toISOString()
+                    });
+
+                    // Ici : intégrer avec votre service d'email (EmailJS, Netlify Forms, etc.)
+                    
+                }, 2000);
+            });
+
+            // Amélioration UX : focus automatique sur mobile
+            if (window.innerWidth <= 768) {
+                fullNameField.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

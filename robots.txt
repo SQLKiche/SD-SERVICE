@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sofiane-portfolio.com/sitemap.xml
+
+# Block access to sensitive files
+Disallow: /_headers
+Disallow: /archive/
+Disallow: /node_modules/
+Disallow: /*.env
+Disallow: /sections/6-faq-questions/node_modules/
+Disallow: /sections/6-faq-questions/.env

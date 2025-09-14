@@ -1,0 +1,100 @@
+functionsDirectory = "C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\project-bolt-sb1-qyyfdj7x\\project\\netlify\\functions"
+functionsDirectoryOrigin = "default"
+redirectsOrigin = "config"
+plugins = []
+
+[build]
+publish = "C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\project-bolt-sb1-qyyfdj7x\\project"
+publishOrigin = "config"
+base = "C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\project-bolt-sb1-qyyfdj7x\\project"
+functions = "C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\project-bolt-sb1-qyyfdj7x\\project\\netlify\\functions"
+
+  [build.environment]
+  NODE_VERSION = "18"
+
+  [build.processing]
+
+    [build.processing.css]
+
+    [build.processing.html]
+
+    [build.processing.images]
+
+    [build.processing.js]
+
+  [build.services]
+
+[functions]
+
+  [functions."*"]
+
+[[headers]]
+for = "/*"
+
+  [headers.values]
+  X-Frame-Options = "DENY"
+  X-Content-Type-Options = "nosniff"
+  X-XSS-Protection = "1; mode=block"
+  Referrer-Policy = "strict-origin-when-cross-origin"
+  Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+  Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://www.google-analytics.com;"
+
+[[headers]]
+for = "/*.html"
+
+  [headers.values]
+  Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+for = "/*.css"
+
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js"
+
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png"
+
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.jpg"
+
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.mp4"
+
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+from = "/"
+to = "/site-complet.html"
+status = 200
+force = false
+
+  [redirects.query]
+
+  [redirects.conditions]
+
+  [redirects.headers]
+
+[[redirects]]
+from = "/index.html"
+to = "/site-complet.html"
+status = 301
+force = false
+
+  [redirects.query]
+
+  [redirects.conditions]
+
+  [redirects.headers]

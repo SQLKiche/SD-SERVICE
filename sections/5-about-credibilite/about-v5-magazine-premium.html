@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version 5: Magazine Premium - À Propos Sofiane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    <link rel="stylesheet" href="../../shared/global-utils.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .about-section {
+            padding: 6rem 0;
+            background: #FEFEFE;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .magazine-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+        
+        .magazine-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            border-bottom: 3px solid #1A1A1A;
+            padding-bottom: 2rem;
+        }
+        
+        .magazine-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        .magazine-tagline {
+            font-size: 1.125rem;
+            color: #666;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        .magazine-date {
+            color: #999;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+        
+        .editorial-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+        
+        .main-article {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .article-hero {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            float: left;
+            margin: 0 2rem 1rem 0;
+            border: 6px solid #1A1A1A;
+            shape-outside: circle();
+        }
+        
+        .hero-caption {
+            font-style: italic;
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            clear: both;
+        }
+        
+        .article-intro {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.375rem;
+            line-height: 1.6;
+            color: #1A1A1A;
+            margin-bottom: 2rem;
+            font-style: italic;
+            text-align: justify;
+        }
+        
+        .article-body {
+            columns: 2;
+            column-gap: 3rem;
+            column-rule: 1px solid #E5E5E5;
+            text-align: justify;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        .article-body p {
+            margin-bottom: 1.5rem;
+            break-inside: avoid;
+        }
+        
+        .article-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            break-after: avoid;
+        }
+        
+        .highlight-box {
+            background: #F8F8F8;
+            border-left: 4px solid #1A1A1A;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            break-inside: avoid;
+        }
+        
+        .highlight-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #1A1A1A;
+            margin-bottom: 0.75rem;
+        }
+        
+        .pullquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-style: italic;
+            color: #1A1A1A;
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 2px solid #1A1A1A;
+            border-bottom: 2px solid #1A1A1A;
+            position: relative;
+            break-inside: avoid;
+            column-span: all;
+        }
+        
+        .pullquote::before,
+        .pullquote::after {
+            content: '"';
+            font-size: 3rem;
+            color: #CCC;
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .pullquote::before {
+            top: 1rem;
+            left: 1rem;
+        }
+        
+        .pullquote::after {
+            bottom: 1rem;
+            right: 1rem;
+        }
+        
+        .quote-author {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 400;
+            margin-top: 1rem;
+            font-style: normal;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .sidebar-section {
+            background: #F8F8F8;
+            padding: 2rem;
+            border-radius: 0;
+        }
+        
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #1A1A1A;
+            padding-bottom: 0.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #E5E5E5;
+        }
+        
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1A1A1A;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .competences-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .competences-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E5E5E5;
+            font-size: 0.9rem;
+        }
+        
+        .competences-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .skill-name {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .skill-level {
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .testimonial-sidebar {
+            background: #1A1A1A;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .testimonial-sidebar .sidebar-title {
+            color: white;
+            border-bottom-color: white;
+        }
+        
+        .testimonial-quote {
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #E5E5E5;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .contact-section {
+            background: #1A1A1A;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .contact-button {
+            background: white;
+            color: #1A1A1A;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-button:hover {
+            background: #E5E5E5;
+        }
+        
+        .magazine-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 3px solid #1A1A1A;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .magazine-container {
+                padding: 0 1.5rem;
+            }
+            
+            .magazine-title {
+                font-size: 2.5rem;
+            }
+            
+            .editorial-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .article-body {
+                columns: 1;
+            }
+            
+            .hero-image {
+                float: none;
+                display: block;
+                margin: 0 auto 2rem;
+                width: 150px;
+                height: 150px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="about-section" id="about">
+        <div class="magazine-container">
+            <div class="magazine-header">
+                <h1 class="magazine-title">SOFIANE DEHAFFREINGUE</h1>
+                <p class="magazine-tagline">Portrait d'un Expert</p>
+                <div class="magazine-date">Excellence • Innovation • Résultats</div>
+            </div>
+            
+            <div class="editorial-layout">
+                <div class="main-article">
+                    <div class="article-hero">
+                        <img src="../../shared/assets/images/picture 1 mesh.jpg" alt="Sofiane Dehaffreingue" class="hero-image">
+                        <p class="article-intro">
+                            "Mon parcours a commencé par un Master en Management International, 
+                            mais c'est sur le terrain au Japon que j'ai découvert ma passion : 
+                            résoudre les problèmes d'efficacité par l'automatisation intelligente."
+                        </p>
+                        <div class="hero-caption">
+                            Sofiane Dehaffreingue dans son environnement de travail, 
+                            où la technologie rencontre l'expertise métier.
+                        </div>
+                    </div>
+                    
+                    <div class="article-body">
+                        <h3>L'Éveil d'une Vocation</h3>
+                        <p>
+                            À l'École Internationale Française de Tokyo, Sofiane a vécu son moment révélateur. 
+                            Face à un processus de bulletins scolaires qui paralysait l'administration pendant 
+                            deux semaines, il a orchestré une transformation remarquable : réduire ce délai à 
+                            un seul jour de validation fluide.
+                        </p>
+                        
+                        <p>
+                            Cette expérience fondatrice lui a enseigné une vérité essentielle : 
+                            une solution technique n'est efficace que si elle est comprise et adoptée 
+                            par ses utilisateurs. "Je ne vends pas de la technologie, je vends de l'efficacité", 
+                            résume-t-il avec conviction.
+                        </p>
+                        
+                        <div class="pullquote">
+                            Je transforme la complexité technique en solutions simples 
+                            que vos équipes adoptent naturellement.
+                            <div class="quote-author">— Philosophie de travail</div>
+                        </div>
+                        
+                        <h3>Une Expertise Multifacette</h3>
+                        <p>
+                            Diplômé d'un Master en Management & Commerce International, Sofiane combine 
+                            une solide formation business avec une expertise technique pointue. 
+                            Sa spécialisation couvre Power BI et la Business Intelligence, l'automatisation 
+                            no-code, ainsi que le développement d'assistants IA conversationnels.
+                        </p>
+                        
+                        <div class="highlight-box">
+                            <div class="highlight-title">L'Expérience Tokyo en Chiffres</div>
+                            <p>
+                                93% de réduction du temps administratif • 10 professeurs formés avec 
+                                100% de réussite • 0% d'erreur après implémentation • 
+                                12 formats standardisés en un seul système unifié.
+                            </p>
+                        </div>
+                        
+                        <h3>Une Mission Claire</h3>
+                        <p>
+                            "Rendre l'automatisation accessible aux PME et startups qui n'ont pas 
+                            les ressources pour une équipe technique dédiée, mais qui méritent 
+                            la même efficacité que les grandes entreprises." Cette mission guide 
+                            chaque intervention de Sofiane.
+                        </p>
+                        
+                        <p>
+                            Son approche se distingue par quatre piliers fondamentaux : 
+                            comprendre avant de proposer, simplifier sans sacrifier la puissance, 
+                            former pour rendre autonome, et accompagner au-delà de la livraison.
+                        </p>
+                        
+                        <h3>Reconnaissance et Témoignages</h3>
+                        <p>
+                            L'efficacité de sa méthode ne passe pas inaperçue. Fabien Levet, 
+                            fondateur de l'École EIFJ, salue "une approche remarquablement pédagogue" 
+                            et une "formation exceptionnelle". Le jury du concours SafeCharm 
+                            a distingué son travail comme "le business plan le plus solide de la promotion".
+                        </p>
+                        
+                        <p>
+                            Aujourd'hui, Sofiane se positionne comme le traducteur indispensable 
+                            entre vos défis business et les solutions technologiques qui peuvent 
+                            révolutionner votre efficacité. Une expertise au service de votre croissance.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <div class="sidebar-section">
+                        <h4 class="sidebar-title">Performance</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">100%</span>
+                                <div class="stat-label">Satisfaction Client</div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">15+</span>
+                                <div class="stat-label">Personnes Formées</div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">93%</span>
+                                <div class="stat-label">Gain Efficacité</div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">48h</span>
+                                <div class="stat-label">Délai Audit</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h4 class="sidebar-title">Compétences</h4>
+                        <ul class="competences-list">
+                            <li>
+                                <span class="skill-name">Power BI & BI</span>
+                                <span class="skill-level">Expert</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Excel Avancé</span>
+                                <span class="skill-level">Expert</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Automatisation</span>
+                                <span class="skill-level">Avancé</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Formation</span>
+                                <span class="skill-level">Expert</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Gestion Projet</span>
+                                <span class="skill-level">Avancé</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Anglais</span>
+                                <span class="skill-level">C1</span>
+                            </li>
+                            <li>
+                                <span class="skill-name">Espagnol</span>
+                                <span class="skill-level">B1</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section testimonial-sidebar">
+                        <h4 class="sidebar-title">Témoignage</h4>
+                        <p class="testimonial-quote">
+                            "Transformation remarquable ! Le processus mis en place nous fait 
+                            économiser énormément de temps. Fini le chaos des formats différents."
+                        </p>
+                        <div class="testimonial-author">
+                            — Fabien Levet<br>
+                            Founder École EIFJ Tokyo
+                        </div>
+                    </div>
+                    
+                    <div class="contact-section">
+                        <h4 class="contact-title">Contact</h4>
+                        <div class="contact-info">
+                            Disponible pour nouveaux projets<br>
+                            Réponse garantie sous 24h<br>
+                            Consultation initiale offerte
+                        </div>
+                        <button class="contact-button">Commencer l'échange</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="magazine-footer">
+                <p>
+                    Portrait réalisé par Claude Code • Automatisation & Intelligence Artificielle • 2024
+                </p>
+            </div>
+        </div>
+    </section>
+    <script src="scripts.js"></script>
+</body>
+</html>

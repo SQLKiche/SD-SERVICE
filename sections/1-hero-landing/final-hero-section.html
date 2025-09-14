@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Récupérez 2h/jour automatiquement - Expert Automatisation & IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    <link rel="stylesheet" href="../../shared/global-utils.css">
+    
+    <!-- Styles Spécifiques Section 1 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Import Twk Everett Mono Font */
+        @font-face {
+            font-family: 'TWK Everett Mono';
+            src: url('../../shared/assets/fonts/twk-everett-mono-font-1756453410-0/TWKEverettMono-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'TWK Everett Mono';
+            src: url('../../shared/assets/fonts/twk-everett-mono-font-1756453410-0/TWKEverettMono-Light.otf') format('opentype');
+            font-weight: 300;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'TWK Everett Mono';
+            src: url('../../shared/assets/fonts/twk-everett-mono-font-1756453410-0/TWKEverettMono-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'TWK Everett Mono';
+            src: url('../../shared/assets/fonts/twk-everett-mono-font-1756453410-0/TWKEverettMono-Extrabold.otf') format('opentype');
+            font-weight: 800;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'TWK Everett Mono';
+            src: url('../../shared/assets/fonts/twk-everett-mono-font-1756453410-0/TWKEverettMono-Black.otf') format('opentype');
+            font-weight: 900;
+            font-style: normal;
+        }
+        
+        /* Styles spécifiques VERSION 1 - ANIMATIONS PREMIUM */
+        .social-proof-badge {
+            position: absolute;
+            top: -40px;
+            right: -80px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #ffffff;
+            opacity: 0;
+            animation: slideInFromRight 1.2s ease-out 1.5s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateX(30px);
+            animation-fill-mode: both;
+            white-space: nowrap;
+        }
+        
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hero-title {
+            position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            font-size: 3rem;
+            line-height: 1.15;
+            font-weight: 650;
+            margin-bottom: 1.5rem;
+            color: #ffffff !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            background-clip: unset !important;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 6px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            animation: fadeInUp 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+            transform: translateY(30px);
+            animation-fill-mode: both;
+            text-align: center;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: inline-block;
+            letter-spacing: -0.025em;
+        }
+        
+        .hero-tagline {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.88);
+            font-weight: 450;
+            margin-bottom: 2rem;
+            font-style: normal;
+            opacity: 0;
+            animation: fadeInUp 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+            transform: translateY(20px);
+            animation-fill-mode: both;
+            text-align: center;
+            flex-shrink: 0;
+            letter-spacing: 0.01em;
+        }
+        
+        .hero-subtitle {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.65;
+            margin-bottom: 2.5rem;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: revealText 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.7s forwards;
+            transform: translateY(20px);
+            animation-fill-mode: both;
+            color: rgba(255, 255, 255, 0.92) !important;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            font-weight: 420;
+            letter-spacing: 0.005em;
+        }
+        
+        .hero-subtitle-emphasis {
+            color: #FF6B35;
+            font-weight: 580;
+            text-shadow: 0 2px 8px rgba(255, 107, 53, 0.25), 0 0 20px rgba(255, 107, 53, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .hero-subtitle-emphasis:hover {
+            color: #FF8C5A;
+            transform: scale(1.01);
+            text-shadow: 0 3px 12px rgba(255, 140, 90, 0.4), 0 0 25px rgba(255, 140, 90, 0.15);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes revealText {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+                filter: blur(2px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+        
+        /* Navigation items with gradient underline effect */
+        .nav-item {
+            text-decoration: none !important;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4F46E5, #06B6D4);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-item:hover {
+            text-decoration: none !important;
+            color: #ffffff;
+        }
+        
+        .nav-item:hover::before {
+            width: 80%;
+        }
+        
+        .compact-nav-item {
+            text-decoration: none !important;
+        }
+        
+        /* Animations pour les boutons */
+        .hero-buttons {
+            margin-top: 1rem;
+            gap: 1.8rem;
+            opacity: 0;
+            animation: bounceIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.9s forwards;
+            transform: translateY(20px) scale(0.95);
+            animation-fill-mode: both;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .btn-primary-v1 {
+            background: linear-gradient(135deg, #4F46E5, #06B6D4);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 24px;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary-v1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary-v1:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary-v1:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #3730A3, #0891B2);
+        }
+        
+        .btn-secondary {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Optimisations performance */
+        .hero-video {
+            will-change: transform;
+            backface-visibility: hidden;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            min-width: 100% !important;
+            min-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: -2 !important;
+            object-fit: cover !important;
+        }
+        
+        .hero-content {
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+        }
+        
+        /* Réduction animations mobile pour performance */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+                animation-duration: 0.8s;
+                white-space: normal;
+                word-break: break-word;
+                hyphens: auto;
+                letter-spacing: -0.015em;
+            }
+            
+            .hero-tagline {
+                animation-duration: 0.8s;
+            }
+            
+            .hero-subtitle {
+                animation-duration: 0.8s;
+            }
+            
+            .hero-buttons {
+                animation-duration: 0.8s;
+            }
+            
+            .social-proof-badge {
+                position: static;
+                margin: 0 auto 20px;
+                display: inline-block;
+                animation-duration: 0.8s;
+            }
+            
+            /* Optimisations mobile */
+            .hero-container {
+                padding: 0 1rem;
+            }
+            
+            .hero-content {
+                max-width: 95%;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1.2rem;
+                margin-top: 1.5rem;
+            }
+            
+            .btn-primary-v1,
+            .btn-secondary {
+                width: 100%;
+                max-width: 280px;
+                font-size: 16px;
+                padding: 14px 24px;
+            }
+            
+            /* Désactiver les hover effects sur mobile */
+            .btn-primary-v1:hover,
+            .btn-secondary:hover,
+            .hero-subtitle-emphasis:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+        
+        /* Bouton Home avec gradient mesh */
+        .home-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 40%, #06B6D4 70%, #4F46E5 100%);
+            background-size: 200% 200%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 4s ease-in-out infinite;
+            width: auto;
+            height: 40px;
+            min-width: 70px;
+        }
+        
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Préférence motion réduite */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .home-btn {
+                animation: none;
+            }
+        }
+        
+        /* Centrage de la navigation */
+        .nav-centered {
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .nav-spacer {
+            width: 70px; /* Équilibre avec le bouton Home */
+        }
+        
+        .nav-logo {
+            position: absolute;
+            left: 20px;
+        }
+        
+        /* Lien personnel */
+        .nav-personal {
+            min-width: 70px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .personal-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .personal-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4F46E5, #06B6D4);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .personal-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .personal-link:hover::before {
+            width: 80%;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Compact Navigation Menu -->
+    <nav class="compact-nav" id="compactNav">
+        <div class="compact-nav-items">
+            <a href="#" class="compact-nav-item home-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 6L8 2L14 6V14C14 14.55 13.55 15 13 15H9V11H7V15H3C2.45 15 2 14.55 2 14V6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a href="#services" class="compact-nav-item">Services</a>
+            <a href="#performance" class="compact-nav-item">Performance</a>
+            <a href="#processus" class="compact-nav-item">Processus</a>
+            <a href="#about" class="compact-nav-item">À Propos</a>
+            <a href="#contact" class="compact-nav-item">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header" id="mainHeader">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <button class="home-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 9L12 2L21 9V20C21 20.5523 20.5523 21 20 21H15V14H9V21H4C3.44772 21 3 20.5523 3 20V9Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+                            <path d="M9 21V12H15V21" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="nav-menu nav-centered">
+                    <a href="#services" class="nav-item">Services</a>
+                    <a href="#performance" class="nav-item">Performance</a>
+                    <a href="#processus" class="nav-item">Processus</a>
+                    <a href="#about" class="nav-item">À Propos</a>
+                    <a href="#contact" class="nav-item">Contact</a>
+                </div>
+                
+                <div class="nav-personal">
+                    <a href="#portfolio" class="personal-link">Portfolio</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <video class="hero-video" muted loop playsinline preload="metadata">
+                <source src="../../shared/assets/hero-background.mp4" type="video/mp4" media="(min-width: 768px)">
+            </video>
+            <div class="video-fallback" style="display: none;"></div>
+            <div class="hero-video-overlay"></div>
+            <div class="fluid-bg"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="social-proof-badge">
+                    ⭐ Méthode approuvée EIFJ : 93% temps économisé
+                </div>
+                
+                <h1 class="hero-title">
+                    Gagnez 10h/semaine pour votre business
+                </h1>
+                
+                <div class="hero-tagline">
+                    Sans équipe technique, sans stress
+                </div>
+                
+                <p class="hero-subtitle">
+                    Je transforme vos <span class="hero-subtitle-emphasis">défis quotidiens</span><br>
+                    en solutions simples et intuitives
+                </p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-primary-v1">RÉSERVER MON AUDIT GRATUIT</button>
+                    <button class="btn btn-secondary">
+                        Voir mes réalisations EIFJ
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="scripts.js"></script>
+    
+    <script>
+        // Smooth scroll pour navigation one-page
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer pour animations au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Optimisation performance - Chargement intelligent
+        window.addEventListener('DOMContentLoaded', () => {
+            const video = document.querySelector('.hero-video');
+            const fallback = document.querySelector('.video-fallback');
+            
+            // Force l'affichage de la vidéo
+            video.style.display = 'block';
+            video.preload = 'auto';
+            
+            // Gérer le chargement et la lecture automatique
+            const handleVideoLoad = () => {
+                video.currentTime = 0;
+                video.play().catch(e => console.log('Autoplay prevented'));
+            };
+            
+            if (video.readyState >= 3) {
+                // Vidéo déjà chargée
+                handleVideoLoad();
+            } else {
+                // Attendre que la vidéo soit prête
+                video.addEventListener('canplaythrough', handleVideoLoad, { once: true });
+                video.load();
+            }
+        });
+        
+        // Gestion du focus pour accessibilité
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav');
+            }
+        });
+        
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav');
+        });
+    </script>
+</body>
+</html>

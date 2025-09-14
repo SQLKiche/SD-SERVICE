@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Premium - Automatisation & IA pour Entreprises | Audit 250€ | Dashboard BI 800€</title>
+    <meta name="description" content="Découvrez nos 4 services premium : Audit & Diagnostic (250€), Automatisation (500€), Dashboard BI (800€), Assistant IA (600€). Solutions sur-mesure pour entreprises.">
+    <meta name="keywords" content="automatisation entreprise, audit digital, dashboard BI, assistant IA, transformation digitale, freelance">
+    <meta property="og:title" content="Services Premium - Automatisation & IA pour Entreprises">
+    <meta property="og:description" content="Transformez votre business avec nos solutions sur-mesure : de l'audit à l'automatisation complète.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    <link rel="stylesheet" href="../../shared/global-utils.css">
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Services Premium Automatisation & IA",
+        "description": "Services de transformation digitale : audit, automatisation, dashboard BI et assistant IA",
+        "provider": {
+            "@type": "Organization",
+            "name": "Freelance Sofiane"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Services Premium",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Audit & Diagnostic",
+                        "description": "Analyse complète en 48h avec roadmap personnalisée"
+                    },
+                    "price": "250",
+                    "priceCurrency": "EUR"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Automatisation",
+                        "description": "Élimination des tâches répétitives avec formation complète"
+                    },
+                    "price": "500",
+                    "priceCurrency": "EUR"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Assistant IA",
+                        "description": "Assistant IA 24/7 avec base personnalisée"
+                    },
+                    "price": "600",
+                    "priceCurrency": "EUR"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Dashboard Automatisé BI",
+                        "description": "Tableaux de bord sur-mesure avec formation BI"
+                    },
+                    "price": "800",
+                    "priceCurrency": "EUR"
+                }
+            ]
+        }
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* === SERVICES SECTION === */
+        .services-section {
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-weight: 650;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            line-height: 1.15;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 6px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-subtitle {
+            font-size: 1.15rem;
+            font-weight: 450;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* === PERSPECTIVE CAROUSEL === */
+        .perspective-carousel {
+            position: relative;
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+            opacity: 0;
+            margin: 0 auto;
+            max-width: 1600px;
+            padding: 0 2rem;
+        }
+        
+        .carousel-stage {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* === SERVICE CARDS === */
+        .service-card {
+            position: absolute;
+            width: 450px;
+            height: 650px;
+            background: var(--glass-medium);
+            backdrop-filter: var(--blur-medium);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 45px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: var(--shadow-strong);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        
+        /* === CARD POSITIONS === */
+        
+        /* Position Center (Active) */
+        .service-card.center {
+            z-index: 10;
+            transform: translateX(0) scale(1.0) rotateY(0deg);
+            opacity: 1;
+        }
+        
+        /* Position Left */
+        .service-card.left {
+            z-index: 8;
+            transform: translateX(-350px) scale(0.8) rotateY(20deg);
+            opacity: 0.75;
+        }
+        
+        /* Position Right */
+        .service-card.right {
+            z-index: 8;
+            transform: translateX(350px) scale(0.8) rotateY(-20deg);
+            opacity: 0.75;
+        }
+        
+        /* Position Far Left */
+        .service-card.far-left {
+            z-index: 6;
+            transform: translateX(-600px) scale(0.65) rotateY(30deg);
+            opacity: 0.5;
+        }
+        
+        /* Position Far Right */
+        .service-card.far-right {
+            z-index: 6;
+            transform: translateX(600px) scale(0.65) rotateY(-30deg);
+            opacity: 0.5;
+        }
+        
+        /* Hidden positions */
+        .service-card.hidden-left {
+            z-index: 4;
+            transform: translateX(-850px) scale(0.5) rotateY(40deg);
+            opacity: 0.3;
+        }
+        
+        .service-card.hidden-right {
+            z-index: 4;
+            transform: translateX(850px) scale(0.5) rotateY(-40deg);
+            opacity: 0.3;
+        }
+        
+        /* === CARD VIDEO BACKGROUND === */
+        .card-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.6;
+            border-radius: 28px;
+            transition: all 0.3s ease;
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+        }
+        
+        .service-card.center .card-video {
+            opacity: 0.8;
+        }
+        
+        .service-card:hover .card-video {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+        
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.75) 0%,
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(0, 0, 0, 0.85) 100%
+            );
+            z-index: 2;
+            border-radius: 28px;
+        }
+        
+        /* === CARD CONTENT === */
+        .card-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            color: white;
+        }
+        
+        .card-header {
+            margin-bottom: 30px;
+        }
+        
+        .service-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .badge-starter {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .badge-popular {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+            position: relative;
+        }
+        
+        .badge-popular::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: inherit;
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.6;
+        }
+        
+        .badge-roi {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            color: white;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .badge-innovation {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .service-title {
+            font-size: 2.1rem;
+            font-weight: 650;
+            margin-bottom: 18px;
+            line-height: 1.3;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 6px 30px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .service-price {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: #06B6D4;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(6, 182, 212, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.1em;
+        }
+        
+        .service-price .currency {
+            font-size: 0.7em;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .service-benefits {
+            list-style: none;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .service-benefits li {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .service-benefits li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #10B981;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .service-proof {
+            font-size: 0.95rem;
+            color: #FFB800;
+            font-style: normal;
+            font-weight: 600;
+            margin-bottom: 30px;
+            padding: 12px 18px;
+            background: rgba(255, 184, 0, 0.15);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 184, 0, 0.4);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .card-footer {
+            margin-top: 20px;
+        }
+        
+        .service-cta {
+            width: 100%;
+            padding: 15px 25px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .service-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-cta:hover::before {
+            left: 100%;
+        }
+        
+        .service-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.6);
+        }
+        
+        .service-cta:active {
+            transform: translateY(-1px) scale(1.01);
+            transition-duration: 0.1s;
+        }
+        
+        /* === NAVIGATION ARROWS === */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--glass-medium);
+            border: 2px solid var(--border-color);
+            backdrop-filter: var(--blur-medium);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: var(--shadow-strong);
+        }
+        
+        .carousel-nav:hover {
+            background: var(--glass-light);
+            border-color: var(--border-hover);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: var(--shadow-brand);
+        }
+        
+        .carousel-nav:active {
+            transform: translateY(-50%) scale(0.95);
+            transition-duration: 0.1s;
+        }
+        
+        .carousel-prev {
+            left: 50px;
+        }
+        
+        .carousel-next {
+            right: 50px;
+        }
+        
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            fill: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-nav:hover .nav-icon {
+            transform: scale(1.2);
+            fill: var(--primary-blue);
+        }
+        
+        /* === DOTS INDICATORS === */
+        .carousel-dots {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--glass-medium);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .dot:hover::after {
+            opacity: 0.2;
+            transform: scale(1);
+        }
+        
+        .dot.active {
+            background: var(--gradient-primary);
+            border-color: var(--primary-blue);
+            transform: scale(1.3);
+        }
+        
+        /* === HOVER EFFECTS === */
+        .service-card:not(.center):hover {
+            transform: translateX(var(--hover-x, 0)) scale(var(--hover-scale, 1)) rotateY(var(--hover-rotate, 0deg));
+            opacity: 0.9;
+        }
+        
+        .service-card.left:hover {
+            --hover-x: -260px;
+            --hover-scale: 0.9;
+            --hover-rotate: 10deg;
+        }
+        
+        .service-card.right:hover {
+            --hover-x: 260px;
+            --hover-scale: 0.9;
+            --hover-rotate: -10deg;
+        }
+        
+        .service-card.far-left:hover {
+            --hover-x: -600px;
+            --hover-scale: 0.65;
+            --hover-rotate: 30deg;
+        }
+        
+        .service-card.far-right:hover {
+            --hover-x: 600px;
+            --hover-scale: 0.65;
+            --hover-rotate: -30deg;
+        }
+        
+        .service-card.hidden-left:hover {
+            --hover-x: -850px;
+            --hover-scale: 0.5;
+            --hover-rotate: 40deg;
+        }
+        
+        .service-card.hidden-right:hover {
+            --hover-x: 850px;
+            --hover-scale: 0.5;
+            --hover-rotate: -40deg;
+        }
+        
+        /* === RESPONSIVE === */
+        @media (max-width: 1400px) {
+            .service-card {
+                width: 400px;
+                height: 600px;
+            }
+            
+            .service-card.left {
+                transform: translateX(-320px) scale(0.8) rotateY(20deg);
+            }
+            
+            .service-card.right {
+                transform: translateX(320px) scale(0.8) rotateY(-20deg);
+            }
+            
+            .service-card.far-left {
+                transform: translateX(-550px) scale(0.65) rotateY(30deg);
+            }
+            
+            .service-card.far-right {
+                transform: translateX(550px) scale(0.65) rotateY(-30deg);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .perspective-carousel {
+                height: 750px;
+            }
+            
+            .service-card {
+                width: 380px;
+                height: 570px;
+            }
+            
+            .service-card.left {
+                transform: translateX(-300px) scale(0.8) rotateY(20deg);
+            }
+            
+            .service-card.right {
+                transform: translateX(300px) scale(0.8) rotateY(-20deg);
+            }
+            
+            .carousel-prev {
+                left: 30px;
+            }
+            
+            .carousel-next {
+                right: 30px;
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .perspective-carousel {
+                height: 600px;
+                padding: 0 1rem;
+            }
+            
+            .carousel-stage {
+                height: 500px;
+            }
+            
+            .service-card {
+                width: 300px;
+                height: 480px;
+                padding: 30px 25px;
+            }
+            
+            .service-card.left {
+                transform: translateX(-200px) scale(0.75) rotateY(20deg);
+                opacity: 0.5;
+            }
+            
+            .service-card.right {
+                transform: translateX(200px) scale(0.75) rotateY(-20deg);
+                opacity: 0.5;
+            }
+            
+            .service-card.far-left,
+            .service-card.far-right,
+            .service-card.hidden-left,
+            .service-card.hidden-right {
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            .service-title {
+                font-size: 1.6rem;
+            }
+            
+            .service-price {
+                font-size: 2rem;
+            }
+            
+            .carousel-prev {
+                left: 10px;
+            }
+            
+            .carousel-next {
+                right: 10px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .perspective-carousel {
+                height: 550px;
+                padding: 0 0.5rem;
+            }
+            
+            .service-card {
+                width: 280px;
+                height: 420px;
+                padding: 25px 20px;
+            }
+            
+            .service-card.left,
+            .service-card.right {
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            .service-title {
+                font-size: 1.4rem;
+            }
+            
+            .service-price {
+                font-size: 1.8rem;
+            }
+            
+            /* Touch-friendly buttons */
+            .carousel-nav {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .service-cta {
+                padding: 18px 25px;
+                font-size: 0.9rem;
+                min-height: 48px;
+            }
+            
+            .dot {
+                width: 16px;
+                height: 16px;
+            }
+        }
+        
+        /* === ANIMATIONS === */
+        .service-card.center .service-badge,
+        .service-card.center .service-title,
+        .service-card.center .service-price,
+        .service-card.center .service-benefits,
+        .service-card.center .service-proof,
+        .service-card.center .service-cta {
+            animation: slideInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        .service-card.center .service-badge { animation-delay: 0.1s; }
+        .service-card.center .service-title { animation-delay: 0.2s; }
+        .service-card.center .service-price { animation-delay: 0.3s; }
+        .service-card.center .service-benefits { animation-delay: 0.4s; }
+        .service-card.center .service-proof { animation-delay: 0.5s; }
+        .service-card.center .service-cta { animation-delay: 0.6s; }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* === ACCESSIBILITY === */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus states */
+        .service-card:focus,
+        .carousel-nav:focus,
+        .dot:focus,
+        .service-cta:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .service-card,
+            .service-cta,
+            .carousel-nav {
+                transition-duration: 0.1s !important;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <!-- === SERVICES SECTION === -->
+    <section class="services-section" role="main" aria-labelledby="services-title">
+        <div class="section-header">
+            <h2 id="services-title" class="section-title">Services Premium</h2>
+            <p class="section-subtitle">
+                Transformez votre business avec des solutions sur-mesure qui génèrent des résultats mesurables
+            </p>
+        </div>
+        
+        <div class="perspective-carousel" role="region" aria-label="Carousel des services en perspective">
+            <div class="carousel-stage">
+                
+                <!-- CARTE 1: AUDIT & DIAGNOSTIC -->
+                <article class="service-card center" data-service="audit" data-position="0" role="tabpanel" aria-labelledby="service-1-title" tabindex="0">
+                    <video class="card-video" autoplay muted loop playsinline preload="none" loading="lazy">
+                        <source src="../../shared/assets/data-analytics-visual.mp4" type="video/mp4">
+                    </video>
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="service-badge badge-starter">POINT D'ENTRÉE</span>
+                            <h3 id="service-1-title" class="service-title">AUDIT & DIAGNOSTIC</h3>
+                            <div class="service-price" itemProp="price">
+                                <span>250</span>
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <ul class="service-benefits">
+                                <li>Analyse complète en 48h</li>
+                                <li>Roadmap personnalisée</li>
+                                <li>Consultation incluse</li>
+                            </ul>
+                            
+                            <div class="service-proof">
+                                Étude de cas : 93% de temps économisé
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <button class="service-cta" aria-describedby="service-1-title">
+                                Demander un audit
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- CARTE 2: AUTOMATISATION -->
+                <article class="service-card right" data-service="automation" data-position="1" role="tabpanel" aria-labelledby="service-2-title" tabindex="0">
+                    <video class="card-video" autoplay muted loop playsinline preload="none" loading="lazy">
+                        <source src="../../shared/assets/automation-visual.mp4" type="video/mp4">
+                    </video>
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="service-badge badge-popular">PLUS POPULAIRE</span>
+                            <h3 id="service-2-title" class="service-title">AUTOMATISATION</h3>
+                            <div class="service-price" itemProp="price">
+                                <span>500</span>
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <ul class="service-benefits">
+                                <li>Zéro tâche répétitive</li>
+                                <li>Formation complète incluse</li>
+                                <li>Support 30 jours</li>
+                            </ul>
+                            
+                            <div class="service-proof">
+                                Résultat client : de 2h à 30 secondes
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <button class="service-cta" aria-describedby="service-2-title">
+                                Obtenir un devis
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- CARTE 3: ASSISTANT IA -->
+                <article class="service-card far-right" data-service="assistant" data-position="2" role="tabpanel" aria-labelledby="service-3-title" tabindex="0">
+                    <video class="card-video" autoplay muted loop playsinline preload="none" loading="lazy">
+                        <source src="../../shared/assets/ai-integration-visual.mp4" type="video/mp4">
+                    </video>
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="service-badge badge-innovation">INNOVATION</span>
+                            <h3 id="service-3-title" class="service-title">ASSISTANT IA</h3>
+                            <div class="service-price" itemProp="price">
+                                <span>600</span>
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <ul class="service-benefits">
+                                <li>24/7 disponible</li>
+                                <li>Base personnalisée</li>
+                                <li>90% auto-réponse</li>
+                            </ul>
+                            
+                            <div class="service-proof">
+                                Solution 24/7 entièrement automatisée
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <button class="service-cta" aria-describedby="service-3-title">
+                                Consulter les options
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- CARTE 4: DASHBOARD BI -->
+                <article class="service-card hidden-right" data-service="dashboard" data-position="3" role="tabpanel" aria-labelledby="service-4-title" tabindex="0">
+                    <video class="card-video" autoplay muted loop playsinline preload="none" loading="lazy">
+                        <source src="../../shared/assets/hero-background.mp4" type="video/mp4">
+                    </video>
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="service-badge badge-roi">MEILLEUR ROI</span>
+                            <h3 id="service-4-title" class="service-title">DASHBOARD AUTOMATISÉ BI</h3>
+                            <div class="service-price" itemProp="price">
+                                <span>800</span>
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <ul class="service-benefits">
+                                <li>Tableaux sur-mesure</li>
+                                <li>Formation BI complète</li>
+                                <li>Maintenance incluse</li>
+                            </ul>
+                            
+                            <div class="service-proof">
+                                Projet validé : 1,5M€ de budget
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <button class="service-cta" aria-describedby="service-4-title">
+                                Découvrir les solutions
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <button class="carousel-nav carousel-prev" id="prevBtn" aria-label="Service précédent" tabindex="0">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <button class="carousel-nav carousel-next" id="nextBtn" aria-label="Service suivant" tabindex="0">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </button>
+            
+            <!-- Dots Indicators -->
+            <nav class="carousel-dots" role="tablist" aria-label="Navigation directe des services">
+                <button class="dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Service 1: Audit & Diagnostic"></button>
+                <button class="dot" data-slide="1" role="tab" aria-selected="false" aria-label="Service 2: Automatisation"></button>
+                <button class="dot" data-slide="2" role="tab" aria-selected="false" aria-label="Service 3: Assistant IA"></button>
+                <button class="dot" data-slide="3" role="tab" aria-selected="false" aria-label="Service 4: Dashboard Automatisé BI"></button>
+            </nav>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // === PERSPECTIVE CAROUSEL PREMIUM ===
+        class PerspectiveCarousel {
+            constructor() {
+                this.currentIndex = 0;
+                this.totalCards = 4;
+                this.isAnimating = false;
+                
+                // DOM Elements
+                this.carousel = document.querySelector('.perspective-carousel');
+                this.cards = document.querySelectorAll('.service-card');
+                this.dots = document.querySelectorAll('.dot');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                
+                // Position classes array
+                this.positions = ['hidden-left', 'left', 'center', 'right', 'far-right', 'hidden-right'];
+                
+                this.init();
+            }
+            
+            init() {
+                gsap.registerPlugin(ScrollTrigger);
+                this.initScrollAnimations();
+                this.bindEvents();
+                this.updateCardElements();
+                this.optimizeVideos();
+            }
+            
+            initScrollAnimations() {
+                // Section header animation
+                gsap.fromTo('.section-header', 
+                    { 
+                        opacity: 0, 
+                        y: 50 
+                    },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 1,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: '.services-section',
+                            start: 'top 80%',
+                            once: true
+                        }
+                    }
+                );
+                
+                // Carousel animation
+                gsap.fromTo('.perspective-carousel',
+                    { 
+                        opacity: 0, 
+                        y: 100 
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        delay: 0.3,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: '.perspective-carousel',
+                            start: 'top 80%',
+                            once: true
+                        }
+                    }
+                );
+            }
+            
+            bindEvents() {
+                // Navigation buttons
+                this.prevBtn?.addEventListener('click', () => {
+                    this.prevSlide();
+                });
+                
+                this.nextBtn?.addEventListener('click', () => {
+                    this.nextSlide();
+                });
+                
+                // Dots navigation
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        this.goToSlide(index);
+                    });
+                });
+                
+                // Card clicks (non-center cards)
+                this.cards.forEach((card, index) => {
+                    card.addEventListener('click', () => {
+                        if (!card.classList.contains('center')) {
+                            this.goToSlide(index);
+                        }
+                    });
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (this.isInViewport(this.carousel)) {
+                        if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            this.prevSlide();
+                        }
+                        if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            this.nextSlide();
+                        }
+                    }
+                });
+                
+                // Touch/swipe support
+                this.addTouchSupport();
+                
+                // CTA tracking
+                this.trackCTAClicks();
+            }
+            
+            addTouchSupport() {
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+                let startTime = 0;
+                
+                this.carousel?.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    currentX = startX;
+                    isDragging = true;
+                    startTime = Date.now();
+                    
+                    // Visual feedback
+                    this.carousel.style.cursor = 'grabbing';
+                }, { passive: true });
+                
+                this.carousel?.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                    
+                    // Subtle visual drag feedback
+                    const diffX = currentX - startX;
+                    const dragOpacity = Math.max(0.8, 1 - Math.abs(diffX) / 200);
+                    this.carousel.style.opacity = dragOpacity;
+                }, { passive: true });
+                
+                this.carousel?.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    const diffX = startX - currentX;
+                    const swipeTime = Date.now() - startTime;
+                    const velocity = Math.abs(diffX) / swipeTime;
+                    
+                    // Dynamic threshold based on velocity
+                    const threshold = velocity > 0.3 ? 50 : 80;
+                    
+                    // Reset visual feedback
+                    this.carousel.style.cursor = '';
+                    this.carousel.style.opacity = '1';
+                    
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                }, { passive: true });
+            }
+            
+            nextSlide() {
+                if (this.isAnimating) return;
+                const nextIndex = (this.currentIndex + 1) % this.totalCards;
+                this.goToSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                if (this.isAnimating) return;
+                const prevIndex = (this.currentIndex - 1 + this.totalCards) % this.totalCards;
+                this.goToSlide(prevIndex);
+            }
+            
+            goToSlide(index) {
+                if (this.isAnimating || index === this.currentIndex) return;
+                
+                this.isAnimating = true;
+                this.currentIndex = index;
+                
+                // Update card positions with GSAP timeline
+                this.updateCardPositions();
+                this.updateDots();
+                this.updateCardElements();
+                
+                // Animation complete
+                setTimeout(() => {
+                    this.isAnimating = false;
+                }, 800);
+            }
+            
+            updateCardPositions() {
+                // Create GSAP timeline for smooth transitions
+                const tl = gsap.timeline({
+                    ease: 'power2.inOut',
+                    duration: 0.8
+                });
+                
+                this.cards.forEach((card, index) => {
+                    // Calculate position relative to current center card
+                    let relativePosition = index - this.currentIndex;
+                    
+                    // Normalize position for circular carousel
+                    if (relativePosition < -2) relativePosition += this.totalCards;
+                    if (relativePosition > 2) relativePosition -= this.totalCards;
+                    
+                    // Remove all position classes
+                    card.classList.remove('center', 'left', 'right', 'far-left', 'far-right', 'hidden-left', 'hidden-right');
+                    
+                    // Determine new position class
+                    let newPositionClass;
+                    switch(relativePosition) {
+                        case 0:
+                            newPositionClass = 'center';
+                            break;
+                        case -1:
+                            newPositionClass = 'left';
+                            break;
+                        case 1:
+                            newPositionClass = 'right';
+                            break;
+                        case -2:
+                            newPositionClass = 'far-left';
+                            break;
+                        case 2:
+                            newPositionClass = 'far-right';
+                            break;
+                        default:
+                            newPositionClass = relativePosition < 0 ? 'hidden-left' : 'hidden-right';
+                    }
+                    
+                    // Add new position class
+                    card.classList.add(newPositionClass);
+                    
+                    // Set transform values based on position
+                    let x = 0, scale = 1, opacity = 1, rotateY = 0, z = 10;
+                    
+                    switch(newPositionClass) {
+                        case 'center':
+                            x = 0; scale = 1.0; opacity = 1; rotateY = 0; z = 10;
+                            break;
+                        case 'left':
+                            x = -350; scale = 0.8; opacity = 0.75; rotateY = 20; z = 8;
+                            break;
+                        case 'right':
+                            x = 350; scale = 0.8; opacity = 0.75; rotateY = -20; z = 8;
+                            break;
+                        case 'far-left':
+                            x = -600; scale = 0.65; opacity = 0.5; rotateY = 30; z = 6;
+                            break;
+                        case 'far-right':
+                            x = 600; scale = 0.65; opacity = 0.5; rotateY = -30; z = 6;
+                            break;
+                        case 'hidden-left':
+                            x = -850; scale = 0.5; opacity = 0.3; rotateY = 40; z = 4;
+                            break;
+                        case 'hidden-right':
+                            x = 850; scale = 0.5; opacity = 0.3; rotateY = -40; z = 4;
+                            break;
+                    }
+                    
+                    // Animate to new position
+                    tl.to(card, {
+                        x: x,
+                        scale: scale,
+                        opacity: opacity,
+                        rotationY: rotateY,
+                        zIndex: z,
+                        duration: 0.8,
+                        ease: 'power2.inOut'
+                    }, 0); // Start all animations simultaneously
+                });
+            }
+            
+            updateDots() {
+                this.dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentIndex);
+                    dot.setAttribute('aria-selected', index === this.currentIndex);
+                });
+            }
+            
+            updateCardElements() {
+                // Re-trigger card element animations for center card
+                setTimeout(() => {
+                    const centerCard = document.querySelector('.service-card.center');
+                    if (centerCard) {
+                        // Add subtle pulse effect to center card
+                        gsap.fromTo(centerCard, {
+                            scale: 0.98
+                        }, {
+                            scale: 1,
+                            duration: 0.5,
+                            ease: 'back.out(1.2)'
+                        });
+                        
+                        // Reset and re-animate elements
+                        const elements = centerCard.querySelectorAll('.service-badge, .service-title, .service-price, .service-benefits, .service-proof, .service-cta');
+                        
+                        gsap.fromTo(elements, {
+                            opacity: 0,
+                            y: 20,
+                            scale: 0.95
+                        }, {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            duration: 0.5,
+                            stagger: 0.08,
+                            delay: 0.2,
+                            ease: 'back.out(1.1)'
+                        });
+                    }
+                }, 150);
+            }
+            
+            isInViewport(element) {
+                if (!element) return false;
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+            
+            optimizeVideos() {
+                // Lazy load videos when they become visible
+                const videos = document.querySelectorAll('.card-video');
+                
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const video = entry.target;
+                            if (video.getAttribute('preload') === 'none') {
+                                video.setAttribute('preload', 'metadata');
+                                video.load();
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '50px'
+                });
+                
+                videos.forEach(video => {
+                    videoObserver.observe(video);
+                });
+            }
+            
+            trackCTAClicks() {
+                document.querySelectorAll('.service-cta').forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
+                        const serviceNames = ['audit_diagnostic', 'automatisation', 'assistant_ia', 'dashboard_automatise_bi'];
+                        const servicePrices = ['250€', '500€', '600€', '800€'];
+                        
+                        // Analytics tracking
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'cta_click', {
+                                service_name: serviceNames[index],
+                                service_price: servicePrices[index]
+                            });
+                        }
+                        
+                        console.log(`CTA clicked: ${serviceNames[index]} - ${servicePrices[index]}`);
+                    });
+                });
+            }
+        }
+        
+        // Initialize carousel when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new PerspectiveCarousel();
+        });
+        
+        // Reduced motion support
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            gsap.globalTimeline.timeScale(0.1);
+        }
+        
+    </script>
+</body>
+</html>

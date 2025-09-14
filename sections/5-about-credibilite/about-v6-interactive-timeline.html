@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version 6: Timeline Interactive - Parcours Sofiane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles Globaux -->
+    <link rel="stylesheet" href="../../shared/global-variables.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .about-timeline-section {
+            padding: 80px 20px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 450;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Timeline Container */
+        .timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation Timeline en haut */
+        .timeline-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .nav-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(79, 70, 229, 0.3), 
+                rgba(139, 92, 246, 0.4), 
+                rgba(6, 182, 212, 0.4), 
+                rgba(251, 146, 60, 0.3)
+            );
+            border-radius: 2px;
+            z-index: 1;
+        }
+        
+        .timeline-dots {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid var(--background-dark);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-dot:hover {
+            transform: scale(1.3);
+        }
+        
+        .timeline-dot.active {
+            transform: scale(1.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .timeline-dot[data-step="1"] {
+            background: rgba(79, 70, 229, 0.8);
+        }
+        
+        .timeline-dot[data-step="2"] {
+            background: rgba(139, 92, 246, 0.8);
+        }
+        
+        .timeline-dot[data-step="3"] {
+            background: rgba(6, 182, 212, 0.8);
+        }
+        
+        .timeline-dot[data-step="4"] {
+            background: rgba(251, 146, 60, 0.8);
+        }
+        
+        .dot-label {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .timeline-dot:hover .dot-label {
+            opacity: 1;
+        }
+        
+        /* Cards Container */
+        .timeline-cards {
+            position: relative;
+            min-height: 500px;
+        }
+        
+        .timeline-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 40px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+        
+        .timeline-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 24px 24px 0 0;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-card[data-step="1"]::before {
+            background: linear-gradient(90deg, rgba(79, 70, 229, 0.8), rgba(79, 70, 229, 0.4));
+        }
+        
+        .timeline-card[data-step="2"]::before {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.8), rgba(139, 92, 246, 0.4));
+        }
+        
+        .timeline-card[data-step="3"]::before {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.8), rgba(6, 182, 212, 0.4));
+        }
+        
+        .timeline-card[data-step="4"]::before {
+            background: linear-gradient(90deg, rgba(251, 146, 60, 0.8), rgba(251, 146, 60, 0.4));
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-card[data-step="1"] .card-icon {
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        .timeline-card[data-step="2"] .card-icon {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .timeline-card[data-step="3"] .card-icon {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        
+        .timeline-card[data-step="4"] .card-icon {
+            background: rgba(251, 146, 60, 0.15);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+        
+        .card-info {
+            flex: 1;
+        }
+        
+        .card-period {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        
+        .card-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        
+        .card-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .card-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        
+        .achievements-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+        
+        .achievements-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        .achievements-list li::before {
+            content: "✓";
+            color: #22c55e;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .card-stats {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .stats-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .highlight-quote {
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 4px solid;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        .timeline-card[data-step="1"] .highlight-quote {
+            border-left-color: rgba(79, 70, 229, 0.8);
+        }
+        
+        .timeline-card[data-step="2"] .highlight-quote {
+            border-left-color: rgba(139, 92, 246, 0.8);
+        }
+        
+        .timeline-card[data-step="3"] .highlight-quote {
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+        
+        .timeline-card[data-step="4"] .highlight-quote {
+            border-left-color: rgba(251, 146, 60, 0.8);
+        }
+        
+        /* Navigation Buttons */
+        .timeline-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .control-btn:disabled:hover {
+            transform: none;
+        }
+        
+        /* Auto-play indicator */
+        .auto-play-indicator {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .play-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .play-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-timeline-section {
+                padding: 60px 16px 80px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .timeline-dots {
+                max-width: 300px;
+            }
+            
+            .timeline-dot {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .dot-label {
+                font-size: 0.7rem;
+                top: -30px;
+            }
+            
+            .timeline-card {
+                padding: 24px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .card-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+            
+            .card-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="about-timeline-section" id="about">
+        <div class="section-header">
+            <h2 class="section-title">Mon Parcours vers l'Excellence</h2>
+            <p class="section-subtitle">4 étapes clés qui forgent mon expertise unique</p>
+        </div>
+        
+        <div class="timeline-container">
+            <!-- Navigation Timeline -->
+            <div class="timeline-nav">
+                <div class="nav-line"></div>
+                <div class="timeline-dots">
+                    <div class="timeline-dot active" data-step="1">
+                        <div class="dot-label">Formation</div>
+                    </div>
+                    <div class="timeline-dot" data-step="2">
+                        <div class="dot-label">Révélation</div>
+                    </div>
+                    <div class="timeline-dot" data-step="3">
+                        <div class="dot-label">Expertise</div>
+                    </div>
+                    <div class="timeline-dot" data-step="4">
+                        <div class="dot-label">Mission</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline Cards -->
+            <div class="timeline-cards">
+                
+                <!-- Card 1: Formation -->
+                <div class="timeline-card active" data-step="1">
+                    <div class="card-header">
+                        <div class="card-icon">🎓</div>
+                        <div class="card-info">
+                            <div class="card-period">2019-2021</div>
+                            <h3 class="card-title">Formation Internationale</h3>
+                            <p class="card-subtitle">Master Management & Commerce International</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div>
+                            <p class="card-description">
+                                Mon parcours académique m'a donné les bases solides du management international, 
+                                mais c'est la passion pour l'efficacité opérationnelle qui m'a vraiment guidé. 
+                                J'ai rapidement compris que la technologie était le levier le plus puissant 
+                                pour transformer les processus métier.
+                            </p>
+                            
+                            <ul class="achievements-list">
+                                <li>Diplôme avec mention en Management International</li>
+                                <li>Spécialisation processus d'optimisation</li>
+                                <li>Formation aux outils digitaux avancés</li>
+                                <li>Développement de l'approche analytique</li>
+                            </ul>
+                            
+                            <div class="highlight-quote">
+                                "Dès mes études, j'ai su que je voulais réconcilier business et technologie 
+                                pour créer de la valeur tangible."
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <h4 class="stats-title">Formation</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number">2</span>
+                                    <div class="stat-label">Années</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">3</span>
+                                    <div class="stat-label">Langues</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">15+</span>
+                                    <div class="stat-label">Certifications</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">A</span>
+                                    <div class="stat-label">Mention</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Révélation Tokyo -->
+                <div class="timeline-card" data-step="2">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-info">
+                            <div class="card-period">2022</div>
+                            <h3 class="card-title">Révélation à Tokyo</h3>
+                            <p class="card-subtitle">École Internationale Française - Transformation Digitale</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div>
+                            <p class="card-description">
+                                L'expérience fondatrice qui a défini ma vocation. Face à un processus de bulletins 
+                                paralysant l'école pendant 2 semaines, j'ai orchestré une transformation remarquable : 
+                                réduction à 1 seule journée de validation fluide. Cette réussite m'a enseigné 
+                                l'importance de l'adoption utilisateur.
+                            </p>
+                            
+                            <ul class="achievements-list">
+                                <li>93% de réduction du temps administratif</li>
+                                <li>10 professeurs formés avec 100% de réussite</li>
+                                <li>0% d'erreur après implémentation</li>
+                                <li>12 formats unifiés en un seul système</li>
+                            </ul>
+                            
+                            <div class="highlight-quote">
+                                "J'ai compris que la meilleure solution technique n'est rien sans l'adhésion 
+                                des utilisateurs. C'est devenu ma signature."
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <h4 class="stats-title">Impact Tokyo</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number">93%</span>
+                                    <div class="stat-label">Gain Temps</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">10</span>
+                                    <div class="stat-label">Formés</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">0</span>
+                                    <div class="stat-label">Erreurs</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">1j</span>
+                                    <div class="stat-label">vs 14j</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3: Développement Expertise -->
+                <div class="timeline-card" data-step="3">
+                    <div class="card-header">
+                        <div class="card-icon">🚀</div>
+                        <div class="card-info">
+                            <div class="card-period">2022-2024</div>
+                            <h3 class="card-title">Expertise Multifacette</h3>
+                            <p class="card-subtitle">Spécialisation Power BI, Automatisation & IA</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div>
+                            <p class="card-description">
+                                Développement d'une expertise technique pointue combinée à une approche business pragmatique. 
+                                Spécialisation en Power BI et Business Intelligence, automatisation no-code, 
+                                et développement d'assistants IA conversationnels pour transformer 
+                                la relation client-données.
+                            </p>
+                            
+                            <ul class="achievements-list">
+                                <li>Certification Power BI Expert</li>
+                                <li>Maîtrise des plateformes no-code/low-code</li>
+                                <li>Développement d'assistants IA conversationnels</li>
+                                <li>Formation pédagogique reconnue</li>
+                                <li>Méthodologie d'accompagnement structurée</li>
+                            </ul>
+                            
+                            <div class="highlight-quote">
+                                "L'expertise technique n'a de valeur que si elle résout des problèmes 
+                                business concrets et mesurables."
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <h4 class="stats-title">Compétences</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number">5+</span>
+                                    <div class="stat-label">Technologies</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">100%</span>
+                                    <div class="stat-label">Satisfaction</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">15+</span>
+                                    <div class="stat-label">Formés</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">48h</span>
+                                    <div class="stat-label">Délai Audit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 4: Mission Actuelle -->
+                <div class="timeline-card" data-step="4">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-info">
+                            <div class="card-period">Aujourd'hui</div>
+                            <h3 class="card-title">Mission & Vision</h3>
+                            <p class="card-subtitle">Démocratiser l'automatisation pour les PME</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div>
+                            <p class="card-description">
+                                Ma mission est claire : rendre l'automatisation accessible aux PME et startups 
+                                qui n'ont pas les ressources pour une équipe technique dédiée, mais qui méritent 
+                                la même efficacité que les grandes entreprises. Je suis le traducteur entre 
+                                vos défis business et les solutions technologiques.
+                            </p>
+                            
+                            <ul class="achievements-list">
+                                <li>Comprendre avant de proposer</li>
+                                <li>Simplifier sans sacrifier la puissance</li>
+                                <li>Former pour rendre autonome</li>
+                                <li>Accompagner au-delà de la livraison</li>
+                            </ul>
+                            
+                            <div class="highlight-quote">
+                                "Je ne vends pas de la technologie, je vends de l'efficacité. 
+                                Votre succès mesure le mien."
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <h4 class="stats-title">Résultats</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number">50+</span>
+                                    <div class="stat-label">Projets</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">100%</span>
+                                    <div class="stat-label">Livraisons</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">30j</span>
+                                    <div class="stat-label">Support</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">24h</span>
+                                    <div class="stat-label">Réponse</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Controls -->
+            <div class="timeline-controls">
+                <button class="control-btn" id="prevBtn">← Précédent</button>
+                <button class="control-btn" id="pauseBtn">Pause Auto</button>
+                <button class="control-btn" id="nextBtn">Suivant →</button>
+            </div>
+            
+            <!-- Auto-play Indicator -->
+            <div class="auto-play-indicator">
+                <div class="play-progress">
+                    <div class="play-progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        class TimelineController {
+            constructor() {
+                this.currentStep = 1;
+                this.totalSteps = 4;
+                this.isPlaying = true;
+                this.playInterval = null;
+                this.progressInterval = null;
+                this.stepDuration = 8000; // 8 seconds per step
+                this.progressWidth = 0;
+                
+                this.init();
+                this.startAutoPlay();
+            }
+            
+            init() {
+                // Get elements
+                this.dots = document.querySelectorAll('.timeline-dot');
+                this.cards = document.querySelectorAll('.timeline-card');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.pauseBtn = document.getElementById('pauseBtn');
+                this.progressBar = document.getElementById('progressBar');
+                
+                // Add event listeners
+                this.dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        const step = parseInt(dot.dataset.step);
+                        this.goToStep(step);
+                    });
+                });
+                
+                this.prevBtn.addEventListener('click', () => this.previousStep());
+                this.nextBtn.addEventListener('click', () => this.nextStep());
+                this.pauseBtn.addEventListener('click', () => this.toggleAutoPlay());
+                
+                // Initialize display
+                this.updateDisplay();
+            }
+            
+            goToStep(step) {
+                if (step < 1 || step > this.totalSteps) return;
+                
+                this.currentStep = step;
+                this.updateDisplay();
+                this.resetAutoPlay();
+            }
+            
+            nextStep() {
+                if (this.currentStep < this.totalSteps) {
+                    this.currentStep++;
+                } else {
+                    this.currentStep = 1; // Loop back to start
+                }
+                this.updateDisplay();
+                this.resetAutoPlay();
+            }
+            
+            previousStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep--;
+                } else {
+                    this.currentStep = this.totalSteps; // Loop to end
+                }
+                this.updateDisplay();
+                this.resetAutoPlay();
+            }
+            
+            updateDisplay() {
+                // Update dots
+                this.dots.forEach(dot => {
+                    const step = parseInt(dot.dataset.step);
+                    dot.classList.toggle('active', step === this.currentStep);
+                });
+                
+                // Update cards
+                this.cards.forEach(card => {
+                    const step = parseInt(card.dataset.step);
+                    card.classList.toggle('active', step === this.currentStep);
+                });
+                
+                // Update buttons
+                this.prevBtn.disabled = false;
+                this.nextBtn.disabled = false;
+            }
+            
+            startAutoPlay() {
+                if (this.isPlaying) {
+                    this.progressWidth = 0;
+                    this.updateProgress();
+                    
+                    this.playInterval = setTimeout(() => {
+                        this.nextStep();
+                    }, this.stepDuration);
+                    
+                    this.progressInterval = setInterval(() => {
+                        this.progressWidth += 100 / (this.stepDuration / 100);
+                        if (this.progressWidth >= 100) {
+                            this.progressWidth = 100;
+                        }
+                        this.updateProgress();
+                    }, 100);
+                }
+            }
+            
+            stopAutoPlay() {
+                if (this.playInterval) {
+                    clearTimeout(this.playInterval);
+                    this.playInterval = null;
+                }
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                    this.progressInterval = null;
+                }
+                this.progressWidth = 0;
+                this.updateProgress();
+            }
+            
+            resetAutoPlay() {
+                this.stopAutoPlay();
+                if (this.isPlaying) {
+                    this.startAutoPlay();
+                }
+            }
+            
+            toggleAutoPlay() {
+                this.isPlaying = !this.isPlaying;
+                this.pauseBtn.textContent = this.isPlaying ? 'Pause Auto' : 'Play Auto';
+                
+                if (this.isPlaying) {
+                    this.startAutoPlay();
+                } else {
+                    this.stopAutoPlay();
+                }
+            }
+            
+            updateProgress() {
+                this.progressBar.style.width = `${this.progressWidth}%`;
+            }
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new TimelineController();
+        });
+        
+        // Add hover effects to cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.timeline-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    if (card.classList.contains('active')) {
+                        card.style.transform = 'translateY(-5px)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    if (card.classList.contains('active')) {
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
