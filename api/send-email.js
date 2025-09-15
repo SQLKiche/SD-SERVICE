@@ -90,6 +90,14 @@ export default async function handler(req, res) {
         throw new Error('Type de template non reconnu');
     }
 
+    // DEBUG: Log des données envoyées à Brevo
+    const brevoPayload = {
+      templateId: emailConfig.templateId,
+      to: emailConfig.to,
+      params: emailConfig.params
+    };
+    console.log('🔍 DEBUG - Données envoyées à Brevo:', JSON.stringify(brevoPayload, null, 2));
+
     // Appel API Brevo
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
