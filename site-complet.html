@@ -6684,7 +6684,34 @@ RÉSERVER MON AUDIT GRATUIT
                             <label for="bookingEmail">Votre email</label>
                             <input type="email" id="bookingEmail" class="booking-input" placeholder="pierre@exemple.com" required>
                         </div>
-                        
+
+                        <div class="booking-form-group">
+                            <label for="bookingPhone">Votre téléphone *</label>
+                            <input type="tel" id="bookingPhone" class="booking-input" placeholder="06 12 34 56 78" required pattern="^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$" title="Format: 06 12 34 56 78 ou +33 6 12 34 56 78">
+                        </div>
+
+                        <div class="booking-form-group">
+                            <label for="bookingCompany">Votre entreprise (optionnel)</label>
+                            <input type="text" id="bookingCompany" class="booking-input" placeholder="Ma Société SARL">
+                        </div>
+
+                        <div class="booking-form-group">
+                            <label for="bookingSector">Secteur d'activité</label>
+                            <select id="bookingSector" class="booking-input" required>
+                                <option value="">Sélectionnez votre secteur</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Conseil">Conseil</option>
+                                <option value="Services">Services</option>
+                                <option value="Industrie">Industrie</option>
+                                <option value="Immobilier">Immobilier</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Santé">Santé</option>
+                                <option value="Éducation">Éducation</option>
+                                <option value="Restaurant">Restaurant/Hôtellerie</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+
                         <div class="booking-form-group">
                             <label for="bookingMessage">Sujet de l'échange (optionnel)</label>
                             <textarea id="bookingMessage" class="booking-input" rows="3" placeholder="Automatisation emails, tableau de bord, etc."></textarea>
@@ -8570,10 +8597,22 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
             async confirmBooking() {
                 const name = document.getElementById('bookingName').value.trim();
                 const email = document.getElementById('bookingEmail').value.trim();
+                const phone = document.getElementById('bookingPhone').value.trim();
+                const company = document.getElementById('bookingCompany').value.trim();
+                const sector = document.getElementById('bookingSector').value;
                 const message = document.getElementById('bookingMessage').value.trim();
 
-                if (!name || !email) {
-                    alert('Veuillez remplir votre nom et email');
+                // Validation des champs obligatoires
+                if (!name || !email || !phone || !sector) {
+                    alert('Veuillez remplir tous les champs obligatoires (nom, email, téléphone, secteur)');
+                    return;
+                }
+
+                // Validation format téléphone
+                const phoneRegex = /^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$/;
+                const cleanPhone = phone.replace(/[\s\-\.]/g, ''); // Retirer espaces, tirets, points
+                if (!phoneRegex.test(cleanPhone)) {
+                    alert('Format de téléphone invalide. Utilisez: 06 12 34 56 78 ou +33 6 12 34 56 78');
                     return;
                 }
 
@@ -8598,6 +8637,9 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                             datetime: this.selectedSlot.start,
                             clientName: name,
                             clientEmail: email,
+                            clientPhone: cleanPhone,
+                            clientCompany: company,
+                            clientSector: sector,
                             clientMessage: message
                         })
                     });
@@ -8639,6 +8681,9 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 // Clear form
                 document.getElementById('bookingName').value = '';
                 document.getElementById('bookingEmail').value = '';
+                document.getElementById('bookingPhone').value = '';
+                document.getElementById('bookingCompany').value = '';
+                document.getElementById('bookingSector').value = '';
                 document.getElementById('bookingMessage').value = '';
             }
 
