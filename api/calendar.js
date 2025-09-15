@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Données manquantes pour la réservation' });
       }
 
-      console.log('New appointment booking:', {
+      console.log('🚀 NOUVEAU TEST - New appointment booking:', {
         datetime,
         clientName,
         clientEmail,
