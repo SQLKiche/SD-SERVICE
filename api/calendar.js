@@ -103,9 +103,6 @@ Automatiquement créé via sofiane-automation.com`,
           dateTime: endDate.toISOString(),
           timeZone: timeZone,
         },
-        attendees: [
-          { email: clientEmail, displayName: clientName }
-        ],
         reminders: {
           useDefault: false,
           overrides: [
