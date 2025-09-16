@@ -9603,8 +9603,8 @@ class LanguageSelector {
         Object.keys(content).forEach(key => {
             const elements = document.querySelectorAll(`[data-translate="${key}"]`);
             elements.forEach(element => {
-                // Utiliser innerHTML pour les éléments qui contiennent du HTML (comme hero-subtitle)
-                if (key === 'hero-subtitle') {
+                // Utiliser innerHTML pour les éléments qui contiennent du HTML
+                if (key === 'hero-subtitle' || key.startsWith('faq-a')) {
                     element.innerHTML = content[key];
                 } else {
                     element.textContent = content[key];
