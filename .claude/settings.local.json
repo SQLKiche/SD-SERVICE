@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(move sections \"C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\ARCHIVE-FICHIERS-NON-ESSENTIELS\\\")",
+      "Bash(move shared \"C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\ARCHIVE-FICHIERS-NON-ESSENTIELS\\\")",
+      "Bash(git rm:*)",
+      "WebFetch(domain:sd-service.vercel.app)",
+      "Bash(grep:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
