@@ -6664,35 +6664,35 @@ RÉSERVER MON AUDIT GRATUIT
                     </div>
 
                     <div class="contact-phone-alternative">
-                        <h4>Vous préférez appeler directement ?</h4>
+                        <h4 data-translate="contact-phone-text">Vous préférez appeler directement ?</h4>
                         <a href="tel:+33699213447" class="contact-phone-link">06.99.21.34.47</a>
-                        <p class="contact-phone-hours">Disponible 7j/7 • Réponse garantie</p>
+                        <p class="contact-phone-hours" data-translate="contact-phone-hours">Disponible 7j/7 • Réponse garantie</p>
                     </div>
                 </form>
 
                 <!-- SÉPARATEUR OU -->
                 <div class="contact-separator">
                     <div class="separator-line"></div>
-                    <span class="separator-text">OU</span>
+                    <span class="separator-text" data-translate="contact-separator">OU</span>
                     <div class="separator-line"></div>
                 </div>
 
                 <!-- WIDGET DE RÉSERVATION DIRECTE -->
                 <div class="booking-widget">
                     <div class="booking-header">
-                        <h3>Réservez votre créneau directement</h3>
-                        <p>Choisissez un moment qui vous convient • 15min gratuit</p>
+                        <h3 data-translate="booking-title">Réservez votre créneau directement</h3>
+                        <p data-translate="booking-subtitle">Choisissez un moment qui vous convient • 15min gratuit</p>
                     </div>
 
                     <!-- Sélecteur de date -->
                     <div class="date-selector" onclick="document.getElementById('bookingDate').showPicker()" style="cursor: pointer;">
-                        <label for="bookingDate">Choisir une date :</label>
+                        <label for="bookingDate" data-translate="booking-date-label">Choisir une date :</label>
                         <input type="date" id="bookingDate" class="booking-date-input">
                     </div>
 
                     <!-- Créneaux horaires -->
                     <div class="time-slots-container" id="timeSlotsContainer">
-                        <p class="loading-slots">Sélectionnez une date pour voir les créneaux disponibles</p>
+                        <p class="loading-slots" data-translate="booking-loading-slots">Sélectionnez une date pour voir les créneaux disponibles</p>
                     </div>
 
                     <!-- Formulaire de confirmation -->
@@ -8714,7 +8714,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
 
             resetWidget() {
                 document.getElementById('bookingDate').value = '';
-                document.getElementById('timeSlotsContainer').innerHTML = '<p class="loading-slots">Sélectionnez une date pour voir les créneaux disponibles</p>';
+                document.getElementById('timeSlotsContainer').innerHTML = '<p class="loading-slots" data-translate="booking-loading-slots">Sélectionnez une date pour voir les créneaux disponibles</p>';
                 document.getElementById('bookingConfirmation').style.display = 'none';
                 document.getElementById('bookingSuccess').style.display = 'none';
                 this.selectedSlot = null;
@@ -9314,6 +9314,11 @@ class LanguageSelector {
                 'faq-cta-title': 'D\'autres questions ?',
                 'faq-cta-text': 'Démarrons par un audit gratuit de 15 minutes pour identifier vos opportunités d\'automatisation',
                 'faq-cta-button': 'Audit Gratuit 15min',
+                'contact-separator': 'OU',
+                'booking-title': 'Réservez votre créneau directement',
+                'booking-subtitle': 'Choisissez un moment qui vous convient • 15min gratuit',
+                'booking-date-label': 'Choisir une date :',
+                'booking-loading-slots': 'Sélectionnez une date pour voir les créneaux disponibles',
 
                 // FAQ Section
                 'faq-section-automation': 'Automatisation PME',
@@ -9522,6 +9527,11 @@ class LanguageSelector {
                 'faq-cta-title': 'More questions?',
                 'faq-cta-text': 'Let\'s start with a free 15-minute audit to identify your automation opportunities',
                 'faq-cta-button': 'Free 15min Audit',
+                'contact-separator': 'OR',
+                'booking-title': 'Book your slot directly',
+                'booking-subtitle': 'Choose a time that suits you • 15min free',
+                'booking-date-label': 'Choose a date:',
+                'booking-loading-slots': 'Select a date to see available slots',
 
                 // FAQ Section
                 'faq-section-automation': 'PME Automation',
