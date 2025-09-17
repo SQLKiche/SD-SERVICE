@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Histoire - Sofiane Dehaffreingue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A0A0F;
+            color: #FFFFFF;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero-story {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg,
+                    rgba(10, 10, 15, 0.85) 0%,
+                    rgba(10, 10, 15, 0.75) 50%,
+                    rgba(10, 10, 15, 0.85) 100%
+                ),
+                url('assets/images/Conference buffet.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 50;
+        }
+
+        .hero-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 40px;
+            border: 4px solid rgba(79, 70, 229, 0.6);
+            display: block;
+            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #4F46E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: #4F46E5;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: #E5E7EB;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-description strong {
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        .hero-description span {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            color: #9CA3AF;
+            text-align: center;
+        }
+
+        .scroll-text {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .scroll-arrow {
+            width: 2px;
+            height: 30px;
+            background: #4F46E5;
+            margin: 0 auto;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #4F46E5;
+            border-bottom: 2px solid #4F46E5;
+            transform: rotate(45deg);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Content */
+        .story-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Chapter Sections */
+        .chapter {
+            margin-bottom: 120px;
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .chapter-number {
+            font-size: 1.1rem;
+            color: #4F46E5;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+        }
+
+        .chapter-subtitle {
+            font-size: 1.2rem;
+            color: #9CA3AF;
+            font-weight: 400;
+        }
+
+        /* Story Layout */
+        .story-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .story-layout.layout-full {
+            grid-template-columns: 1fr;
+        }
+
+        .story-text {
+            color: #E5E7EB;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .story-text h3 {
+            color: #FFFFFF;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 30px 0 15px;
+        }
+
+        .story-text p {
+            margin-bottom: 20px;
+        }
+
+        .story-text strong {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .story-text em {
+            color: #4F46E5;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            height: fit-content;
+        }
+
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4F46E5;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4F46E5;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+
+        /* Highlight Quote */
+        .highlight-quote {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.15));
+            border-left: 4px solid #4F46E5;
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .highlight-quote strong {
+            color: #4F46E5;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #4F46E5;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4F46E5;
+            margin-bottom: 15px;
+        }
+
+        .project-description {
+            color: #E5E7EB;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-results {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .result-badge {
+            background: rgba(79, 70, 229, 0.2);
+            color: #4F46E5;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.15));
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            color: #E5E7EB;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid #4F46E5;
+        }
+
+        /* Navigation */
+        .back-nav {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(79, 70, 229, 0.9);
+            border-color: #4F46E5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-description { font-size: 1.1rem; }
+            .chapter-title { font-size: 2rem; }
+            .story-layout { grid-template-columns: 1fr; gap: 30px; }
+            .project-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="back-nav">
+        <a href="site-complet.html" class="back-btn">← Retour Site Principal</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-story">
+        <div class="hero-content">
+            <img src="assets/images/Conference buffet.jpg" alt="Sofiane Dehaffreingue - Networking CCIFJ Tokyo" class="hero-image">
+            <h1 class="hero-title">Mon Histoire</h1>
+            <p class="hero-subtitle">Sofiane Dehaffreingue</p>
+            <p class="hero-description">
+                <strong>À 24 ans, j'ai représenté la France à la Chambre de Commerce Franco-Japonaise (CCIFJ) à Tokyo</strong>,<br>
+                où j'ai transformé les processus d'une école internationale, <br>
+                <span>économisant 93% du temps de 10 professeurs en 6 mois.</span>
+            </p>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-text">Découvrir mon parcours</div>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Main Story Content -->
+    <main class="story-content">
+
+        <!-- Chapter 1: Tokyo Révélation -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">🇯🇵 Chapitre 1</div>
+                <h2 class="chapter-title">Tokyo : La Révélation Professionnelle</h2>
+                <p class="chapter-subtitle">L'expérience qui a tout changé</p>
+            </div>
+
+            <div class="story-layout">
+                <div class="story-text">
+                    <p>
+                        <strong>La mission de mes 24 ans qui a tout changé.</strong> Sélectionné pour représenter
+                        la France dans le cadre d'une collaboration avec la <strong>Chambre de Commerce Franco-Japonaise (CCIFJ)</strong>,
+                        j'ai passé 6 mois à Tokyo à transformer les processus d'une école internationale.
+                    </p>
+
+                    <p>
+                        <strong>Le défi</strong> : 10 professeurs passaient en moyenne <em>6 heures par semaine</em> sur des tâches
+                        administratives répétitives. Mon objectif était clair : leur rendre du temps pour ce qui compte vraiment - l'enseignement.
+                    </p>
+
+                    <h3>🎯 La Transformation</h3>
+                    <p>
+                        En 6 mois, j'ai conçu et déployé un système d'automatisation complet qui a révolutionné
+                        leur quotidien. <strong>Résultat : 93% de temps économisé</strong> sur les tâches administratives,
+                        soit plus de 5 heures récupérées par semaine et par professeur.
+                    </p>
+
+                    <div class="highlight-quote">
+                        🏆 <strong>Cette mission m'a révélé ma vocation</strong> : transformer la complexité opérationnelle
+                        en efficacité mesurable, tout en formant les équipes pour garantir leur autonomie.
+                        <em>La reconnaissance officielle par la CCIFJ n'était que le début.</em>
+                    </div>
+
+                    <p>
+                        <img src="assets/images/Conference.jpg" alt="Conférence CCIFJ Tokyo" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-title">📊 Résultats CCIFJ Tokyo</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">93%</div>
+                            <div class="stat-label">Temps économisé</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10</div>
+                            <div class="stat-label">Professeurs formés</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Mois d'immersion</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Adoption méthodo</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; text-align: center;">
+                        <img src="assets/images/CCIFJ diplome.png" alt="Diplôme CCIFJ Tokyo" style="width: 100%; max-width: 250px; border-radius: 12px; box-shadow: 0 6px 20px rgba(79,70,229,0.3);">
+                        <p style="font-size: 0.9rem; color: #9CA3AF; margin-top: 10px; font-weight: 500;">Diplôme officiel CCIFJ</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 2: Projets Concrets -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">💻 Chapitre 2</div>
+                <h2 class="chapter-title">Projets Concrets, Résultats Vérifiables</h2>
+                <p class="chapter-subtitle">De l'idée à l'impact mesurable</p>
+            </div>
+
+            <div class="story-layout layout-full">
+                <div class="story-text">
+                    <p>
+                        Fort de cette expérience révélatrice, j'ai appliqué cette approche résultat-focused
+                        à des projets entrepreneuriaux concrets, toujours avec le même objectif :
+                        <strong>créer de la valeur mesurable pour les utilisateurs finaux.</strong>
+                    </p>
+                </div>
+
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3 class="project-title">🛍️ Hubi Paris - E-commerce Complet</h3>
+                        <div class="project-description">
+                            Conception, développement et automatisation intégrale d'une boutique e-commerce
+                            pour ma sœur entrepreneure. Solution technique end-to-end avec gestion complète
+                            du flux commandes-livraison.
+                        </div>
+
+                        <div class="project-results">
+                            <span class="result-badge">Site WordPress/WooCommerce</span>
+                            <span class="result-badge">50+ produits configurés</span>
+                            <span class="result-badge">100% automatisation</span>
+                            <span class="result-badge">483€ CA généré</span>
+                            <span class="result-badge">11 commandes traitées</span>
+                        </div>
+
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #9CA3AF;">
+                            <strong>🌐 Vérifiable :</strong> hubi-paris.fr (portfolio technique concret)
+                        </p>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">🎯 Ce Site Web - Vitrine Technique</h3>
+                        <div class="project-description">
+                            Création intégrale de cette plateforme professionnelle, démonstration de mes
+                            capacités end-to-end. Chaque fonctionnalité est pensée pour la conversion
+                            et l'expérience utilisateur.
+                        </div>
+
+                        <div class="project-results">
+                            <span class="result-badge">Architecture responsive</span>
+                            <span class="result-badge">Agent IA intégré</span>
+                            <span class="result-badge">Formulaires optimisés</span>
+                            <span class="result-badge">Analytics avancés</span>
+                            <span class="result-badge">SEO optimisé</span>
+                        </div>
+
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #9CA3AF;">
+                            <strong>💡 Philosophie :</strong> La technique sert le business, jamais l'inverse.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="highlight-quote">
+                    <strong>Approche différenciante :</strong> Chaque projet est une opportunité de démontrer
+                    que l'excellence technique, couplée à une compréhension business,
+                    génère des résultats concrets et mesurables.
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 3: Formation d'Excellence -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">🎓 Chapitre 3</div>
+                <h2 class="chapter-title">Formation d'Excellence & Vision Internationale</h2>
+                <p class="chapter-subtitle">Expertise business + maîtrise technique</p>
+            </div>
+
+            <div class="story-layout">
+                <div class="info-card">
+                    <h3 class="info-title">📚 Formation Stratégique</h3>
+
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="color: #4F46E5; font-size: 1.1rem; margin-bottom: 10px;">Master Management & Commerce International</h4>
+                        <p style="color: #E5E7EB; font-size: 0.95rem; line-height: 1.5;">
+                            Université Polytechnique Hauts-de-France<br>
+                            <em>Spécialisation Data & IA Appliquée</em>
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="color: #4F46E5; font-size: 1.1rem; margin-bottom: 10px;">🌍 Expérience Internationale</h4>
+                        <ul style="color: #E5E7EB; font-size: 0.95rem; line-height: 1.6; list-style: none; padding-left: 0;">
+                            <li>• Erasmus Universidad de Cantabria (Santander)</li>
+                            <li>• Stage professionnel CCIFJ Tokyo</li>
+                            <li>• Adaptation culturelle France-Espagne-Japon</li>
+                        </ul>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="assets/images/Diplome_upscayl_4x_upscayl-standard-4x.png" alt="Diplôme Polytechnique" style="width: 100%; max-width: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                </div>
+
+                <div class="story-text">
+                    <h3>💼 Double Expertise Rare</h3>
+                    <p>
+                        Ma formation en <strong>Management International</strong> couplée à une expertise technique
+                        autodidacte me positionne comme <em>traducteur naturel</em> entre les enjeux métier
+                        et les solutions digitales.
+                    </p>
+
+                    <p>
+                        <strong>Cette dualité est rare sur le marché</strong> : la plupart des profils sont soit
+                        100% business, soit 100% technique. Moi, je navigue entre les deux mondes
+                        pour créer des ponts concrets et efficaces.
+                    </p>
+
+                    <h3>🌍 Vision Globale Forgée</h3>
+                    <p>
+                        Mes expériences en <strong>France, Espagne et Japon</strong> m'ont enseigné l'adaptabilité
+                        et la communication interculturelle. Des compétences cruciales dans un monde
+                        où les équipes et les marchés sont de plus en plus internationaux.
+                    </p>
+
+                    <div class="highlight-quote">
+                        <strong>Mon différenciateur :</strong> Je ne me contente pas de comprendre les enjeux techniques OU business.
+                        Je maîtrise les deux langages pour créer des solutions qui parlent
+                        autant aux dirigeants qu'aux équipes opérationnelles.
+                    </div>
+
+                    <p style="margin-top: 20px;">
+                        <img src="assets/images/ccifj annuel.png" alt="Événement CCIFJ Tokyo" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 4: Mission Actuelle -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">🚀 Chapitre 4</div>
+                <h2 class="chapter-title">Mission & Objectifs Actuels</h2>
+                <p class="chapter-subtitle">Double positionnement stratégique</p>
+            </div>
+
+            <div class="story-layout layout-full">
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3 class="project-title">📊 Pour les Recruteurs</h3>
+                        <div class="project-description">
+                            <strong>Profil polyvalent</strong> ouvert à tous secteurs nécessitant une approche data-driven :
+                        </div>
+
+                        <ul style="color: #E5E7EB; margin: 20px 0; line-height: 1.6; list-style: none; padding-left: 0;">
+                            <li>• Data Analysis & Business Intelligence</li>
+                            <li>• Transformation Digitale & Automatisation</li>
+                            <li>• Commercial/International avec dimension tech</li>
+                            <li>• Conseil en stratégie data-driven</li>
+                        </ul>
+
+                        <div class="project-results">
+                            <span class="result-badge">Expérience 3 pays</span>
+                            <span class="result-badge">ROI mesurable</span>
+                            <span class="result-badge">Formation équipes</span>
+                            <span class="result-badge">Autonomie prouvée</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">💼 Pour les Clients</h3>
+                        <div class="project-description">
+                            <strong>Mission claire :</strong> Démocratiser l'automatisation intelligente pour les PME
+                            qui méritent la même efficacité que les grandes entreprises.
+                        </div>
+
+                        <ul style="color: #E5E7EB; margin: 20px 0; line-height: 1.6; list-style: none; padding-left: 0;">
+                            <li>• Audit gratuit systématique avant toute proposition</li>
+                            <li>• Solutions sur-mesure, jamais du copy-paste</li>
+                            <li>• Formation complète pour votre autonomie totale</li>
+                            <li>• ROI mesurable dès le premier mois</li>
+                            <li>• Support continu, pas d'abandon après livraison</li>
+                        </ul>
+
+                        <div class="project-results">
+                            <span class="result-badge">Audit gratuit</span>
+                            <span class="result-badge">Sur-mesure</span>
+                            <span class="result-badge">Formation incluse</span>
+                            <span class="result-badge">Autonomie garantie</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-quote">
+                    <strong>🏆 Garantie différenciation :</strong><br>
+                    Je ne vends pas de la technologie, je vends de l'efficacité.<br>
+                    Je ne crée pas de la dépendance, je crée de l'autonomie.<br>
+                    <em>Mon parcours continue avec chaque nouveau projet, chaque défi résolu, chaque client rendu autonome.</em>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2 class="cta-title">Et Si Le Prochain Chapitre Parlait De Vous ?</h2>
+            <p class="cta-description">
+                Que vous soyez recruteur à la recherche d'un profil polyvalent unique,
+                ou dirigeant PME souhaitant transformer vos défis en opportunités,
+                découvrons ensemble comment mes compétences peuvent servir vos ambitions.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="site-complet.html#contact" class="cta-button">🚀 AUDIT GRATUIT 15MIN</a>
+                <a href="site-complet.html" class="cta-button secondary">📈 DÉCOUVRIR MES SERVICES</a>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
