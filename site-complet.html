@@ -7,7 +7,6 @@
     
     <!-- Security Meta Tags -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
@@ -9803,6 +9802,225 @@ function initGoogleAnalyticsTracking() {
     }, 120000);
     
     console.log('✅ Google Analytics tracking initialized');
+
+    // ==========================================
+    // 🎯 ÉVÉNEMENTS DE CONVERSION BUSINESS
+    // ==========================================
+
+    // Configuration Google Sheets pour conversions
+    const CONVERSION_SHEETS_URL = 'https://script.google.com/macros/s/YOUR_CONVERSION_SCRIPT_ID/exec';
+
+    // Fonction pour envoyer les conversions vers Google Sheets
+    function trackConversion(conversionData) {
+        // Google Analytics Conversion Event
+        gtag('event', 'conversion', {
+            send_to: 'G-XXXXXXXXXX', // Remplacer par votre ID GA4
+            event_category: 'conversion',
+            event_label: conversionData.type,
+            value: conversionData.value || 1,
+            currency: 'EUR',
+            custom_parameter_1: conversionData.source || 'website'
+        });
+
+        // Envoi vers Google Sheets
+        fetch(CONVERSION_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...conversionData,
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                referrer: document.referrer || 'Direct',
+                userAgent: navigator.userAgent,
+                sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
+            })
+        }).catch(error => console.log('Conversion tracked'));
+
+        console.log('🎯 CONVERSION TRACKED:', conversionData.type);
+    }
+
+    // 📧 TRACKING FORMULAIRE DE CONTACT
+    function setupContactFormTracking() {
+        // Observer tous les formulaires de contact
+        const contactForms = document.querySelectorAll('form[id*="contact"], form[class*="contact"], .contact-form form');
+
+        contactForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                trackConversion({
+                    type: 'contact_form_submission',
+                    value: 100, // Valeur estimée d'un lead
+                    source: 'contact_form',
+                    formId: this.id || 'contact_form',
+                    details: 'Formulaire de contact soumis'
+                });
+            });
+        });
+
+        // Tracking des champs focus (engagement)
+        const contactInputs = document.querySelectorAll('input[name*="email"], input[name*="nom"], textarea[name*="message"]');
+        contactInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                gtag('event', 'form_engagement', {
+                    event_category: 'engagement',
+                    event_label: 'contact_form_focus',
+                    custom_parameter_1: 'lead_intent'
+                });
+            });
+        });
+    }
+
+    // 📅 TRACKING CALENDRIER/RÉSERVATION
+    function setupCalendarTracking() {
+        // Boutons de réservation Calendly
+        const calendlyButtons = document.querySelectorAll('a[href*="calendly"], button[onclick*="calendly"], .calendly-button, [data-calendly]');
+
+        calendlyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                trackConversion({
+                    type: 'calendar_booking_click',
+                    value: 500, // Valeur élevée car c'est un prospect chaud
+                    source: 'calendar_button',
+                    buttonText: this.textContent.trim(),
+                    details: 'Clic sur réservation de rendez-vous'
+                });
+            });
+        });
+
+        // Tracking ouverture popup Calendly
+        window.addEventListener('message', function(e) {
+            if (e.data.type === 'calendly:event_scheduled') {
+                trackConversion({
+                    type: 'calendar_booking_completed',
+                    value: 1000, // Conversion complétée !
+                    source: 'calendly_popup',
+                    details: 'Rendez-vous réservé avec succès'
+                });
+            }
+        });
+    }
+
+    // 🤖 TRACKING INTERACTIONS CHATBOT
+    function setupChatbotTracking() {
+        // Ouverture du chatbot
+        const chatBall = document.getElementById('chatBall');
+        const chatModal = document.getElementById('chatModal');
+
+        if (chatBall) {
+            chatBall.addEventListener('click', function() {
+                trackConversion({
+                    type: 'chatbot_opened',
+                    value: 50,
+                    source: 'chatbot_ball',
+                    details: 'Chatbot ouvert par le visiteur'
+                });
+            });
+        }
+
+        // Première interaction chatbot
+        let firstChatInteraction = true;
+        const chatInput = document.querySelector('#chatModal input, #chatModal textarea');
+        if (chatInput) {
+            chatInput.addEventListener('input', function() {
+                if (firstChatInteraction) {
+                    firstChatInteraction = false;
+                    trackConversion({
+                        type: 'chatbot_first_message',
+                        value: 75,
+                        source: 'chatbot_input',
+                        details: 'Premier message écrit dans le chatbot'
+                    });
+                }
+            });
+        }
+
+        // Clics sur boutons de redirection du chatbot
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.chatbot-cta, .chat-service-button, [data-chat-action]')) {
+                trackConversion({
+                    type: 'chatbot_cta_click',
+                    value: 200,
+                    source: 'chatbot_redirection',
+                    actionType: e.target.getAttribute('data-chat-action') || 'unknown',
+                    details: 'Clic sur CTA dans le chatbot'
+                });
+            }
+        });
+    }
+
+    // 📱 TRACKING ACTIONS MOBILE
+    function setupMobileTracking() {
+        // Clics sur numéro de téléphone
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        phoneLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                trackConversion({
+                    type: 'phone_call_intent',
+                    value: 300,
+                    source: 'phone_link',
+                    phoneNumber: this.getAttribute('href'),
+                    details: 'Clic pour appeler (mobile)'
+                });
+            });
+        });
+
+        // Clics sur email
+        const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+        emailLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                trackConversion({
+                    type: 'email_intent',
+                    value: 150,
+                    source: 'email_link',
+                    email: this.getAttribute('href'),
+                    details: 'Clic pour envoyer un email'
+                });
+            });
+        });
+    }
+
+    // 🎯 TRACKING PAGES DE HAUTE VALEUR
+    function setupHighValuePageTracking() {
+        // Si on est sur la page "Mon Histoire"
+        if (window.location.href.includes('histoire') || window.location.href.includes('about')) {
+            // Scroll profond = prospect intéressé
+            let deepScrollTracked = false;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+                if (scrollPercent > 80 && !deepScrollTracked) {
+                    deepScrollTracked = true;
+                    trackConversion({
+                        type: 'deep_page_engagement',
+                        value: 25,
+                        source: 'mon_histoire_scroll',
+                        scrollPercent: Math.round(scrollPercent),
+                        details: 'Lecture approfondie de Mon Histoire'
+                    });
+                }
+            });
+        }
+    }
+
+    // 🚀 INITIALISATION DES TRACKING DE CONVERSION
+    document.addEventListener('DOMContentLoaded', function() {
+        setupContactFormTracking();
+        setupCalendarTracking();
+        setupChatbotTracking();
+        setupMobileTracking();
+        setupHighValuePageTracking();
+
+        console.log('🎯 Conversion tracking initialized');
+    });
+
+    // Génération d'ID de session si pas déjà fait
+    function generateSessionId() {
+        const id = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        sessionStorage.setItem('sessionId', id);
+        return id;
+    }
 }
 
 </script>
