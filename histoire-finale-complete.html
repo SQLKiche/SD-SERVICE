@@ -12,6 +12,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Hotjar Tracking Code -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:YOUR_HOTJAR_ID,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+
     <style>
         :root {
             /* === PALETTE PROFESSIONNELLE === */
@@ -1548,6 +1569,188 @@
             if (hero && scrolled < window.innerHeight) {
                 hero.style.backgroundPosition = `center ${scrolled * 0.5}px`;
             }
+        });
+
+        // ==========================================
+        // SYSTÈME DE TRACKING AVANCÉ
+        // ==========================================
+
+        // Configuration Google Sheets
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+        // Fonction pour envoyer les données vers Google Sheets
+        function sendToGoogleSheets(eventData) {
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(eventData)
+            }).catch(error => console.log('Tracking sent'));
+        }
+
+        // Fonction pour obtenir les informations du visiteur
+        function getVisitorInfo() {
+            return {
+                page: 'Mon Histoire',
+                url: window.location.href,
+                referrer: document.referrer || 'Direct',
+                userAgent: navigator.userAgent,
+                screenResolution: `${screen.width}x${screen.height}`,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                language: navigator.language,
+                timestamp: new Date().toISOString(),
+                sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
+            };
+        }
+
+        function generateSessionId() {
+            const id = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            sessionStorage.setItem('sessionId', id);
+            return id;
+        }
+
+        // Track page view
+        window.addEventListener('load', () => {
+            const eventData = {
+                ...getVisitorInfo(),
+                eventType: 'page_view',
+                eventValue: 'Mon Histoire - Load Complete'
+            };
+
+            sendToGoogleSheets(eventData);
+
+            // Google Analytics event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    page_title: 'Mon Histoire',
+                    page_location: window.location.href
+                });
+            }
+        });
+
+        // Track scroll depth
+        let maxScrollDepth = 0;
+        window.addEventListener('scroll', () => {
+            const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+
+            if (scrollPercent > maxScrollDepth && scrollPercent % 25 === 0) {
+                maxScrollDepth = scrollPercent;
+
+                const eventData = {
+                    ...getVisitorInfo(),
+                    eventType: 'scroll_depth',
+                    eventValue: `${scrollPercent}%`
+                };
+
+                sendToGoogleSheets(eventData);
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'scroll', {
+                        event_category: 'engagement',
+                        event_label: `${scrollPercent}%`,
+                        value: scrollPercent
+                    });
+                }
+            }
+        });
+
+        // Track social link clicks
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const platform = e.currentTarget.title || 'Unknown';
+
+                const eventData = {
+                    ...getVisitorInfo(),
+                    eventType: 'social_click',
+                    eventValue: platform
+                };
+
+                sendToGoogleSheets(eventData);
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'click', {
+                        event_category: 'social',
+                        event_label: platform
+                    });
+                }
+            });
+        });
+
+        // Track image views (when images enter viewport)
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.hasAttribute('data-tracked')) {
+                    entry.target.setAttribute('data-tracked', 'true');
+
+                    const imageName = entry.target.alt || entry.target.src.split('/').pop();
+
+                    const eventData = {
+                        ...getVisitorInfo(),
+                        eventType: 'image_view',
+                        eventValue: imageName
+                    };
+
+                    sendToGoogleSheets(eventData);
+
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'view_item', {
+                            event_category: 'media',
+                            event_label: imageName
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observer toutes les images
+        document.querySelectorAll('img').forEach(img => {
+            imageObserver.observe(img);
+        });
+
+        // Track time on page
+        let startTime = Date.now();
+        window.addEventListener('beforeunload', () => {
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+
+            const eventData = {
+                ...getVisitorInfo(),
+                eventType: 'time_on_page',
+                eventValue: `${timeSpent}s`
+            };
+
+            // Utiliser sendBeacon pour garantir l'envoi
+            navigator.sendBeacon(GOOGLE_APPS_SCRIPT_URL, JSON.stringify(eventData));
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'timing_complete', {
+                    name: 'time_on_page',
+                    value: timeSpent
+                });
+            }
+        });
+
+        // Track CTA clicks
+        document.querySelectorAll('.cta-button, .back-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const buttonText = e.currentTarget.textContent.trim();
+
+                const eventData = {
+                    ...getVisitorInfo(),
+                    eventType: 'cta_click',
+                    eventValue: buttonText
+                };
+
+                sendToGoogleSheets(eventData);
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'click', {
+                        event_category: 'cta',
+                        event_label: buttonText
+                    });
+                }
+            });
         });
     </script>
 </body>
