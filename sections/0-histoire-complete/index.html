@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Styles Globaux -->
-    <link rel="stylesheet" href="../../shared/global-variables.css">
+    <link rel="stylesheet" href="https://sd-service.vercel.app/shared/global-variables.css">
     
     <style>
         * {
@@ -39,7 +39,7 @@
                     rgba(10, 10, 15, 0.75) 50%, 
                     rgba(10, 10, 15, 0.85) 100%
                 ),
-                url('../../shared/assets/images/mosaique.jpg');
+                url('https://sd-service.vercel.app/shared/assets/images/mosaique.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -670,6 +670,48 @@
                 transform: translateY(0) scale(1);
             }
         }
+
+        /* Diplomas Section */
+        .diplomas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .diploma-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .diploma-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .diploma-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .diploma-title {
+            font-size: 1.2rem;
+            color: var(--brand-primary);
+            margin-bottom: 8px;
+        }
+
+        .diploma-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -701,7 +743,7 @@
     <!-- Hero Section -->
     <section class="hero-story">
         <div class="hero-content">
-            <img src="../../shared/assets/images/Identité.JPG" alt="Sofiane Dehaffreingue" class="hero-image">
+            <img src="https://sd-service.vercel.app/shared/assets/images/identité.jpg" alt="Sofiane Dehaffreingue" class="hero-image">
             <h1 class="hero-title">Mon Histoire Complète</h1>
             <p class="hero-subtitle">Sofiane Dehaffreingue</p>
             <p class="hero-description">
@@ -876,7 +918,44 @@
                 </div>
             </div>
         </section>
-        
+
+        <!-- Certifications & Reconnaissance -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">Reconnaissance</div>
+                <h2 class="chapter-title">Certifications & Témoignages</h2>
+                <p class="chapter-subtitle">Validation de l'expertise développée</p>
+            </div>
+
+            <div class="story-layout layout-full">
+                <div class="diplomas-grid">
+                    <div class="diploma-card">
+                        <img src="https://sd-service.vercel.app/shared/assets/images/CCIFJ diplome.jpg" alt="Diplôme officiel CCIFJ" class="diploma-image">
+                        <div class="diploma-info">
+                            <h3 class="diploma-title">Reconnaissance CCIFJ</h3>
+                            <p class="diploma-desc">Certification de participation en tant que représentant EIFJ auprès de la CCIFJ</p>
+                        </div>
+                    </div>
+
+                    <div class="diploma-card">
+                        <img src="https://sd-service.vercel.app/shared/assets/images/Diplome.jpg" alt="Diplôme Polytechnique" class="diploma-image">
+                        <div class="diploma-info">
+                            <h3 class="diploma-title">Formation Polytechnique</h3>
+                            <p class="diploma-desc">Validation de mon parcours académique</p>
+                        </div>
+                    </div>
+
+                    <div class="diploma-card">
+                        <img src="https://sd-service.vercel.app/shared/assets/images/Conference.jpg" alt="Photo événement CCIFJ" class="diploma-image">
+                        <div class="diploma-info">
+                            <h3 class="diploma-title">Événement CCIFJ</h3>
+                            <p class="diploma-desc">Participation aux événements professionnels de la CCIFJ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Chapter 3: Développement de l'Expertise -->
         <section class="chapter">
             <div class="chapter-header">
