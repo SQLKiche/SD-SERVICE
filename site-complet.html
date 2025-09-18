@@ -9776,7 +9776,7 @@ function initGoogleAnalyticsTracking() {
                 console.log('📊 GA Event: Section View - ' + entry.target.id);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.25 });
     
     sections.forEach(sectionId => {
         const section = document.getElementById(sectionId);
