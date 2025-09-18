@@ -9883,13 +9883,29 @@ function initGoogleAnalyticsTracking() {
     }
 
     // 🎯 INITIALISER TOUS LES TRACKINGS
-    document.addEventListener('DOMContentLoaded', function() {
-        setupServiceCardTracking();
-        setupPerformanceCardTracking();
-        setupFAQTracking();
-        setupCarouselTracking();
-        console.log('✅ Advanced interaction tracking initialized');
-    });
+    function initAdvancedTracking() {
+        console.log('🚀 Starting advanced tracking initialization...');
+
+        try {
+            setupServiceCardTracking();
+            setupPerformanceCardTracking();
+            setupFAQTracking();
+            setupCarouselTracking();
+            console.log('✅ Advanced interaction tracking initialized');
+        } catch (error) {
+            console.error('❌ Error initializing tracking:', error);
+        }
+    }
+
+    // Exécuter immédiatement ET sur DOMContentLoaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAdvancedTracking);
+    } else {
+        initAdvancedTracking();
+    }
+
+    // Backup - exécuter après 2 secondes
+    setTimeout(initAdvancedTracking, 2000);
 
     // ==========================================
     // 🎯 ÉVÉNEMENTS DE CONVERSION BUSINESS
