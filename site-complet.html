@@ -9804,17 +9804,99 @@ function initGoogleAnalyticsTracking() {
     console.log('✅ Google Analytics tracking initialized');
 
     // ==========================================
+    // 🎯 TRACKING DÉTAILLÉ INTERACTIONS
+    // ==========================================
+
+    // 🎯 TRACKING CLICS CARTES SERVICES CAROUSEL
+    function setupServiceCardTracking() {
+        const serviceCards = document.querySelectorAll('.service-card, .services-carousel .card, [class*="service"]');
+        serviceCards.forEach((card, index) => {
+            card.addEventListener('click', function(e) {
+                const serviceName = card.querySelector('h3, .title, [class*="title"]')?.textContent || `Service ${index + 1}`;
+                gtag('event', 'service_card_click', {
+                    event_category: 'engagement',
+                    event_label: serviceName,
+                    custom_parameter_1: 'service_discovery'
+                });
+                console.log('📊 GA Event: Service Card Click - ' + serviceName);
+            });
+        });
+    }
+
+    // 🎯 TRACKING CLICS CARTES PERFORMANCE
+    function setupPerformanceCardTracking() {
+        const perfCards = document.querySelectorAll('.performance-card, .impact-card, [class*="performance"] .card');
+        perfCards.forEach((card, index) => {
+            card.addEventListener('click', function(e) {
+                const perfTitle = card.querySelector('h3, .title, [class*="title"]')?.textContent || `Performance ${index + 1}`;
+                gtag('event', 'performance_card_click', {
+                    event_category: 'engagement',
+                    event_label: perfTitle,
+                    custom_parameter_1: 'performance_interest'
+                });
+                console.log('📊 GA Event: Performance Card Click - ' + perfTitle);
+            });
+        });
+    }
+
+    // 🎯 TRACKING INTERACTIONS FAQ
+    function setupFAQTracking() {
+        const faqItems = document.querySelectorAll('.faq-item, .faq-question, [class*="faq"] .item');
+        faqItems.forEach((item, index) => {
+            const trigger = item.querySelector('button, .question, [class*="trigger"]');
+            if (trigger) {
+                trigger.addEventListener('click', function() {
+                    const question = trigger.textContent?.substring(0, 50) || `FAQ ${index + 1}`;
+                    const isOpen = item.classList.contains('open') || item.classList.contains('active');
+
+                    gtag('event', 'faq_interaction', {
+                        event_category: 'engagement',
+                        event_label: question,
+                        custom_parameter_1: isOpen ? 'faq_close' : 'faq_open'
+                    });
+                    console.log('📊 GA Event: FAQ ' + (isOpen ? 'Close' : 'Open') + ' - ' + question);
+                });
+            }
+        });
+    }
+
+    // 🎯 TRACKING NAVIGATION CAROUSEL
+    function setupCarouselTracking() {
+        const carouselBtns = document.querySelectorAll('.carousel-btn, .slider-btn, [class*="carousel"] button, [class*="slider"] button');
+        carouselBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const direction = btn.classList.contains('next') || btn.textContent.includes('next') ? 'next' : 'prev';
+                gtag('event', 'carousel_navigation', {
+                    event_category: 'interaction',
+                    event_label: direction,
+                    custom_parameter_1: 'content_exploration'
+                });
+                console.log('📊 GA Event: Carousel ' + direction);
+            });
+        });
+    }
+
+    // 🎯 INITIALISER TOUS LES TRACKINGS
+    document.addEventListener('DOMContentLoaded', function() {
+        setupServiceCardTracking();
+        setupPerformanceCardTracking();
+        setupFAQTracking();
+        setupCarouselTracking();
+        console.log('✅ Advanced interaction tracking initialized');
+    });
+
+    // ==========================================
     // 🎯 ÉVÉNEMENTS DE CONVERSION BUSINESS
     // ==========================================
 
     // Configuration Google Sheets pour conversions
-    const CONVERSION_SHEETS_URL = 'https://script.google.com/macros/s/YOUR_CONVERSION_SCRIPT_ID/exec';
+    const CONVERSION_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyzftJaSgjs2FgDmaThdR4KGl9rWPkzTfaNcTwcuF7oJ_mCroLKi85wbKiJlBkRlyi0/exec';
 
     // Fonction pour envoyer les conversions vers Google Sheets
     function trackConversion(conversionData) {
         // Google Analytics Conversion Event
         gtag('event', 'conversion', {
-            send_to: 'G-XXXXXXXXXX', // Remplacer par votre ID GA4
+            send_to: 'G-5XWZE1D5N1', // Votre ID GA4
             event_category: 'conversion',
             event_label: conversionData.type,
             value: conversionData.value || 1,
