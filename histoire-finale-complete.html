@@ -219,7 +219,10 @@
             border-right: 3px solid var(--brand-primary);
             border-bottom: 3px solid var(--brand-primary);
             transform: translate(-50%, -60%) rotate(45deg);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            box-shadow:
+                0 0 15px rgba(212, 175, 55, 0.4),
+                0 4px 8px rgba(0, 0, 0, 0.2);
+            filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
         }
 
         .scroll-arrow::after {
@@ -241,7 +244,10 @@
         }
 
         .scroll-arrow:hover::before {
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+            box-shadow:
+                0 0 25px rgba(212, 175, 55, 0.8),
+                0 6px 12px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.5));
         }
 
         @keyframes fadeInUp {
@@ -915,10 +921,10 @@
     <!-- Social Links -->
     <div class="social-links">
         <a href="https://www.linkedin.com/in/sofianedehaffreingueprofil" target="_blank" class="social-link" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
+            💼
         </a>
         <a href="mailto:sofianedehaf@gmail.com" class="social-link" title="Email">
-            <i class="fas fa-envelope"></i>
+            ✉️
         </a>
     </div>
 
