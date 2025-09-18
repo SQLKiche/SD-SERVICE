@@ -198,56 +198,15 @@
         }
 
         .scroll-arrow {
-            width: 30px;
-            height: 30px;
-            margin: 0 auto;
-            position: relative;
-            animation: bounceGlow 2s ease-in-out infinite;
-            display: block;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .scroll-arrow::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
             width: 20px;
             height: 20px;
-            border: none;
-            border-right: 3px solid var(--brand-primary);
-            border-bottom: 3px solid var(--brand-primary);
-            transform: translate(-50%, -60%) rotate(45deg);
-            box-shadow:
-                0 0 15px rgba(212, 175, 55, 0.4),
-                0 4px 8px rgba(0, 0, 0, 0.2);
-            filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
-        }
-
-        .scroll-arrow::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 16px;
-            height: 16px;
-            border: none;
-            border-right: 2px solid var(--brand-primary);
-            border-bottom: 2px solid var(--brand-primary);
-            transform: translate(-50%, -40%) rotate(45deg);
-            opacity: 0.6;
-        }
-
-        .scroll-arrow:hover {
-            transform: scale(1.1);
-        }
-
-        .scroll-arrow:hover::before {
-            box-shadow:
-                0 0 25px rgba(212, 175, 55, 0.8),
-                0 6px 12px rgba(0, 0, 0, 0.3);
-            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.5));
+            border: 2px solid var(--brand-primary);
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+            margin: 0 auto;
+            animation: bounce 2s infinite;
+            cursor: pointer;
         }
 
         @keyframes fadeInUp {
@@ -272,18 +231,15 @@
             }
         }
 
-        @keyframes bounceGlow {
+        @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-                filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+                transform: translateY(0) rotate(45deg);
             }
             40% {
-                transform: translateY(-12px);
-                filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+                transform: translateY(-10px) rotate(45deg);
             }
             60% {
-                transform: translateY(-6px);
-                filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+                transform: translateY(-5px) rotate(45deg);
             }
         }
 
@@ -979,10 +935,10 @@
     <!-- Social Links -->
     <div class="social-links">
         <a href="https://www.linkedin.com/in/sofianedehaffreingueprofil" target="_blank" class="social-link" title="LinkedIn">
-            💼
+            <i class="fab fa-linkedin-in"></i>
         </a>
         <a href="mailto:sofianedehaf@gmail.com" class="social-link" title="Email">
-            ✉️
+            <i class="fas fa-envelope"></i>
         </a>
     </div>
 
