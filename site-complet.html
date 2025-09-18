@@ -9848,14 +9848,24 @@ function initGoogleAnalyticsTracking() {
             question.addEventListener('click', function() {
                 const questionText = question.textContent?.substring(0, 50) || `FAQ ${index + 1}`;
                 const faqItem = question.closest('.faq-item');
-                const isOpen = faqItem ? faqItem.classList.contains('open') || faqItem.classList.contains('active') : false;
 
-                gtag('event', 'faq_interaction', {
-                    event_category: 'engagement',
-                    event_label: questionText,
-                    custom_parameter_1: isOpen ? 'faq_close' : 'faq_open'
-                });
-                console.log('📊 GA Event: FAQ ' + (isOpen ? 'Close' : 'Open') + ' - ' + questionText);
+                // Vérifier l'état AVANT le clic pour détecter l'ouverture
+                const wasOpen = faqItem ? faqItem.classList.contains('open') || faqItem.classList.contains('active') : false;
+
+                // Attendre un petit délai pour que l'animation se fasse
+                setTimeout(() => {
+                    const isNowOpen = faqItem ? faqItem.classList.contains('open') || faqItem.classList.contains('active') : false;
+
+                    // Ne tracker que les OUVERTURES (quand ça passe de fermé à ouvert)
+                    if (!wasOpen && isNowOpen) {
+                        gtag('event', 'faq_interaction', {
+                            event_category: 'engagement',
+                            event_label: questionText,
+                            custom_parameter_1: 'faq_open'
+                        });
+                        console.log('📊 GA Event: FAQ Open - ' + questionText);
+                    }
+                }, 100);
             });
         });
         console.log('✅ FAQ tracking setup completed - ' + faqQuestions.length + ' questions found');
