@@ -6612,81 +6612,7 @@ Validation client + tests + ajustements inclus
                     <p class="subtitle" data-translate="contact-subtitle">Premier échange gratuit, sans engagement</p>
                 </div>
 
-                <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-                    <input type="hidden" name="form-name" value="contact">
-                    <p class="hidden">
-                        <label>Don't fill this out: <input name="bot-field"></label>
-                    </p>
-                    <div class="contact-form-group">
-                        <label for="fullName" data-translate="contact-label-name">Prénom + Nom <span class="required">*</span></label>
-                        <input type="text" id="fullName" name="fullName" class="contact-form-input" data-translate-placeholder="contact-placeholder-name" placeholder="Pierre Martin" required>
-                        <div class="contact-error-message" id="fullNameError">Ce champ est obligatoire</div>
-                    </div>
-
-                    <div class="contact-form-group">
-                        <label for="email" data-translate="contact-label-email">Email professionnel <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" class="contact-form-input" data-translate-placeholder="contact-placeholder-email" placeholder="pierre@monentreprise.fr" required>
-                        <div class="contact-error-message" id="emailError">Format email requis</div>
-                    </div>
-
-                    <div class="contact-form-group">
-                        <label for="sector" data-translate="contact-label-sector">Votre secteur d'activité</label>
-                        <select id="sector" name="sector" class="contact-form-input">
-                            <option value="">Sélectionnez votre secteur...</option>
-                            <option value="ecommerce">E-commerce</option>
-                            <option value="services">Services / Conseil</option>
-                            <option value="education">Éducation / Formation</option>
-                            <option value="sante">Santé / Bien-être</option>
-                            <option value="industrie">Industrie / Manufacturing</option>
-                            <option value="autre">Autre secteur</option>
-                        </select>
-                    </div>
-
-                    <div class="contact-form-group">
-                        <label for="priority" data-translate="contact-label-priority">Votre priorité actuelle</label>
-                        <select id="priority" name="priority" class="contact-form-input">
-                            <option value="">Votre besoin principal...</option>
-                            <option value="emails">Automatiser mes emails</option>
-                            <option value="dashboard">Créer des tableaux de bord</option>
-                            <option value="crm">Optimiser ma gestion client</option>
-                            <option value="assistant">Développer un assistant IA</option>
-                            <option value="data">Analyser mes données</option>
-                            <option value="autre">Autre projet</option>
-                        </select>
-                    </div>
-
-                    <div class="contact-form-group">
-                        <label for="description" data-translate="contact-label-description">Message (optionnel)</label>
-                        <textarea id="description" name="description" class="contact-form-input" rows="4" data-translate-placeholder="contact-placeholder-description" placeholder="Décrivez brièvement vos besoins ou défis actuels..."></textarea>
-                    </div>
-
-                    <div class="contact-privacy-note">
-                        <p data-translate="contact-privacy">Confidentialité garantie - Vos données ne seront jamais partagées</p>
-                    </div>
-
-                    <button type="submit" class="contact-cta-button" id="submitBtn" data-translate="contact-cta-button">
-RÉSERVER MON AUDIT GRATUIT
-                    </button>
-
-                    <div class="contact-form-benefits" data-translate="contact-benefits">
-                        ▸ 15min gratuit ▸ Réponse sous 24h ▸ Aucun engagement
-                    </div>
-
-                    <div class="contact-phone-alternative">
-                        <h4 data-translate="contact-phone-text">Vous préférez appeler directement ?</h4>
-                        <a href="tel:+33699213447" class="contact-phone-link">06.99.21.34.47</a>
-                        <p class="contact-phone-hours" data-translate="contact-phone-hours">Disponible 7j/7 • Réponse garantie</p>
-                    </div>
-                </form>
-
-                <!-- SÉPARATEUR OU -->
-                <div class="contact-separator">
-                    <div class="separator-line"></div>
-                    <span class="separator-text" data-translate="contact-separator">OU</span>
-                    <div class="separator-line"></div>
-                </div>
-
-                <!-- WIDGET DE RÉSERVATION DIRECTE -->
+                <!-- WIDGET DE RÉSERVATION DIRECTE - EN PREMIER -->
                 <div class="booking-widget">
                     <div class="booking-header">
                         <h3 data-translate="booking-title">Réservez votre créneau directement</h3>
@@ -6767,6 +6693,81 @@ RÉSERVER MON AUDIT GRATUIT
                         <p id="bookingSuccessMessage"></p>
                     </div>
                 </div>
+
+                <!-- SÉPARATEUR OU -->
+                <div class="contact-separator">
+                    <div class="separator-line"></div>
+                    <span class="separator-text" data-translate="contact-separator">OU</span>
+                    <div class="separator-line"></div>
+                </div>
+
+                <!-- FORMULAIRE CONTACT - EN DEUXIÈME -->
+                <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+                    <input type="hidden" name="form-name" value="contact">
+                    <p class="hidden">
+                        <label>Don't fill this out: <input name="bot-field"></label>
+                    </p>
+                    <div class="contact-form-group">
+                        <label for="fullName" data-translate="contact-label-name">Prénom + Nom <span class="required">*</span></label>
+                        <input type="text" id="fullName" name="fullName" class="contact-form-input" data-translate-placeholder="contact-placeholder-name" placeholder="Pierre Martin" required>
+                        <div class="contact-error-message" id="fullNameError">Ce champ est obligatoire</div>
+                    </div>
+
+                    <div class="contact-form-group">
+                        <label for="email" data-translate="contact-label-email">Email professionnel <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" class="contact-form-input" data-translate-placeholder="contact-placeholder-email" placeholder="pierre@monentreprise.fr" required>
+                        <div class="contact-error-message" id="emailError">Format email requis</div>
+                    </div>
+
+                    <div class="contact-form-group">
+                        <label for="sector" data-translate="contact-label-sector">Votre secteur d'activité</label>
+                        <select id="sector" name="sector" class="contact-form-input">
+                            <option value="">Sélectionnez votre secteur...</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="services">Services / Conseil</option>
+                            <option value="education">Éducation / Formation</option>
+                            <option value="sante">Santé / Bien-être</option>
+                            <option value="industrie">Industrie / Manufacturing</option>
+                            <option value="autre">Autre secteur</option>
+                        </select>
+                    </div>
+
+                    <div class="contact-form-group">
+                        <label for="priority" data-translate="contact-label-priority">Votre priorité actuelle</label>
+                        <select id="priority" name="priority" class="contact-form-input">
+                            <option value="">Votre besoin principal...</option>
+                            <option value="emails">Automatiser mes emails</option>
+                            <option value="dashboard">Créer des tableaux de bord</option>
+                            <option value="crm">Optimiser ma gestion client</option>
+                            <option value="assistant">Développer un assistant IA</option>
+                            <option value="data">Analyser mes données</option>
+                            <option value="autre">Autre projet</option>
+                        </select>
+                    </div>
+
+                    <div class="contact-form-group">
+                        <label for="description" data-translate="contact-label-description">Message (optionnel)</label>
+                        <textarea id="description" name="description" class="contact-form-input" rows="4" data-translate-placeholder="contact-placeholder-description" placeholder="Décrivez brièvement vos besoins ou défis actuels..."></textarea>
+                    </div>
+
+                    <div class="contact-privacy-note">
+                        <p data-translate="contact-privacy">Confidentialité garantie - Vos données ne seront jamais partagées</p>
+                    </div>
+
+                    <button type="submit" class="contact-cta-button" id="submitBtn" data-translate="contact-cta-button">
+RÉSERVER MON AUDIT GRATUIT
+                    </button>
+
+                    <div class="contact-form-benefits" data-translate="contact-benefits">
+                        ▸ 15min gratuit ▸ Réponse sous 24h ▸ Aucun engagement
+                    </div>
+
+                    <div class="contact-phone-alternative">
+                        <h4 data-translate="contact-phone-text">Vous préférez appeler directement ?</h4>
+                        <a href="tel:+33699213447" class="contact-phone-link">06.99.21.34.47</a>
+                        <p class="contact-phone-hours" data-translate="contact-phone-hours">Disponible 7j/7 • Réponse garantie</p>
+                    </div>
+                </form>
 
                 <div class="contact-success-message" id="successMessage">
                     <h3>Merci ! Votre demande a été envoyée</h3>
