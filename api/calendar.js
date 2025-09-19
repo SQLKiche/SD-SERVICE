@@ -2,11 +2,6 @@
 import { google } from 'googleapis';
 
 export default async function handler(req, res) {
-  console.log('🔥 API CALENDAR APPELÉE !', {
-    method: req.method,
-    body: req.body,
-    timestamp: new Date().toISOString()
-  });
 
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -32,35 +27,13 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Données manquantes pour la réservation' });
       }
 
-      console.log('🚀 NOUVEAU TEST - New appointment booking:', {
-        datetime,
-        clientName,
-        clientEmail,
-        clientPhone,
-        clientCompany,
-        clientSector,
-        clientMessage,
-        timestamp: new Date().toISOString()
-      });
-
       // Parse credentials from environment variable
-      console.log('🔍 DEBUG - Variables d\'environnement disponibles:', {
-        hasBrevoKey: !!process.env.BREVO_API_KEY,
-        hasGoogleCalendarId: !!process.env.GOOGLE_CALENDAR_ID,
-        hasGoogleCredentials: !!process.env.GOOGLE_CALENDAR_CREDENTIALS,
-        calendarId: process.env.GOOGLE_CALENDAR_ID
-      });
 
       if (!process.env.GOOGLE_CALENDAR_CREDENTIALS) {
         throw new Error('GOOGLE_CALENDAR_CREDENTIALS manquant');
       }
 
       const credentials = JSON.parse(process.env.GOOGLE_CALENDAR_CREDENTIALS);
-      console.log('🔍 DEBUG - Credentials parsées:', {
-        type: credentials.type,
-        project_id: credentials.project_id,
-        client_email: credentials.client_email
-      });
 
       // Initialize Google Calendar API for writing
       const auth = new google.auth.GoogleAuth({
@@ -119,13 +92,6 @@ Automatiquement créé via sofiane-automation.com`,
       };
 
       // Add event to Google Calendar
-      console.log('🔍 DEBUG - Tentative création événement dans calendrier:', process.env.GOOGLE_CALENDAR_ID);
-      console.log('🔍 DEBUG - Données événement:', {
-        summary: event.summary,
-        start: event.start,
-        end: event.end
-      });
-
       const calendarResponse = await calendar.events.insert({
         calendarId: process.env.GOOGLE_CALENDAR_ID,
         resource: event,
