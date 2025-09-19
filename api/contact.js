@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     // Configuration Brevo
-    const BREVO_API_KEY = 'xkeysib-5df07a7e46a4e2b6e1cf6be6a8dd2e5d8eeb6d0f4a94c5cd26daa6e5c8b4bfoyxH';
+    const BREVO_API_KEY = process.env.BREVO_API_KEY;
     const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
     // Préparer l'email pour Brevo
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'api-key': BREVO_API_KEY
+        'Api-Key': BREVO_API_KEY
       },
       body: JSON.stringify(emailData)
     });
