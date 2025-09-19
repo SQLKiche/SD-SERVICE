@@ -8545,6 +8545,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
         // Widget de réservation Calendar
         class BookingWidget {
             constructor() {
+                console.log('🎯 BookingWidget - Initialisation...');
                 this.selectedSlot = null;
                 this.availableSlots = [];
                 this.init();
@@ -8656,6 +8657,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
             }
 
             async confirmBooking() {
+                console.log('🎯 confirmBooking() - Début de la réservation...');
                 const name = document.getElementById('bookingName').value.trim();
                 const email = document.getElementById('bookingEmail').value.trim();
                 const phone = document.getElementById('bookingPhone').value.trim();
