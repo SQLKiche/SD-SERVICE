@@ -9731,6 +9731,19 @@ function initGoogleAnalyticsTracking() {
                     event_label: text.slice(0, 50),
                     custom_parameter_1: 'portfolio_site'
                 });
+
+                // Envoyer vers Google Sheets
+                sendToGoogleSheets({
+                    eventType: 'cta_click',
+                    eventValue: text.slice(0, 50),
+                    url: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    userAgent: navigator.userAgent,
+                    screenResolution: screen.width + 'x' + screen.height,
+                    viewport: window.innerWidth + 'x' + window.innerHeight,
+                    language: navigator.language
+                });
+
                 console.log('📊 GA Event: CTA Click - ' + text.slice(0, 50));
             });
         }
@@ -9746,6 +9759,19 @@ function initGoogleAnalyticsTracking() {
                 value: 100,
                 custom_parameter_1: 'high_intent_lead'
             });
+
+            // Envoyer vers Google Sheets
+            sendToGoogleSheets({
+                eventType: 'form_submit',
+                eventValue: 'contact_form',
+                url: window.location.href,
+                referrer: document.referrer || 'Direct',
+                userAgent: navigator.userAgent,
+                screenResolution: screen.width + 'x' + screen.height,
+                viewport: window.innerWidth + 'x' + window.innerHeight,
+                language: navigator.language
+            });
+
             console.log('📊 GA Event: Form Submission');
         });
     }
@@ -9759,6 +9785,19 @@ function initGoogleAnalyticsTracking() {
                 value: 80,
                 custom_parameter_1: 'direct_contact'
             });
+
+            // Envoyer vers Google Sheets
+            sendToGoogleSheets({
+                eventType: 'phone_click',
+                eventValue: 'phone_call',
+                url: window.location.href,
+                referrer: document.referrer || 'Direct',
+                userAgent: navigator.userAgent,
+                screenResolution: screen.width + 'x' + screen.height,
+                viewport: window.innerWidth + 'x' + window.innerHeight,
+                language: navigator.language
+            });
+
             console.log('📊 GA Event: Phone Click');
         });
     });
@@ -9848,6 +9887,19 @@ function initGoogleAnalyticsTracking() {
                     event_label: perfTitle,
                     custom_parameter_1: 'performance_interest'
                 });
+
+                // Envoyer vers Google Sheets
+                sendToGoogleSheets({
+                    eventType: 'performance_card_click',
+                    eventValue: perfTitle,
+                    url: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    userAgent: navigator.userAgent,
+                    screenResolution: screen.width + 'x' + screen.height,
+                    viewport: window.innerWidth + 'x' + window.innerHeight,
+                    language: navigator.language
+                });
+
                 console.log('📊 GA Event: Performance Card Click - ' + perfTitle);
             });
         });
@@ -9866,6 +9918,19 @@ function initGoogleAnalyticsTracking() {
                     event_label: questionText,
                     custom_parameter_1: 'faq_click'
                 });
+
+                // Envoyer vers Google Sheets
+                sendToGoogleSheets({
+                    eventType: 'faq_interaction',
+                    eventValue: questionText,
+                    url: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    userAgent: navigator.userAgent,
+                    screenResolution: screen.width + 'x' + screen.height,
+                    viewport: window.innerWidth + 'x' + window.innerHeight,
+                    language: navigator.language
+                });
+
                 console.log('📊 GA Event: FAQ Click - ' + questionText);
             });
         });
@@ -9887,6 +9952,19 @@ function initGoogleAnalyticsTracking() {
                     event_label: direction,
                     custom_parameter_1: 'content_exploration'
                 });
+
+                // Envoyer vers Google Sheets
+                sendToGoogleSheets({
+                    eventType: 'carousel_navigation',
+                    eventValue: direction,
+                    url: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    userAgent: navigator.userAgent,
+                    screenResolution: screen.width + 'x' + screen.height,
+                    viewport: window.innerWidth + 'x' + window.innerHeight,
+                    language: navigator.language
+                });
+
                 console.log('📊 GA Event: Carousel ' + direction);
             });
         });
@@ -9910,13 +9988,20 @@ function initGoogleAnalyticsTracking() {
 
     // Exécuter immédiatement ET sur DOMContentLoaded
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAdvancedTracking);
+        document.addEventListener('DOMContentLoaded', () => {
+            initAdvancedTracking();
+            testGoogleSheetsIntegration();
+        });
     } else {
         initAdvancedTracking();
+        testGoogleSheetsIntegration();
     }
 
     // Backup - exécuter après 2 secondes
-    setTimeout(initAdvancedTracking, 2000);
+    setTimeout(() => {
+        initAdvancedTracking();
+        testGoogleSheetsIntegration();
+    }, 2000);
 
     // ==========================================
     // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
@@ -9927,19 +10012,32 @@ function initGoogleAnalyticsTracking() {
 
     // Fonction pour envoyer vers Google Sheets Analytics
     function sendToGoogleSheets(eventData) {
+        console.log('🔍 DEBUG sendToGoogleSheets appelée avec:', eventData);
+
+        const dataToSend = {
+            ...eventData,
+            page: 'Site Principal',
+            timestamp: new Date().toLocaleString('fr-FR'),
+            sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
+        };
+
+        console.log('📤 Envoi vers Google Sheets:', dataToSend);
+        console.log('🌐 URL Google Apps Script:', GOOGLE_APPS_SCRIPT_URL);
+
         fetch(GOOGLE_APPS_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                ...eventData,
-                page: 'Site Principal',
-                timestamp: new Date().toLocaleString('fr-FR'),
-                sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
-            })
-        }).catch(error => console.log('Tracking sent'));
+            body: JSON.stringify(dataToSend)
+        })
+        .then(() => {
+            console.log('✅ Données envoyées avec succès vers Google Sheets');
+        })
+        .catch(error => {
+            console.error('❌ Erreur envoi Google Sheets:', error);
+        });
     }
 
     // Générer ID de session
@@ -9947,6 +10045,25 @@ function initGoogleAnalyticsTracking() {
         const sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
         sessionStorage.setItem('sessionId', sessionId);
         return sessionId;
+    }
+
+    // Test de l'intégration Google Sheets
+    function testGoogleSheetsIntegration() {
+        console.log('🧪 Test de l\'intégration Google Sheets...');
+
+        // Test immédiat
+        sendToGoogleSheets({
+            eventType: 'test_integration',
+            eventValue: 'Page Load Test',
+            url: window.location.href,
+            referrer: document.referrer || 'Direct',
+            userAgent: navigator.userAgent,
+            screenResolution: screen.width + 'x' + screen.height,
+            viewport: window.innerWidth + 'x' + window.innerHeight,
+            language: navigator.language
+        });
+
+        console.log('✅ Test d\'intégration Google Sheets envoyé');
     }
 
     // ==========================================
