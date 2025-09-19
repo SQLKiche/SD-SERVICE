@@ -9865,13 +9865,7 @@ function initGoogleAnalyticsTracking() {
                 // Envoyer vers Google Sheets
                 sendToGoogleSheets({
                     eventType: 'service_card_click',
-                    eventValue: serviceName,
-                    url: window.location.href,
-                    referrer: document.referrer || 'Direct',
-                    userAgent: navigator.userAgent,
-                    screenResolution: screen.width + 'x' + screen.height,
-                    viewport: window.innerWidth + 'x' + window.innerHeight,
-                    language: navigator.language
+                    eventValue: serviceName
                 });
 
                 console.log('📊 GA Event: Service Card Click - ' + serviceName);
@@ -10031,6 +10025,14 @@ function initGoogleAnalyticsTracking() {
         initTrackingOnce();
     }
 
+    // Données statiques collectées une seule fois au chargement
+    const STATIC_DATA = {
+        userAgent: navigator.userAgent,
+        screenResolution: screen.width + 'x' + screen.height,
+        language: navigator.language,
+        referrer: document.referrer || 'Direct'
+    };
+
     // Fonction pour envoyer vers Google Sheets Analytics
     function sendToGoogleSheets(eventData) {
         console.log('🔍 DEBUG sendToGoogleSheets appelée avec:', eventData);
@@ -10039,10 +10041,14 @@ function initGoogleAnalyticsTracking() {
         const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
 
         const dataToSend = {
-            ...eventData,
+            eventType: eventData.eventType,
+            eventValue: eventData.eventValue,
             page: 'Site Principal',
             timestamp: new Date().toLocaleString('fr-FR'),
-            sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
+            url: window.location.href,
+            viewport: window.innerWidth + 'x' + window.innerHeight,
+            sessionId: sessionStorage.getItem('sessionId') || generateSessionId(),
+            ...STATIC_DATA
         };
 
         console.log('📤 Envoi vers Google Sheets:', dataToSend);
@@ -10095,7 +10101,7 @@ function initGoogleAnalyticsTracking() {
     // ==========================================
 
     // Configuration Google Sheets pour conversions
-    const CONVERSION_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyzftJaSgjs2FgDmaThdR4KGl9rWPkzTfaNcTwcuF7oJ_mCroLKi85wbKiJlBkRlyi0/exec';
+    const CONVERSION_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbySNw13wJB6BPGe6IPaThUsyInLlFtCO4QsG9HDU-Nzt8GuUesnrxLu5RunhcH2nNt-/exec';
 
     // Fonction pour envoyer les conversions vers Google Sheets
     function trackConversion(conversionData) {
@@ -10109,21 +10115,28 @@ function initGoogleAnalyticsTracking() {
             custom_parameter_1: conversionData.source || 'website'
         });
 
-        // Envoi vers Google Sheets
+        // Envoi vers Google Sheets (optimisé avec données statiques)
+        const conversionDataToSend = {
+            type: conversionData.type,
+            value: conversionData.value || 1,
+            source: conversionData.source || 'website',
+            page: 'Site Principal',
+            details: conversionData.details || JSON.stringify(conversionData),
+            timestamp: new Date().toLocaleString('fr-FR'),
+            url: window.location.href,
+            sessionId: sessionStorage.getItem('sessionId') || generateSessionId(),
+            ...STATIC_DATA
+        };
+
+        console.log('🎯 CONVERSION trackée:', conversionDataToSend);
+
         fetch(CONVERSION_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                ...conversionData,
-                timestamp: new Date().toISOString(),
-                url: window.location.href,
-                referrer: document.referrer || 'Direct',
-                userAgent: navigator.userAgent,
-                sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
-            })
+            body: JSON.stringify(conversionDataToSend)
         }).catch(error => console.log('Conversion tracked'));
 
         console.log('🎯 CONVERSION TRACKED:', conversionData.type);
