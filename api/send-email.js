@@ -35,11 +35,11 @@ export default async function handler(req, res) {
           templateId: templateIds['contact-form'],
           to: [{ email: 'sofiane.dehaffreingue59@gmail.com', name: 'Sofiane' }],
           params: {
-            from_name: data.fullName,
-            from_email: data.email,
+            from_name: data.from_name || data.fullName,
+            from_email: data.from_email || data.email,
             sector: data.sector,
             priority: data.priority,
-            message: data.description,
+            message: data.message || data.description,
             timestamp: new Date().toLocaleString('fr-FR')
           }
         };

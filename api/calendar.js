@@ -139,34 +139,36 @@ Automatiquement créé via sofiane-automation.com`,
 
       // Send notification emails
       try {
-        // Email de notification pour toi (owner) - Template 1 qui marche
+        // Email de notification pour toi (owner) - Template 3
         await fetch(`${req.headers.origin}/api/send-email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            templateType: 'contact-form',
+            templateType: 'appointment-owner',
             data: {
-              from_name: `🗓️ NOUVEAU RDV - ${clientName}`,
-              from_email: clientEmail,
-              sector: clientSector || 'Non spécifié',
-              priority: `RDV ${appointmentDate} à ${appointmentTime}`,
-              message: `📅 NOUVEAU RENDEZ-VOUS CONFIRMÉ\n\n👤 Client: ${clientName}\n📧 Email: ${clientEmail}\n📞 Téléphone: ${clientPhone || 'Non fourni'}\n🏢 Entreprise: ${clientCompany || 'Non fournie'}\n🎯 Secteur: ${clientSector}\n\n📅 Date: ${appointmentDate}\n🕐 Heure: ${appointmentTime}\n\n💬 Besoins du client:\n${clientMessage}\n\n⚡ Action: Contacter le client à l'heure prévue !`
+              appointmentDate: appointmentDate,
+              appointmentTime: appointmentTime,
+              clientName: clientName,
+              clientEmail: clientEmail,
+              clientPhone: clientPhone || 'Non fourni',
+              clientCompany: clientCompany || 'Non fournie',
+              clientSector: clientSector,
+              clientMessage: clientMessage
             }
           })
         });
 
-        // Email de confirmation pour le client - Template 1 qui marche
+        // Email de confirmation pour le client - Template 4
         await fetch(`${req.headers.origin}/api/send-email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            templateType: 'contact-form',
+            templateType: 'appointment-client',
             data: {
-              from_name: `SD Service - Confirmation RDV`,
-              from_email: 'sofiane.dehaffreingue59@gmail.com',
-              sector: 'Confirmation RDV',
-              priority: `Votre RDV le ${appointmentDate} à ${appointmentTime}`,
-              message: `Bonjour ${clientName},\n\n✅ Votre rendez-vous de 15 minutes est confirmé !\n\n📅 Date: ${appointmentDate}\n🕐 Heure: ${appointmentTime}\n\n📞 Je vous contacterai à l'heure prévue au numéro que vous avez fourni.\n\nEn cas d'empêchement, n'hésitez pas à me contacter.\n\nÀ bientôt !\n\nSofiane Dehaffreingue\nSD Service\nExpert Automatisation & IA`
+              clientName: clientName,
+              clientEmail: clientEmail,
+              appointmentDate: appointmentDate,
+              appointmentTime: appointmentTime
             }
           })
         });

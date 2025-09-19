@@ -75,7 +75,32 @@ export default async function handler(req, res) {
     }
 
     const brevoResult = await brevoResponse.json();
-    console.log('✅ Email envoyé via Brevo:', brevoResult);
+    console.log('✅ Email notification envoyé via Brevo:', brevoResult);
+
+    // Envoyer email de confirmation au client (Template 2)
+    try {
+      const clientConfirmationResponse = await fetch(`${req.headers.origin}/api/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          templateType: 'client-confirmation',
+          data: {
+            email: email,
+            fullName: fullName,
+            sector: sector || 'Non spécifié',
+            priority: priority || 'Non spécifié'
+          }
+        })
+      });
+
+      if (clientConfirmationResponse.ok) {
+        console.log('✅ Email de confirmation client envoyé');
+      } else {
+        console.error('❌ Erreur envoi confirmation client');
+      }
+    } catch (confirmationError) {
+      console.error('❌ Erreur envoi confirmation client:', confirmationError);
+    }
 
     // Réponse de succès
     return res.status(200).json({

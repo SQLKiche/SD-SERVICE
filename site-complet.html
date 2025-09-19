@@ -8658,6 +8658,8 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
 
             async confirmBooking() {
                 console.log('🎯 confirmBooking() - Début de la réservation...');
+
+                console.log('🔍 DEBUG 1 - Récupération des éléments du formulaire...');
                 const name = document.getElementById('bookingName').value.trim();
                 const email = document.getElementById('bookingEmail').value.trim();
                 const phone = document.getElementById('bookingPhone').value.trim();
@@ -8665,46 +8667,83 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 const sector = document.getElementById('bookingSector').value;
                 const message = document.getElementById('bookingMessage').value.trim();
 
+                console.log('🔍 DEBUG 2 - Données formulaire récupérées:', {
+                    name, email, phone, sector,
+                    selectedSlot: this.selectedSlot,
+                    nameLength: name.length,
+                    emailLength: email.length,
+                    phoneLength: phone.length,
+                    sectorLength: sector ? sector.length : 0
+                });
+
                 // Validation des champs obligatoires
+                console.log('🔍 DEBUG 3 - Validation des champs obligatoires...');
                 if (!name || !email || !phone || !sector) {
+                    console.log('❌ Validation échouée - champs manquants:', {
+                        hasName: !!name,
+                        hasEmail: !!email,
+                        hasPhone: !!phone,
+                        hasSector: !!sector
+                    });
                     alert('Veuillez remplir tous les champs obligatoires (nom, email, téléphone, secteur)');
                     return;
                 }
+                console.log('✅ DEBUG 3 - Validation champs obligatoires OK');
 
                 // Validation format téléphone
+                console.log('🔍 DEBUG 4 - Validation format téléphone...');
                 const phoneRegex = /^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$/;
                 const cleanPhone = phone.replace(/[\s\-\.]/g, ''); // Retirer espaces, tirets, points
+                console.log('🔍 DEBUG 4 - Téléphone nettoyé:', { originalPhone: phone, cleanPhone });
+
                 if (!phoneRegex.test(cleanPhone)) {
+                    console.log('❌ Validation téléphone échouée:', { cleanPhone, regex: phoneRegex.toString() });
                     alert('Format de téléphone invalide. Utilisez: 06 12 34 56 78 ou +33 6 12 34 56 78');
                     return;
                 }
+                console.log('✅ DEBUG 4 - Validation téléphone OK');
 
+                console.log('🔍 DEBUG 5 - Validation slot sélectionné...');
                 if (!this.selectedSlot) {
+                    console.log('❌ Pas de slot sélectionné');
                     alert('Veuillez sélectionner un créneau');
                     return;
                 }
+                console.log('✅ DEBUG 5 - Slot sélectionné OK:', this.selectedSlot);
 
+                console.log('🔍 DEBUG 6 - Préparation bouton et données pour API...');
                 const confirmBtn = document.getElementById('confirmBookingBtn');
                 const originalText = confirmBtn.textContent;
                 confirmBtn.textContent = 'CONFIRMATION...';
                 confirmBtn.disabled = true;
+                console.log('✅ DEBUG 6 - Bouton mis à jour');
+
+                console.log('🔍 DEBUG 7 - Préparation payload pour API calendar...');
+                const payload = {
+                    action: 'book',
+                    datetime: this.selectedSlot.start,
+                    clientName: name,
+                    clientEmail: email,
+                    clientPhone: cleanPhone,
+                    clientCompany: company,
+                    clientSector: sector,
+                    clientMessage: message
+                };
+                console.log('🔍 DEBUG 7 - Payload préparé:', payload);
 
                 try {
+                    console.log('🚀 DEBUG 8 - DÉBUT APPEL API /api/calendar...');
                     const response = await fetch('/api/calendar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({
-                            action: 'book',
-                            datetime: this.selectedSlot.start,
-                            clientName: name,
-                            clientEmail: email,
-                            clientPhone: cleanPhone,
-                            clientCompany: company,
-                            clientSector: sector,
-                            clientMessage: message
-                        })
+                        body: JSON.stringify(payload)
+                    });
+                    console.log('🔍 DEBUG 8 - Réponse API reçue:', {
+                        status: response.status,
+                        ok: response.ok,
+                        statusText: response.statusText
                     });
 
                     const result = await response.json();
