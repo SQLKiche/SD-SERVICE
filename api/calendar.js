@@ -173,6 +173,34 @@ Automatiquement créé via sofiane-automation.com`,
         // Continue anyway, don't fail the appointment creation
       }
 
+      // 🎯 TRACKING CONVERSION RDV vers Google Sheets
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbwrN5i7qTBq3Lg_O40ZgsFg-fShEyywSXXxSmXcRYJrki5SH8vLkTXpfBLNMvdiq4NV/exec', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventType: 'calendar_booking_completed',
+            type: 'calendar_booking_completed',
+            value: 500, // Valeur élevée car RDV = prospect chaud
+            source: 'calendar_booking',
+            page: 'Site Principal',
+            details: `RDV confirmé avec ${clientName} le ${appointmentDate} à ${appointmentTime}`,
+            timestamp: new Date().toLocaleString('fr-FR'),
+            url: req.headers.origin || 'https://sd-service.vercel.app',
+            email: clientEmail,
+            fullName: clientName,
+            clientPhone: clientPhone || 'Non fourni',
+            clientCompany: clientCompany || 'Non fournie',
+            sector: clientSector,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+          })
+        });
+        console.log('✅ Conversion RDV trackée vers Google Sheets');
+      } catch (trackingError) {
+        console.error('❌ Erreur tracking conversion RDV:', trackingError);
+      }
+
       return res.status(200).json({
         success: true,
         message: 'Rendez-vous confirmé ! Vous recevrez un email de confirmation.',
