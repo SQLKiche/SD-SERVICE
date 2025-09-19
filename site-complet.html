@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,13 +8,12 @@
     
     <!-- Security Meta Tags -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    
-    <!-- Force Cache Refresh -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net https://script.google.com; connect-src 'self' https://api.brevo.com https://api.openai.com https://api.emailjs.com https://region1.google-analytics.com https://www.google-analytics.com https://static.hotjar.com https://script.google.com https://script.googleusercontent.com https://in.hotjar.com https://vc.hotjar.com https://insights.hotjar.io https://events.hotjar.io https://cdn.jsdelivr.net https://ws-us3.pusher.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'none'; report-uri /csp-report;">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    <meta http-equiv="X-DNS-Prefetch-Control" content="off">
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="Expert en automatisation PME et IA. Récupérez 2h/jour avec nos solutions sur-mesure : automatisation emails, tableaux de bord, assistants IA. Audit gratuit 15min.">
@@ -26,7 +26,7 @@
     <meta property="og:description" content="Récupérez 2h/jour automatiquement avec nos solutions d'automatisation PME et IA sur-mesure.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sofiane-portfolio.com/">
-    <meta property="og:image" content="https://sofiane-portfolio.com/shared/assets/images/Identité.JPG">
+    <meta property="og:image" content="shared/assets/images/identité.jpg">
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XWZE1D5N1"></script>
@@ -42,11 +42,24 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Chart.js pour section performance -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Chart.js pour section performance - chargement différé -->
+    <script>
+        function loadChartJS() {
+            if (!window.Chart) {
+                const script1 = document.createElement('script');
+                script1.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script1.onload = () => {
+                    const script2 = document.createElement('script');
+                    script2.src = 'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2';
+                    document.head.appendChild(script2);
+                };
+                document.head.appendChild(script1);
+            }
+        }
+    </script>
     
     <style>
         /* === MOBILE SERVICES SECTION === */
@@ -3961,6 +3974,31 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .booking-input select,
+        .booking-input option {
+            background: #2D3748 !important;
+            color: #fff !important;
+        }
+
+        select.booking-input {
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1) url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNyA3TDEzIDEiIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+') no-repeat right 12px center;
+            background-size: 14px 8px;
+            padding-right: 40px;
+        }
+
+        select.booking-input option {
+            background: #2D3748;
+            color: #fff;
+            padding: 8px 12px;
+        }
+
+        select.booking-input option:hover,
+        select.booking-input option:focus {
+            background: #4F46E5;
+            color: #fff;
+        }
+
         .booking-confirm-btn, .booking-cancel-btn {
             padding: 14px 24px;
             border: none;
@@ -5621,7 +5659,7 @@
          ================================ -->
 
     <!-- Mobile Navigation Toggle -->
-    <button class="mobile-nav-toggle" id="mobileNavToggle">
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu de navigation">
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -5757,7 +5795,7 @@
             <!-- Swipe Instruction Overlay -->
             <div class="swipe-instruction" id="swipeInstruction">
                 <div class="hand-gesture">
-                    <img src="shared/assets/images/svg-swipe-2.png" alt="Swipe gesture" width="50" height="50" class="hand-icon" loading="lazy">
+                    <img src="shared/assets/images/svg-swipe-2.png" alt="Swipe gesture" width="50" height="50" class="hand-icon" loading="lazy" decoding="async">
                 </div>
                 <div class="swipe-text">Balayez pour naviguer</div>
             </div>
@@ -5773,7 +5811,7 @@
                     <div class="mobile-service-content">
                         <div class="mobile-card-header">
                             <div class="mobile-service-badge">POINT D'ENTRÉE</div>
-                            <h3 class="mobile-service-title">AUDIT & DIAGNOSTIC</h3>
+                            <h3 class="mobile-service-title">AUDIT & DIAGNOSTIC</h4>
                             <div class="mobile-service-price">250€</div>
                         </div>
                         
@@ -5803,7 +5841,7 @@
                     <div class="mobile-service-content">
                         <div class="mobile-card-header">
                             <div class="mobile-service-badge">PLUS POPULAIRE</div>
-                            <h3 class="mobile-service-title">AUTOMATISATION</h3>
+                            <h3 class="mobile-service-title">AUTOMATISATION</h4>
                             <div class="mobile-service-price">500€</div>
                         </div>
                         
@@ -5833,7 +5871,7 @@
                     <div class="mobile-service-content">
                         <div class="mobile-card-header">
                             <div class="mobile-service-badge">INNOVATION</div>
-                            <h3 class="mobile-service-title">ASSISTANT IA</h3>
+                            <h3 class="mobile-service-title">ASSISTANT IA</h4>
                             <div class="mobile-service-price">600€</div>
                         </div>
                         
@@ -5863,7 +5901,7 @@
                     <div class="mobile-service-content">
                         <div class="mobile-card-header">
                             <div class="mobile-service-badge">MEILLEUR ROI</div>
-                            <h3 class="mobile-service-title">DASHBOARD BI</h3>
+                            <h3 class="mobile-service-title">DASHBOARD BI</h4>
                             <div class="mobile-service-price">800€</div>
                         </div>
                         
@@ -5908,7 +5946,7 @@
                     <div class="card-content">
                         <div class="card-header">
                             <span class="service-badge badge-starter" data-translate="service-badge-entry">POINT D'ENTRÉE</span>
-                            <h3 class="service-title" data-translate="service-title-audit">AUDIT & DIAGNOSTIC</h3>
+                            <h3 class="service-title" data-translate="service-title-audit">AUDIT & DIAGNOSTIC</h4>
                             <div class="service-price">
                                 <span>250</span>
                                 <span class="currency">€</span>
@@ -5939,7 +5977,7 @@
                     <div class="card-content">
                         <div class="card-header">
                             <span class="service-badge badge-popular" data-translate="service-badge-popular">PLUS POPULAIRE</span>
-                            <h3 class="service-title" data-translate="service-title-automation">AUTOMATISATION</h3>
+                            <h3 class="service-title" data-translate="service-title-automation">AUTOMATISATION</h4>
                             <div class="service-price">
                                 <span>500</span>
                                 <span class="currency">€</span>
@@ -5970,7 +6008,7 @@
                     <div class="card-content">
                         <div class="card-header">
                             <span class="service-badge badge-premium" data-translate="service-badge-premium">PREMIUM</span>
-                            <h3 class="service-title" data-translate="service-title-assistant">ASSISTANT IA</h3>
+                            <h3 class="service-title" data-translate="service-title-assistant">ASSISTANT IA</h4>
                             <div class="service-price">
                                 <span>600</span>
                                 <span class="currency">€</span>
@@ -6001,7 +6039,7 @@
                     <div class="card-content">
                         <div class="card-header">
                             <span class="service-badge badge-enterprise" data-translate="service-badge-enterprise">ENTERPRISE</span>
-                            <h3 class="service-title" data-translate="service-title-dashboard">DASHBOARD BI</h3>
+                            <h3 class="service-title" data-translate="service-title-dashboard">DASHBOARD BI</h4>
                             <div class="service-price">
                                 <span>800</span>
                                 <span class="currency">€</span>
@@ -6055,7 +6093,7 @@
                     <div class="mobile-card-overlay"></div>
                     <div class="mobile-card-content">
                         <div class="service-badge badge-starter" data-translate="service-badge-entry">POINT D'ENTRÉE</div>
-                        <h3 class="service-title" data-translate="service-title-audit">AUDIT & DIAGNOSTIC</h3>
+                        <h3 class="service-title" data-translate="service-title-audit">AUDIT & DIAGNOSTIC</h4>
                         <div class="service-price">
                             <span>250</span>
                             <span class="currency">€</span>
@@ -6082,7 +6120,7 @@
                     <div class="mobile-card-overlay"></div>
                     <div class="mobile-card-content">
                         <div class="service-badge badge-popular" data-translate="service-badge-popular">PLUS POPULAIRE</div>
-                        <h3 class="service-title" data-translate="service-title-automation">AUTOMATISATION</h3>
+                        <h3 class="service-title" data-translate="service-title-automation">AUTOMATISATION</h4>
                         <div class="service-price">
                             <span>500</span>
                             <span class="currency">€</span>
@@ -6109,7 +6147,7 @@
                     <div class="mobile-card-overlay"></div>
                     <div class="mobile-card-content">
                         <div class="service-badge badge-premium" data-translate="service-badge-premium">PREMIUM</div>
-                        <h3 class="service-title" data-translate="service-title-assistant">ASSISTANT IA</h3>
+                        <h3 class="service-title" data-translate="service-title-assistant">ASSISTANT IA</h4>
                         <div class="service-price">
                             <span>600</span>
                             <span class="currency">€</span>
@@ -6136,7 +6174,7 @@
                     <div class="mobile-card-overlay"></div>
                     <div class="mobile-card-content">
                         <div class="service-badge badge-enterprise" data-translate="service-badge-enterprise">ENTERPRISE</div>
-                        <h3 class="service-title" data-translate="service-title-dashboard">DASHBOARD BI</h3>
+                        <h3 class="service-title" data-translate="service-title-dashboard">DASHBOARD BI</h4>
                         <div class="service-price">
                             <span>800</span>
                             <span class="currency">€</span>
@@ -6214,7 +6252,7 @@
                 <!-- Projet 1: Tokyo EIFJ -->
                 <div class="project-card active" data-project="tokyo">
                     <div class="project-badge badge-education" data-translate="project-badge-education">TRANSFORMATION ÉDUCATIVE</div>
-                    <h3 class="project-title" data-translate="project-title-tokyo">École EIFJ Tokyo</h3>
+                    <h3 class="project-title" data-translate="project-title-tokyo">École EIFJ Tokyo</h4>
                     <div class="project-metric tokyo-metric">93%</div>
                     <div class="project-label" data-translate="project-label-time-saved">Temps économisé</div>
                 </div>
@@ -6222,7 +6260,7 @@
                 <!-- Projet 2: Hubi Paris -->
                 <div class="project-card" data-project="hubi">
                     <div class="project-badge badge-ecommerce" data-translate="project-badge-ecommerce">DÉVELOPPEMENT E-COMMERCE</div>
-                    <h3 class="project-title" data-translate="project-title-hubi">Hubi Paris</h3>
+                    <h3 class="project-title" data-translate="project-title-hubi">Hubi Paris</h4>
                     <div class="project-metric hubi-metric">100%</div>
                     <div class="project-label" data-translate="project-label-automated">Flux automatisé</div>
                 </div>
@@ -6230,7 +6268,7 @@
                 <!-- Projet 3: Impact Global -->
                 <div class="project-card" data-project="global">
                     <div class="project-badge badge-global" data-translate="project-badge-global">IMPACT GLOBAL</div>
-                    <h3 class="project-title" data-translate="project-title-results">Résultats Cumulés</h3>
+                    <h3 class="project-title" data-translate="project-title-results">Résultats Cumulés</h4>
                     <div class="project-metric global-metric">15+</div>
                     <div class="project-label" data-translate="project-label-impacted">Personnes impactées</div>
                 </div>
@@ -6238,7 +6276,7 @@
                 <!-- Projet 4: À venir -->
                 <div class="project-card" data-project="coming">
                     <div class="project-badge badge-coming">À VENIR</div>
-                    <h3 class="project-title">Projets en cours</h3>
+                    <h3 class="project-title">Projets en cours</h4>
                     <div class="project-metric coming-metric">XXX</div>
                     <div class="project-label">Nouveau projet</div>
                 </div>
@@ -6262,8 +6300,8 @@
             <div class="cta-container">
                 <div class="cta-content">
                     <div class="cta-text">
-                        <span class="cta-main">Discutons de votre prochain projet</span>
-                        <span class="cta-availability" style="cursor: pointer;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Créneaux disponibles</span>
+                        <span class="cta-main" data-translate="cta-main">Discutons de votre prochain projet</span>
+                        <span class="cta-availability" data-translate="cta-availability" style="cursor: pointer;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Créneaux disponibles</span>
                     </div>
                     <div class="cta-button" id="ctaBtn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -6299,7 +6337,7 @@
                     <h3 class="zone-title">
                         <span class="zone-number">1</span>
                         <span data-translate="zone-title-1">Processus Transparent</span>
-                    </h3>
+                    </h4>
                     <div class="zone-text" data-translate="zone-text-1">
                         Communication Slack directe + validation temps réel
                     </div>
@@ -6314,7 +6352,7 @@
                     <h3 class="zone-title">
                         <span class="zone-number">2</span>
                         <span data-translate="zone-title-2">Support Réactif</span>
-                    </h3>
+                    </h4>
                     <div class="zone-text" data-translate="zone-text-2">
                         Support dédié 9h-18h, réponse garantie sous 2h
                     </div>
@@ -6329,7 +6367,7 @@
                     <h3 class="zone-title">
                         <span class="zone-number">3</span>
 <span data-translate="zone-title-3">Adaptabilité Maximale</span>
-                    </h3>
+                    </h4>
                     <div class="zone-text" data-translate="zone-text-3">
 Planning flexible, ajouts intégrés sans surcoût
                     </div>
@@ -6344,7 +6382,7 @@ Planning flexible, ajouts intégrés sans surcoût
                     <h3 class="zone-title">
                         <span class="zone-number">4</span>
 <span data-translate="zone-title-4">Contrôle Qualité</span>
-                    </h3>
+                    </h4>
                     <div class="zone-text" data-translate="zone-text-4">
 Validation client + tests + ajustements inclus
                     </div>
@@ -6359,7 +6397,7 @@ Validation client + tests + ajustements inclus
                     <h3 class="zone-title">
                         <span class="zone-number">5</span>
 <span data-translate="zone-title-5">Autonomie Garantie</span>
-                    </h3>
+                    </h4>
                     <div class="zone-text" data-translate="zone-text-5">
                         Formation complète + documentation + autonomie totale
                     </div>
@@ -6374,7 +6412,7 @@ Validation client + tests + ajustements inclus
                     <h3 class="zone-title">
                         <span class="zone-number">6</span>
 <span data-translate="zone-title-6">Démarrons Ensemble</span>
-                    </h3>
+                    </h4>
                     <div class="zone-intro" data-translate="zone-intro-6">Premier échange gratuit 15min pour faire connaissance</div>
                     <a href="#contact" class="cta-button">
 <span data-translate="zone-cta-6">Commencer Mon Projet Gratuit</span>
@@ -6393,21 +6431,21 @@ Validation client + tests + ajustements inclus
         <div class="faq-container">
             <!-- HEADER -->
             <div class="faq-header">
-                <h1 id="faq-title" data-translate="faq-title">Questions Fréquentes</h1>
+                <h2 id="faq-title" data-translate="faq-title">Questions Fréquentes</h2>
                 <p class="subtitle" data-translate="faq-subtitle">Toutes les réponses sur l'automatisation PME, data analytics et notre processus d'accompagnement</p>
             </div>
 
             <!-- SECTION 1: AUTOMATISATION -->
             <div class="faq-section-group">
-                <h2 class="faq-section-title" data-translate="faq-section-automation">Automatisation PME</h2>
+                <h3 class="faq-section-title" data-translate="faq-section-automation">Automatisation PME</h4>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Quels gains concrets puis-je attendre de l'automatisation ?</h3>
+                        <h4 data-translate="faq-q1">Quels gains concrets puis-je attendre de l'automatisation ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a1">
                             D'après nos projets récents : <strong>93% de temps économisé</strong> à l'École Internationale Franco-Japonaise de Tokyo, <strong>100% du flux e-commerce automatisé</strong> chez Hubi Paris (483€ de CA en 11 commandes). <br><br>
                             <span class="highlight">En moyenne, nos clients PME gagnent 2-3 heures par jour</span> grâce à l'automatisation de leurs processus répétitifs : gestion emails, facturation, relances clients, reporting, etc. <br><br>
                             Le ROI est généralement <strong>positif dès le premier mois</strong> comparé au coût du temps perdu quotidiennement.
@@ -6417,11 +6455,11 @@ Validation client + tests + ajustements inclus
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Comment savoir quels processus automatiser dans mon entreprise ?</h3>
+                        <h4 data-translate="faq-q2">Comment savoir quels processus automatiser dans mon entreprise ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a2">
                             Je commence toujours par un <strong>audit complet de vos processus (250€)</strong> pour identifier les tâches répétitives, chronophages et sources d'erreurs.<br><br>
                             <span class="highlight">Mes critères de priorité :</span><br>
                             • Tâches répétées plus de 5 fois par semaine<br>
@@ -6435,11 +6473,11 @@ Validation client + tests + ajustements inclus
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Combien coûte réellement l'automatisation pour une PME ?</h3>
+                        <h4 data-translate="faq-q3">Combien coûte réellement l'automatisation pour une PME ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a3">
                             <strong>Tarifs transparents et fixes :</strong><br><br>
                             • <span class="highlight">Audit & Diagnostic : 250€</span> (48h à 1 semaine)<br>
                             • <span class="highlight">Automatisation complète : 500€</span> (1 à 2 semaines)<br>
@@ -6452,11 +6490,11 @@ Validation client + tests + ajustements inclus
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Quels outils utilisez-vous pour automatiser sans coder ?</h3>
+                        <h4 data-translate="faq-q4">Quels outils utilisez-vous pour automatiser sans coder ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a4">
                             Je privilégie des solutions <strong>no-code accessibles aux PME :</strong><br><br>
                             • <span class="highlight">Make.com</span> : automatisation de workflows complexes<br>
                             • <span class="highlight">Power BI & Excel avancé</span> : reporting automatique<br>
@@ -6469,11 +6507,11 @@ Validation client + tests + ajustements inclus
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Comment garantissez-vous la sécurité de nos données ?</h3>
+                        <h4 data-translate="faq-q5">Comment garantissez-vous la sécurité de nos données ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a5">
                             <strong>Sécurité et confidentialité prioritaires :</strong><br><br>
                             • <span class="highlight">Conformité RGPD</span> : toutes les automatisations respectent la réglementation<br>
                             • <span class="highlight">Chiffrement des données</span> : connexions sécurisées SSL/TLS<br>
@@ -6487,15 +6525,15 @@ Validation client + tests + ajustements inclus
 
             <!-- SECTION 2: DATA ANALYTICS -->
             <div class="faq-section-group">
-                <h2 class="faq-section-title">Data Analytics</h2>
+                <h3 class="faq-section-title" data-translate="faq-section-data">Data Analytics</h3>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Quels bénéfices concrets l'analyse de données peut-elle apporter ?</h3>
+                        <h4 data-translate="faq-q6">Quels bénéfices concrets l'analyse de données peut-elle apporter ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a6">
                             <strong>ROI mesurable sur vos décisions business :</strong><br><br>
                             • <span class="highlight">Visibilité temps réel</span> : KPI automatiques, fini les rapports manuels<br>
                             • <span class="highlight">Détection opportunités</span> : tendances cachées, optimisations possibles<br>
@@ -6508,11 +6546,11 @@ Validation client + tests + ajustements inclus
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Comment commencer la data analytics sans expertise technique ?</h3>
+                        <h4 data-translate="faq-q7">Comment commencer la data analytics sans expertise technique ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a7">
                             <strong>Approche progressive et accompagnée :</strong><br><br>
                             • <span class="highlight">Dashboard BI clé en main (800€)</span> : 1 à 3 semaines de développement<br>
                             • <span class="highlight">Formation incluse</span> : prise en main Power BI pour votre équipe<br>
@@ -6526,15 +6564,15 @@ Validation client + tests + ajustements inclus
 
             <!-- SECTION 3: PROCESSUS -->
             <div class="faq-section-group">
-                <h2 class="faq-section-title" data-translate="faq-section-process">Processus d'Accompagnement</h2>
+                <h3 class="faq-section-title" data-translate="faq-section-process">Processus d'Accompagnement</h3>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Comment se déroule concrètement notre collaboration ?</h3>
+                        <h4 data-translate="faq-q8">Comment se déroule concrètement notre collaboration ?</h4>
                         <div class="faq-icon"></div>
                     </div>
                     <div class="faq-answer">
-                        <div class="faq-answer-content">
+                        <div class="faq-answer-content" data-translate="faq-a8">
                             <strong>Méthode éprouvée en 6 étapes :</strong><br><br>
                             <span class="highlight">1. Diagnostic (48h)</span> : Audit complet de vos processus<br>
                             <span class="highlight">2. Analyse & Priorités</span> : Identification des gains rapides<br>
@@ -6564,7 +6602,7 @@ Validation client + tests + ajustements inclus
         <!-- VIDEO BACKGROUND -->
         <div class="contact-video-background">
             <video autoplay muted loop playsinline>
-                <source src="shared/assets/videos/FAQ WAVE STYLE.mp4" type="video/mp4">
+                <source src="shared/assets/videos/faq%20wave%20style.mp4" type="video/mp4">
             </video>
         </div>
         
@@ -6575,7 +6613,7 @@ Validation client + tests + ajustements inclus
             <!-- CENTERED FORM -->
             <div class="contact-form-section">
                 <div class="contact-form-header">
-                    <h1 id="contact-title" data-translate="contact-title">Audit Gratuit 15min</h1>
+                    <h2 id="contact-title" data-translate="contact-title">Audit Gratuit 15min</h2>
                     <p class="tagline" data-translate="contact-tagline">Transformez votre PME en entreprise ultra-performante grâce à l'IA</p>
                     <p class="subtitle" data-translate="contact-subtitle">Premier échange gratuit, sans engagement</p>
                 </div>
@@ -6659,12 +6697,12 @@ RÉSERVER MON AUDIT GRATUIT
                 <!-- WIDGET DE RÉSERVATION DIRECTE -->
                 <div class="booking-widget">
                     <div class="booking-header">
-                        <h3>Réservez votre créneau directement</h3>
+                        <h3>Réservez votre créneau directement</h4>
                         <p>Choisissez un moment qui vous convient • 15min gratuit</p>
                     </div>
 
                     <!-- Sélecteur de date -->
-                    <div class="date-selector">
+                    <div class="date-selector" onclick="document.getElementById('bookingDate').showPicker()" style="cursor: pointer;">
                         <label for="bookingDate">Choisir une date :</label>
                         <input type="date" id="bookingDate" class="booking-date-input">
                     </div>
@@ -6688,7 +6726,34 @@ RÉSERVER MON AUDIT GRATUIT
                             <label for="bookingEmail">Votre email</label>
                             <input type="email" id="bookingEmail" class="booking-input" placeholder="pierre@exemple.com" required>
                         </div>
-                        
+
+                        <div class="booking-form-group">
+                            <label for="bookingPhone">Votre téléphone *</label>
+                            <input type="tel" id="bookingPhone" class="booking-input" placeholder="06 12 34 56 78" required pattern="^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$" title="Format: 06 12 34 56 78 ou +33 6 12 34 56 78">
+                        </div>
+
+                        <div class="booking-form-group">
+                            <label for="bookingCompany">Votre entreprise (optionnel)</label>
+                            <input type="text" id="bookingCompany" class="booking-input" placeholder="Ma Société SARL">
+                        </div>
+
+                        <div class="booking-form-group">
+                            <label for="bookingSector">Secteur d'activité</label>
+                            <select id="bookingSector" class="booking-input" required>
+                                <option value="">Sélectionnez votre secteur</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Conseil">Conseil</option>
+                                <option value="Services">Services</option>
+                                <option value="Industrie">Industrie</option>
+                                <option value="Immobilier">Immobilier</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Santé">Santé</option>
+                                <option value="Éducation">Éducation</option>
+                                <option value="Restaurant">Restaurant/Hôtellerie</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+
                         <div class="booking-form-group">
                             <label for="bookingMessage">Sujet de l'échange (optionnel)</label>
                             <textarea id="bookingMessage" class="booking-input" rows="3" placeholder="Automatisation emails, tableau de bord, etc."></textarea>
@@ -6712,7 +6777,7 @@ RÉSERVER MON AUDIT GRATUIT
                 </div>
 
                 <div class="contact-success-message" id="successMessage">
-                    <h3>Merci ! Votre demande a été envoyée</h3>
+                    <h3>Merci ! Votre demande a été envoyée</h4>
                     <p>Je vous contacte sous 24h pour programmer notre échange gratuit de 15min.</p>
                 </div>
             </div>
@@ -7480,7 +7545,7 @@ RÉSERVER MON AUDIT GRATUIT
                     return;
                 }
 
-                // Envoyer via fonctions serverless Netlify + Brevo
+                // Envoyer via API Brevo
                 submitBtn.disabled = true;
                 submitBtn.classList.add('loading');
                 submitBtn.textContent = '';
@@ -7494,24 +7559,33 @@ RÉSERVER MON AUDIT GRATUIT
                     description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
-                // Envoyer via fonction serverless
-                fetch('/.netlify/functions/contact', {
+                // Envoyer avec l'API contact Vercel
+                fetch('/api/contact', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
                 .then((data) => {
-                    console.log('✅ Formulaire envoyé avec succès:', data);
+                    console.log('✅ Email envoyé avec succès!', data);
                     
                     // Cacher le formulaire et afficher le message de succès
                     formSection.style.display = 'none';
                     successMessage.classList.add('show');
+                    
+                    // Log des données
+                    console.log('✅ Formulaire envoyé avec succès:', {
+                        fullName: fullName,
+                        email: email,
+                        sector: sector || 'Non spécifié',
+                        priority: priority || 'Non spécifié',
+                        timestamp: new Date().toISOString()
+                    });
                 })
                 .catch((error) => {
-                    console.error('❌ Erreur envoi formulaire:', error);
+                    console.error('❌ Erreur envoi:', error);
                     alert('Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter directement.');
                 })
                 .finally(() => {
@@ -7547,7 +7621,6 @@ RÉSERVER MON AUDIT GRATUIT
     </script>
 
     <!-- JavaScript Section 3: Performance Charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script>
         // Données des projets
         const projectsData = {
@@ -7826,14 +7899,17 @@ RÉSERVER MON AUDIT GRATUIT
         });
         
         function initChart() {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            const projectData = projectsData[currentProject];
-            
-            chart = new Chart(ctx, {
-                type: projectData.chart.type,
-                data: projectData.chart.data,
-                options: projectData.chart.options
-            });
+            loadChartJS();
+            setTimeout(() => {
+                const ctx = document.getElementById('performanceChart').getContext('2d');
+                const projectData = projectsData[currentProject];
+
+                chart = new Chart(ctx, {
+                    type: projectData.chart.type,
+                    data: projectData.chart.data,
+                    options: projectData.chart.options
+                });
+            }, 100);
         }
         
         function updateContent(projectKey) {
@@ -8022,7 +8098,7 @@ RÉSERVER MON AUDIT GRATUIT
     
     <!-- BOULE FLOTTANTE -->
     <div class="floating-chat-ball" id="chatBall">
-        <img src="shared/assets/images/EVE.png" alt="EVE Assistant" style="width: 50px; height: auto; filter: brightness(1.1);" loading="lazy">
+        <img src="shared/assets/images/eve.png" alt="EVE Assistant" style="width: 50px; height: auto; filter: brightness(1.1);" loading="lazy" decoding="async">
         <div class="notification-badge" id="notificationBadge">!</div>
     </div>
 
@@ -8033,7 +8109,7 @@ RÉSERVER MON AUDIT GRATUIT
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
-                <button class="close-button" id="closeButton">×</button>
+                <button class="close-button" id="closeButton" aria-label="Fermer le chat">×</button>
                 <h1>Assistant IA</h1>
                 <p class="subtitle">Assistant de Sofiane - Posez vos questions !</p>
             </div>
@@ -8048,7 +8124,7 @@ RÉSERVER MON AUDIT GRATUIT
 
             <div class="input-container">
                 <input type="text" id="userInput" placeholder="Tapez votre question ici..." autocomplete="off">
-                <button id="sendButton" onclick="sendMessage()">Envoyer</button>
+                <button id="sendButton" onclick="sendMessage()" aria-label="Envoyer le message">Envoyer</button>
             </div>
         </div>
     </div>
@@ -8258,7 +8334,7 @@ CONTACT : Ne donne JAMAIS l'email direct ! Redirige vers le formulaire de contac
 
 Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", jamais "JE fais" ! 😊`;
 
-                const response = await fetch('/.netlify/functions/chatbot', {
+                const response = await fetch('/api/chatbot', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8486,7 +8562,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 container.innerHTML = '<p class="loading-slots">Chargement des créneaux...</p>';
 
                 try {
-                    const response = await fetch('/.netlify/functions/calendar', {
+                    const response = await fetch('/api/calendar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -8565,10 +8641,22 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
             async confirmBooking() {
                 const name = document.getElementById('bookingName').value.trim();
                 const email = document.getElementById('bookingEmail').value.trim();
+                const phone = document.getElementById('bookingPhone').value.trim();
+                const company = document.getElementById('bookingCompany').value.trim();
+                const sector = document.getElementById('bookingSector').value;
                 const message = document.getElementById('bookingMessage').value.trim();
 
-                if (!name || !email) {
-                    alert('Veuillez remplir votre nom et email');
+                // Validation des champs obligatoires
+                if (!name || !email || !phone || !sector) {
+                    alert('Veuillez remplir tous les champs obligatoires (nom, email, téléphone, secteur)');
+                    return;
+                }
+
+                // Validation format téléphone
+                const phoneRegex = /^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$/;
+                const cleanPhone = phone.replace(/[\s\-\.]/g, ''); // Retirer espaces, tirets, points
+                if (!phoneRegex.test(cleanPhone)) {
+                    alert('Format de téléphone invalide. Utilisez: 06 12 34 56 78 ou +33 6 12 34 56 78');
                     return;
                 }
 
@@ -8583,7 +8671,7 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 confirmBtn.disabled = true;
 
                 try {
-                    const response = await fetch('/.netlify/functions/calendar', {
+                    const response = await fetch('/api/calendar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -8593,6 +8681,9 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                             datetime: this.selectedSlot.start,
                             clientName: name,
                             clientEmail: email,
+                            clientPhone: cleanPhone,
+                            clientCompany: company,
+                            clientSector: sector,
                             clientMessage: message
                         })
                     });
@@ -8634,6 +8725,9 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
                 // Clear form
                 document.getElementById('bookingName').value = '';
                 document.getElementById('bookingEmail').value = '';
+                document.getElementById('bookingPhone').value = '';
+                document.getElementById('bookingCompany').value = '';
+                document.getElementById('bookingSector').value = '';
                 document.getElementById('bookingMessage').value = '';
             }
 
@@ -8682,4 +8776,4 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
 
 </body>
 </html>
-<!-- Version: 20250913-2345 - EmailJS supprimé, formulaire via Netlify Functions -->
+
