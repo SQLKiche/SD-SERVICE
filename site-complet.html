@@ -7539,8 +7539,8 @@ RÉSERVER MON AUDIT GRATUIT
                     description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
-                // Envoyer avec Netlify Functions
-                fetch('/.netlify/functions/contact', {
+                // Envoyer avec API Vercel
+                fetch('/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

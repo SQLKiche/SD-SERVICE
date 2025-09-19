@@ -8,7 +8,9 @@
       "Bash(move shared \"C:\\Users\\sofia\\OneDrive\\Documents\\Portfolio Freelance Projet\\Porfolio-Freelance\\ARCHIVE-FICHIERS-NON-ESSENTIELS\\\")",
       "Bash(git rm:*)",
       "WebFetch(domain:sd-service.vercel.app)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
