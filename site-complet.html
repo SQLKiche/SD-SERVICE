@@ -9990,9 +9990,6 @@ function initGoogleAnalyticsTracking() {
     // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
     // ==========================================
 
-    // Configuration Google Sheets analytics
-    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
-
     // Exécuter immédiatement ET sur DOMContentLoaded
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
@@ -10014,6 +10011,9 @@ function initGoogleAnalyticsTracking() {
     function sendToGoogleSheets(eventData) {
         console.log('🔍 DEBUG sendToGoogleSheets appelée avec:', eventData);
 
+        // URL Google Apps Script définie directement dans la fonction
+        const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
+
         const dataToSend = {
             ...eventData,
             page: 'Site Principal',
@@ -10022,9 +10022,9 @@ function initGoogleAnalyticsTracking() {
         };
 
         console.log('📤 Envoi vers Google Sheets:', dataToSend);
-        console.log('🌐 URL Google Apps Script:', GOOGLE_APPS_SCRIPT_URL);
+        console.log('🌐 URL Google Apps Script:', SHEETS_URL);
 
-        fetch(GOOGLE_APPS_SCRIPT_URL, {
+        fetch(SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
