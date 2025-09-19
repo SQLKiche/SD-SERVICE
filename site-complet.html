@@ -7551,33 +7551,26 @@ RÉSERVER MON AUDIT GRATUIT
                     description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
-                // 🎯 TRACKING CONVERSION AVANT ENVOI (via Google Sheets)
-                sendToGoogleSheets({
-                    eventType: 'contact_form_submission',
-                    eventValue: 'conversion_lead',
-                    conversionType: 'contact_form',
-                    conversionValue: 100,
-                    details: 'Formulaire de contact soumis - CONVERSION'
-                });
-
-                // 📊 TRACKING CONVERSION vers sheet dédié
+                // 🎯 TRACKING CONVERSION (Google Sheets direct)
                 fetch('https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec', {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        eventType: 'contact_form_submission',
                         type: 'contact_form_submission',
                         value: 100,
                         source: 'contact_form',
-                        page: 'Site Principal - CONVERSIONS',
+                        page: 'Site Principal',
                         details: 'Lead formulaire contact',
                         timestamp: new Date().toLocaleString('fr-FR'),
                         url: window.location.href,
                         email: email,
                         fullName: fullName,
-                        sector: sector
+                        sector: sector || 'Non spécifié',
+                        priority: priority || 'Non spécifié'
                     })
-                }).catch(error => console.log('✅ Conversion envoyée'));
+                }).catch(error => console.log('✅ Conversion trackée'));
 
                 // Envoyer avec API Vercel
                 fetch('/api/contact', {
