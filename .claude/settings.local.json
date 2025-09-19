@@ -10,7 +10,8 @@
       "WebFetch(domain:sd-service.vercel.app)",
       "Bash(grep:*)",
       "Bash(git pull:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebFetch(domain:script.google.com)"
     ],
     "deny": [],
     "ask": []
