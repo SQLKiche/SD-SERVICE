@@ -9986,6 +9986,13 @@ function initGoogleAnalyticsTracking() {
         }
     }
 
+    // ==========================================
+    // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
+    // ==========================================
+
+    // Configuration Google Sheets analytics
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
+
     // Exécuter immédiatement ET sur DOMContentLoaded
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
@@ -10002,13 +10009,6 @@ function initGoogleAnalyticsTracking() {
         initAdvancedTracking();
         testGoogleSheetsIntegration();
     }, 2000);
-
-    // ==========================================
-    // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
-    // ==========================================
-
-    // Configuration Google Sheets analytics
-    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
 
     // Fonction pour envoyer vers Google Sheets Analytics
     function sendToGoogleSheets(eventData) {
