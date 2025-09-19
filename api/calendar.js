@@ -2,6 +2,12 @@
 import { google } from 'googleapis';
 
 export default async function handler(req, res) {
+  console.log('🔥 API CALENDAR APPELÉE !', {
+    method: req.method,
+    body: req.body,
+    timestamp: new Date().toISOString()
+  });
+
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
