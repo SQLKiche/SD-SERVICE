@@ -9990,22 +9990,30 @@ function initGoogleAnalyticsTracking() {
     // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
     // ==========================================
 
-    // Exécuter immédiatement ET sur DOMContentLoaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            initAdvancedTracking();
-            testGoogleSheetsIntegration();
-        });
-    } else {
+    // Variable pour éviter les initialisations multiples
+    let trackingInitialized = false;
+
+    function initTrackingOnce() {
+        if (trackingInitialized) {
+            console.log('📊 Tracking déjà initialisé, skip...');
+            return;
+        }
+
+        trackingInitialized = true;
         initAdvancedTracking();
-        testGoogleSheetsIntegration();
+
+        // Test unique au premier chargement
+        setTimeout(() => {
+            testGoogleSheetsIntegration();
+        }, 1000);
     }
 
-    // Backup - exécuter après 2 secondes
-    setTimeout(() => {
-        initAdvancedTracking();
-        testGoogleSheetsIntegration();
-    }, 2000);
+    // Exécuter une seule fois
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTrackingOnce);
+    } else {
+        initTrackingOnce();
+    }
 
     // Fonction pour envoyer vers Google Sheets Analytics
     function sendToGoogleSheets(eventData) {
