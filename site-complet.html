@@ -9818,6 +9818,19 @@ function initGoogleAnalyticsTracking() {
                     event_label: serviceName,
                     custom_parameter_1: 'service_discovery'
                 });
+
+                // Envoyer vers Google Sheets
+                sendToGoogleSheets({
+                    eventType: 'service_card_click',
+                    eventValue: serviceName,
+                    url: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    userAgent: navigator.userAgent,
+                    screenResolution: screen.width + 'x' + screen.height,
+                    viewport: window.innerWidth + 'x' + window.innerHeight,
+                    language: navigator.language
+                });
+
                 console.log('📊 GA Event: Service Card Click - ' + serviceName);
             });
         });
@@ -9904,6 +9917,37 @@ function initGoogleAnalyticsTracking() {
 
     // Backup - exécuter après 2 secondes
     setTimeout(initAdvancedTracking, 2000);
+
+    // ==========================================
+    // 🎯 GOOGLE SHEETS ANALYTICS GÉNÉRAL
+    // ==========================================
+
+    // Configuration Google Sheets analytics
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
+
+    // Fonction pour envoyer vers Google Sheets Analytics
+    function sendToGoogleSheets(eventData) {
+        fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...eventData,
+                page: 'Site Principal',
+                timestamp: new Date().toLocaleString('fr-FR'),
+                sessionId: sessionStorage.getItem('sessionId') || generateSessionId()
+            })
+        }).catch(error => console.log('Tracking sent'));
+    }
+
+    // Générer ID de session
+    function generateSessionId() {
+        const sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        sessionStorage.setItem('sessionId', sessionId);
+        return sessionId;
+    }
 
     // ==========================================
     // 🎯 ÉVÉNEMENTS DE CONVERSION BUSINESS
