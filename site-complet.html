@@ -7552,6 +7552,7 @@ RÉSERVER MON AUDIT GRATUIT
                 };
 
                 // 🎯 TRACKING CONVERSION (Google Sheets direct)
+                console.log('🚀 DÉMARRAGE TRACKING CONVERSION...');
                 fetch('https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec', {
                     method: 'POST',
                     mode: 'no-cors',
@@ -7570,7 +7571,12 @@ RÉSERVER MON AUDIT GRATUIT
                         sector: sector || 'Non spécifié',
                         priority: priority || 'Non spécifié'
                     })
-                }).catch(error => console.log('✅ Conversion trackée'));
+                }).then(() => {
+                    console.log('✅ Conversion envoyée vers Google Sheets');
+                }).catch(error => {
+                    console.log('❌ Erreur envoi conversion:', error);
+                    console.log('✅ Conversion trackée quand même');
+                });
 
                 // Envoyer avec API Vercel
                 fetch('/api/contact', {
