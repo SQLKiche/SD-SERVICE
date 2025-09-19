@@ -137,43 +137,84 @@ Automatiquement créé via sofiane-automation.com`,
         link: calendarResponse.data.htmlLink
       });
 
-      // Send notification emails
+      // Send notification emails - APPELS DIRECTS BREVO (comme Template 1)
       try {
-        // Email de notification pour toi (owner) - Template 3
-        await fetch(`${req.headers.origin}/api/send-email`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            templateType: 'appointment-owner',
-            data: {
-              appointmentDate: appointmentDate,
-              appointmentTime: appointmentTime,
-              clientName: clientName,
-              clientEmail: clientEmail,
-              clientPhone: clientPhone || 'Non fourni',
-              clientCompany: clientCompany || 'Non fournie',
-              clientSector: clientSector,
-              clientMessage: clientMessage
+        // Email de notification pour toi (owner) - Template 3 - APPEL DIRECT BREVO
+        const ownerNotificationData = {
+          sender: {
+            name: "SD Service",
+            email: "sofiane.dehaffreingue59@gmail.com"
+          },
+          to: [
+            {
+              email: "sofiane.dehaffreingue59@gmail.com",
+              name: "Sofiane"
             }
-          })
+          ],
+          templateId: 3, // Template "RDV Calendrier - Notification"
+          params: {
+            appointment_date: appointmentDate,
+            appointment_time: appointmentTime,
+            client_name: clientName,
+            client_email: clientEmail,
+            client_phone: clientPhone || 'Non fourni',
+            client_company: clientCompany || 'Non fournie',
+            client_sector: clientSector,
+            client_message: clientMessage
+          }
+        };
+
+        const ownerResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Api-Key': process.env.BREVO_API_KEY
+          },
+          body: JSON.stringify(ownerNotificationData)
         });
 
-        // Email de confirmation pour le client - Template 4
-        await fetch(`${req.headers.origin}/api/send-email`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            templateType: 'appointment-client',
-            data: {
-              clientName: clientName,
-              clientEmail: clientEmail,
-              appointmentDate: appointmentDate,
-              appointmentTime: appointmentTime
+        if (ownerResponse.ok) {
+          const ownerResult = await ownerResponse.json();
+          console.log('✅ Email notification owner envoyé via Brevo:', ownerResult);
+        }
+
+        // Email de confirmation pour le client - Template 4 - APPEL DIRECT BREVO
+        const clientConfirmationData = {
+          sender: {
+            name: "SD Service",
+            email: "sofiane.dehaffreingue59@gmail.com"
+          },
+          to: [
+            {
+              email: clientEmail,
+              name: clientName
             }
-          })
+          ],
+          templateId: 4, // Template "Confirmation RDV - Client"
+          params: {
+            client_name: clientName,
+            appointment_date: appointmentDate,
+            appointment_time: appointmentTime
+          }
+        };
+
+        const clientResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Api-Key': process.env.BREVO_API_KEY
+          },
+          body: JSON.stringify(clientConfirmationData)
         });
 
-        console.log('✅ Emails de confirmation envoyés');
+        if (clientResponse.ok) {
+          const clientResult = await clientResponse.json();
+          console.log('✅ Email confirmation client envoyé via Brevo:', clientResult);
+        }
+
+        console.log('✅ Tous les emails RDV envoyés en direct via Brevo');
 
       } catch (emailError) {
         console.error('❌ Erreur envoi emails:', emailError);

@@ -77,26 +77,42 @@ export default async function handler(req, res) {
     const brevoResult = await brevoResponse.json();
     console.log('✅ Email notification envoyé via Brevo:', brevoResult);
 
-    // Envoyer email de confirmation au client (Template 2)
+    // Envoyer email de confirmation au client (Template 2) - APPEL DIRECT BREVO
     try {
-      const clientConfirmationResponse = await fetch(`${req.headers.origin}/api/send-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          templateType: 'client-confirmation',
-          data: {
+      const clientConfirmationData = {
+        sender: {
+          name: "SD Service",
+          email: "sofiane.dehaffreingue59@gmail.com"
+        },
+        to: [
+          {
             email: email,
-            fullName: fullName,
-            sector: sector || 'Non spécifié',
-            priority: priority || 'Non spécifié'
+            name: fullName
           }
-        })
+        ],
+        templateId: 2, // Template "Confirmation Client - Audit"
+        params: {
+          to_name: fullName,
+          sector: sector || 'Non spécifié',
+          priority: priority || 'Non spécifié'
+        }
+      };
+
+      const clientConfirmationResponse = await fetch(BREVO_API_URL, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Api-Key': BREVO_API_KEY
+        },
+        body: JSON.stringify(clientConfirmationData)
       });
 
       if (clientConfirmationResponse.ok) {
-        console.log('✅ Email de confirmation client envoyé');
+        const clientResult = await clientConfirmationResponse.json();
+        console.log('✅ Email de confirmation client envoyé via Brevo:', clientResult);
       } else {
-        console.error('❌ Erreur envoi confirmation client');
+        console.error('❌ Erreur envoi confirmation client:', clientConfirmationResponse.status);
       }
     } catch (confirmationError) {
       console.error('❌ Erreur envoi confirmation client:', confirmationError);
