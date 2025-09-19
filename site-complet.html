@@ -9850,6 +9850,10 @@ function initGoogleAnalyticsTracking() {
     function setupServiceCardTracking() {
         const serviceCards = document.querySelectorAll('.service-card, .mobile-service-card');
         serviceCards.forEach((card, index) => {
+            // Éviter les event listeners multiples
+            if (card.hasAttribute('data-tracking-attached')) return;
+            card.setAttribute('data-tracking-attached', 'true');
+
             card.addEventListener('click', function(e) {
                 const serviceName = card.querySelector('h3, .card-header h3, .title')?.textContent || `Service ${index + 1}`;
                 gtag('event', 'service_card_click', {
@@ -9880,6 +9884,10 @@ function initGoogleAnalyticsTracking() {
     function setupPerformanceCardTracking() {
         const perfCards = document.querySelectorAll('.project-card');
         perfCards.forEach((card, index) => {
+            // Éviter les event listeners multiples
+            if (card.hasAttribute('data-perf-tracking-attached')) return;
+            card.setAttribute('data-perf-tracking-attached', 'true');
+
             card.addEventListener('click', function(e) {
                 const perfTitle = card.querySelector('h3, .title, .card-header h3')?.textContent || `Performance ${index + 1}`;
                 gtag('event', 'performance_card_click', {
@@ -9910,6 +9918,10 @@ function initGoogleAnalyticsTracking() {
     function setupFAQTracking() {
         const faqQuestions = document.querySelectorAll('.faq-question');
         faqQuestions.forEach((question, index) => {
+            // Éviter les event listeners multiples
+            if (question.hasAttribute('data-faq-tracking-attached')) return;
+            question.setAttribute('data-faq-tracking-attached', 'true');
+
             question.addEventListener('click', function() {
                 const questionText = question.textContent?.substring(0, 50) || `FAQ ${index + 1}`;
 
@@ -9941,6 +9953,10 @@ function initGoogleAnalyticsTracking() {
     function setupCarouselTracking() {
         const carouselBtns = document.querySelectorAll('.carousel-nav, .dot, .mobile-dot');
         carouselBtns.forEach(btn => {
+            // Éviter les event listeners multiples
+            if (btn.hasAttribute('data-carousel-tracking-attached')) return;
+            btn.setAttribute('data-carousel-tracking-attached', 'true');
+
             btn.addEventListener('click', function() {
                 let direction = 'navigation';
                 if (btn.classList.contains('carousel-prev')) direction = 'prev';
