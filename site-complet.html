@@ -7551,6 +7551,15 @@ RÉSERVER MON AUDIT GRATUIT
                     description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
+                // 🎯 TRACKING CONVERSION AVANT ENVOI
+                trackConversion({
+                    type: 'contact_form_submission',
+                    value: 100, // Valeur estimée d'un lead
+                    source: 'contact_form',
+                    formId: 'contactForm',
+                    details: 'Formulaire de contact soumis'
+                });
+
                 // Envoyer avec API Vercel
                 fetch('/api/contact', {
                     method: 'POST',
