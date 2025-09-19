@@ -9844,28 +9844,23 @@ function initGoogleAnalyticsTracking() {
     // 🎯 TRACKING INTERACTIONS FAQ
     function setupFAQTracking() {
         const faqQuestions = document.querySelectorAll('.faq-question');
+        const clickedQuestions = new Set(); // Tracker les questions déjà cliquées
+
         faqQuestions.forEach((question, index) => {
             question.addEventListener('click', function() {
                 const questionText = question.textContent?.substring(0, 50) || `FAQ ${index + 1}`;
-                const faqItem = question.closest('.faq-item');
 
-                // Vérifier l'état AVANT le clic pour détecter l'ouverture
-                const wasOpen = faqItem ? faqItem.classList.contains('open') || faqItem.classList.contains('active') : false;
+                // Tracker seulement la PREMIÈRE fois qu'on clique sur une question
+                if (!clickedQuestions.has(questionText)) {
+                    clickedQuestions.add(questionText);
 
-                // Attendre un petit délai pour que l'animation se fasse
-                setTimeout(() => {
-                    const isNowOpen = faqItem ? faqItem.classList.contains('open') || faqItem.classList.contains('active') : false;
-
-                    // Ne tracker que les OUVERTURES (quand ça passe de fermé à ouvert)
-                    if (!wasOpen && isNowOpen) {
-                        gtag('event', 'faq_interaction', {
-                            event_category: 'engagement',
-                            event_label: questionText,
-                            custom_parameter_1: 'faq_open'
-                        });
-                        console.log('📊 GA Event: FAQ Open - ' + questionText);
-                    }
-                }, 100);
+                    gtag('event', 'faq_interaction', {
+                        event_category: 'engagement',
+                        event_label: questionText,
+                        custom_parameter_1: 'faq_first_click'
+                    });
+                    console.log('📊 GA Event: FAQ First Click - ' + questionText);
+                }
             });
         });
         console.log('✅ FAQ tracking setup completed - ' + faqQuestions.length + ' questions found');
