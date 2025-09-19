@@ -25,54 +25,27 @@ export default async function handler(req, res) {
       });
     }
 
-    // Configuration Brevo
-    const BREVO_API_KEY = process.env.BREVO_API_KEY;
-    const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
-
-    // Préparer l'email pour Brevo
-    const emailData = {
-      sender: {
-        name: "SD Service",
-        email: "sofiane.dehaffreingue59@gmail.com"
-      },
-      to: [
-        {
-          email: "sofiane.dehaffreingue59@gmail.com",
-          name: "SD Service"
-        }
-      ],
-      subject: `🔥 Nouvelle demande de ${fullName}`,
-      htmlContent: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #4F46E5;">Nouvelle demande de contact</h2>
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-            <p><strong>Nom :</strong> ${fullName}</p>
-            <p><strong>Email :</strong> ${email}</p>
-            <p><strong>Secteur :</strong> ${sector || 'Non spécifié'}</p>
-            <p><strong>Priorité :</strong> ${priority || 'Non spécifié'}</p>
-            <p><strong>Message :</strong><br>${description || 'Aucun message'}</p>
-            <p><strong>Date :</strong> ${new Date().toLocaleString('fr-FR')}</p>
-          </div>
-        </div>
-      `
-    };
-
-    // Envoyer via Brevo
-    const brevoResponse = await fetch(BREVO_API_URL, {
+    // Utiliser l'API send-email avec templates Brevo
+    const emailResponse = await fetch(`${req.headers.origin}/api/send-email`, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Api-Key': BREVO_API_KEY
-      },
-      body: JSON.stringify(emailData)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        templateType: 'contact-form',
+        data: {
+          fullName: fullName,
+          email: email,
+          sector: sector || 'Non spécifié',
+          priority: priority || 'Non spécifié',
+          description: description || 'Aucun message'
+        }
+      })
     });
 
-    if (!brevoResponse.ok) {
-      throw new Error(`Brevo API error: ${brevoResponse.status}`);
+    if (!emailResponse.ok) {
+      throw new Error(`Send-email API error: ${emailResponse.status}`);
     }
 
-    const brevoResult = await brevoResponse.json();
+    const brevoResult = await emailResponse.json();
     console.log('✅ Email envoyé via Brevo:', brevoResult);
 
     // Réponse de succès

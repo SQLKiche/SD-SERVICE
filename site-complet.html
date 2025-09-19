@@ -34,6 +34,18 @@
             custom_map: {'custom_parameter_1': 'lead_source'}
         });
     </script>
+
+    <!-- Hotjar Tracking Code -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:6524062,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9841,6 +9853,43 @@ function initGoogleAnalyticsTracking() {
     }, 120000);
     
     console.log('✅ Google Analytics tracking initialized');
+
+    // ==========================================
+    // 📊 GOOGLE SHEETS INTEGRATION
+    // ==========================================
+
+    // URL Google Apps Script pour analytics
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec';
+
+    // Fonction pour envoyer vers Google Sheets
+    function sendToGoogleSheets(eventData) {
+        fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...eventData,
+                page: 'Site Principal', // Différenciation avec "Mon Histoire"
+                timestamp: new Date().toLocaleString('fr-FR'),
+                sessionId: sessionStorage.getItem('sessionId') || generateSessionId(),
+                url: window.location.href,
+                referrer: document.referrer || 'Direct',
+                userAgent: navigator.userAgent,
+                screenResolution: screen.width + 'x' + screen.height,
+                viewport: window.innerWidth + 'x' + window.innerHeight,
+                language: navigator.language
+            })
+        }).catch(error => console.log('Tracking sent'));
+    }
+
+    // Génération session ID
+    function generateSessionId() {
+        const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        sessionStorage.setItem('sessionId', sessionId);
+        return sessionId;
+    }
 
     // ==========================================
     // 🎯 TRACKING DÉTAILLÉ INTERACTIONS
