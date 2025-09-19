@@ -10145,10 +10145,17 @@ function initGoogleAnalyticsTracking() {
     // 📧 TRACKING FORMULAIRE DE CONTACT
     function setupContactFormTracking() {
         // Observer tous les formulaires de contact
-        const contactForms = document.querySelectorAll('form[id*="contact"], form[class*="contact"], .contact-form form');
+        const contactForms = document.querySelectorAll('#contactForm, form[id*="contact"], form[class*="contact"], .contact-form form');
+
+        console.log('🔍 DEBUG: Formulaires trouvés pour tracking conversions:', contactForms.length);
+        contactForms.forEach((form, index) => {
+            console.log(`📝 Formulaire ${index + 1}:`, form.id || 'sans ID', form.className || 'sans class');
+        });
 
         contactForms.forEach(form => {
             form.addEventListener('submit', function(e) {
+                console.log('🚀 FORMULAIRE SOUMIS! ID:', this.id, 'Class:', this.className);
+
                 trackConversion({
                     type: 'contact_form_submission',
                     value: 100, // Valeur estimée d'un lead
