@@ -1,6 +1,7 @@
 {
   "name": "sofiane-automation-portfolio",
   "version": "1.0.0",
+  "type": "module",
   "description": "Portfolio professionnel de Sofiane - Expert en automatisation PME et IA",
   "main": "site-complet.html",
   "scripts": {
