@@ -7551,14 +7551,33 @@ RÉSERVER MON AUDIT GRATUIT
                     description: document.getElementById('description')?.value || 'Aucun message'
                 };
 
-                // 🎯 TRACKING CONVERSION AVANT ENVOI
-                trackConversion({
-                    type: 'contact_form_submission',
-                    value: 100, // Valeur estimée d'un lead
-                    source: 'contact_form',
-                    formId: 'contactForm',
-                    details: 'Formulaire de contact soumis'
+                // 🎯 TRACKING CONVERSION AVANT ENVOI (via Google Sheets)
+                sendToGoogleSheets({
+                    eventType: 'contact_form_submission',
+                    eventValue: 'conversion_lead',
+                    conversionType: 'contact_form',
+                    conversionValue: 100,
+                    details: 'Formulaire de contact soumis - CONVERSION'
                 });
+
+                // 📊 TRACKING CONVERSION vers sheet dédié
+                fetch('https://script.google.com/macros/s/AKfycbx1XbxDzsyWwen1n1Y65J0wAusPFp5DtRHmcCXkQGSITguSPelCeDmJMIcb3uvtt-0oWw/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'contact_form_submission',
+                        value: 100,
+                        source: 'contact_form',
+                        page: 'Site Principal - CONVERSIONS',
+                        details: 'Lead formulaire contact',
+                        timestamp: new Date().toLocaleString('fr-FR'),
+                        url: window.location.href,
+                        email: email,
+                        fullName: fullName,
+                        sector: sector
+                    })
+                }).catch(error => console.log('✅ Conversion envoyée'));
 
                 // Envoyer avec API Vercel
                 fetch('/api/contact', {
