@@ -138,16 +138,13 @@ Automatiquement créé via sofiane-automation.com`,
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            templateType: 'appointment-owner',
+            templateType: 'contact-form',
             data: {
-              appointmentDate,
-              appointmentTime,
-              clientName,
-              clientEmail,
-              clientPhone: clientPhone || 'Non fourni',
-              clientCompany: clientCompany || 'Non fournie',
-              clientSector,
-              clientMessage
+              from_name: `RDV Confirmé - ${clientName}`,
+              from_email: clientEmail,
+              sector: clientSector,
+              priority: `RDV le ${appointmentDate} à ${appointmentTime}`,
+              message: `NOUVEAU RDV CONFIRMÉ\n\nClient: ${clientName}\nEmail: ${clientEmail}\nTéléphone: ${clientPhone || 'Non fourni'}\nEntreprise: ${clientCompany || 'Non fournie'}\nSecteur: ${clientSector}\n\nDate: ${appointmentDate}\nHeure: ${appointmentTime}\n\nBesoins:\n${clientMessage}`
             }
           })
         });
@@ -157,11 +154,13 @@ Automatiquement créé via sofiane-automation.com`,
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            templateType: 'appointment-client',
+            templateType: 'contact-form',
             data: {
-              clientName,
-              appointmentDate,
-              appointmentTime
+              from_name: `Confirmation RDV - SD Service`,
+              from_email: 'sofiane.dehaffreingue59@gmail.com',
+              sector: 'Confirmation',
+              priority: `RDV le ${appointmentDate} à ${appointmentTime}`,
+              message: `Bonjour ${clientName},\n\nVotre rendez-vous de 15 minutes est confirmé :\n\nDate: ${appointmentDate}\nHeure: ${appointmentTime}\n\nJe vous contacterai à l'heure prévue.\n\nÀ bientôt !\nSofiane Dehaffreingue\nSD Service`
             }
           })
         });
