@@ -1821,61 +1821,40 @@
             const socialIcons = socialLinks.querySelectorAll('.social-link');
 
             function triggerWaveEffect() {
-                console.log('🌊 Starting one-way wave effect on social icons!');
+                console.log('🌊 Starting simple sequential wave effect!');
 
-                // Phase 1: Aller (gauche → droite) : Téléphone → LinkedIn → Email
-                const phaseAller = [0, 1, 2];
-                // Phase 2: Retour (droite → gauche) : Email → LinkedIn → Téléphone
-                const phaseRetour = [2, 1, 0];
-
-                let currentPhase = 1; // 1 = aller, 2 = retour
+                // Séquence simple : Téléphone → LinkedIn → Email (FINI)
+                const sequence = [0, 1, 2];
                 let currentStep = 0;
 
                 function animateNextIcon() {
-                    const isPhaseAller = currentPhase === 1;
-                    const currentSequence = isPhaseAller ? phaseAller : phaseRetour;
-
-                    if (currentStep >= currentSequence.length) {
-                        if (currentPhase === 1) {
-                            // Passe à la phase retour
-                            currentPhase = 2;
-                            currentStep = 0;
-                            setTimeout(() => {
-                                animateNextIcon();
-                            }, 200); // Pause entre les phases
-                        }
+                    if (currentStep >= sequence.length) {
+                        console.log('✅ Wave effect completed!');
                         return;
                     }
 
-                    const iconIndex = currentSequence[currentStep];
+                    const iconIndex = sequence[currentStep];
                     const icon = socialIcons[iconIndex];
-                    const direction = isPhaseAller ? 'droite' : 'gauche';
-                    const sweepClass = isPhaseAller ? 'light-sweep-right' : 'light-sweep-left';
 
                     if (icon) {
-                        console.log(`💫 Phase ${currentPhase} - Step ${currentStep + 1}: Icon ${iconIndex} vers ${direction}`);
+                        console.log(`💫 Step ${currentStep + 1}: Animating icon ${iconIndex}`);
 
-                        // Reset position pour direction opposée
-                        if (!isPhaseAller) {
-                            icon.style.setProperty('--before-start', '100%');
-                        }
-
-                        // Ajoute l'effet de sweep de lumière dans la bonne direction
-                        icon.classList.add(sweepClass);
+                        // Ajoute l'effet de sweep de lumière (gauche → droite)
+                        icon.classList.add('light-sweep-right');
 
                         // Ajoute l'effet de glow
                         icon.classList.add('wave-glow');
 
                         // Retire les effets après animation ET lance la suivante
                         setTimeout(() => {
-                            icon.classList.remove(sweepClass);
+                            icon.classList.remove('light-sweep-right');
                             icon.classList.remove('wave-glow');
 
-                            // Passe à l'icône suivante après que celle-ci soit finie
+                            // Passe à l'icône suivante
                             currentStep++;
                             setTimeout(() => {
                                 animateNextIcon();
-                            }, 100); // Petit délai entre les animations
+                            }, 150); // Délai entre les animations
                         }, 700); // Durée de l'animation
                     }
                 }
