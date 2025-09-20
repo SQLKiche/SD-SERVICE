@@ -1660,18 +1660,26 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         // Déclenche l'effet BOOM pulse quand on arrive à la fin
+                        console.log('🎯 Contact icons in view - triggering glow effect!');
                         entry.target.classList.add('pulse-effect');
                         setTimeout(() => {
                             entry.target.classList.remove('pulse-effect');
                         }, 3000);
                     } else {
                         // Retire l'effet quand on remonte
+                        console.log('📤 Contact icons out of view - removing effect');
                         entry.target.classList.remove('pulse-effect');
                     }
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: 0.1, rootMargin: '50px' });
 
             contactObserver.observe(contactIcons);
+
+            // Test manuel - décommenter pour tester l'animation
+            // setTimeout(() => {
+            //     console.log('🧪 Test manual de l\'animation');
+            //     contactIcons.classList.add('pulse-effect');
+            // }, 2000);
         }
 
         // Observer les stats pour les animer
