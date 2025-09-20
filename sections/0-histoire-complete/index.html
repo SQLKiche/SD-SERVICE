@@ -630,6 +630,59 @@
             left: 100%;
         }
 
+        /* Tooltip pour téléphone */
+        .social-link[data-phone] {
+            position: relative;
+        }
+
+        .social-link[data-phone]::after {
+            content: attr(data-phone);
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 29, 35, 0.95);
+            color: var(--primary-gold);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 1000;
+        }
+
+        .social-link[data-phone]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: -40px;
+        }
+
+        /* Notification de copie */
+        .copy-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-warm));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+        }
+
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+
         /* CTA Section */
         .cta-section {
             background:
@@ -945,7 +998,7 @@
 
     <!-- Social Links -->
     <div class="social-links">
-        <a href="tel:+33699213447" class="social-link" title="Téléphone">
+        <a href="#" class="social-link" data-phone="+33 6 99 21 34 47" title="Cliquer pour copier le numéro">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
@@ -1868,6 +1921,76 @@
 
             socialObserver.observe(ctaSection);
         }
+
+        // ==========================================
+        // PHONE COPY FUNCTIONALITY
+        // ==========================================
+
+        // Fonction pour copier le numéro et afficher la notification
+        function copyPhoneNumber(phoneNumber) {
+            navigator.clipboard.writeText(phoneNumber.replace(/\s/g, '')).then(() => {
+                showCopyNotification();
+                console.log('📞 Phone number copied:', phoneNumber);
+            }).catch(err => {
+                console.error('Failed to copy phone number:', err);
+                // Fallback pour les navigateurs qui ne supportent pas clipboard
+                fallbackCopyTextToClipboard(phoneNumber.replace(/\s/g, ''));
+            });
+        }
+
+        // Affiche la notification de copie
+        function showCopyNotification() {
+            // Créer la notification si elle n'existe pas
+            let notification = document.querySelector('.copy-notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.className = 'copy-notification';
+                notification.innerHTML = '📞 Numéro copié !';
+                document.body.appendChild(notification);
+            }
+
+            // Afficher la notification
+            notification.classList.add('show');
+
+            // Masquer après 3 secondes
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fallback pour copier sans clipboard API
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showCopyNotification();
+                console.log('📞 Phone number copied (fallback):', text);
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // Event listener pour le lien téléphone
+        document.addEventListener('DOMContentLoaded', () => {
+            const phoneLink = document.querySelector('[data-phone]');
+            if (phoneLink) {
+                phoneLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const phoneNumber = phoneLink.getAttribute('data-phone');
+                    copyPhoneNumber(phoneNumber);
+                });
+            }
+        });
     </script>
 </body>
 </html>
