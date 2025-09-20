@@ -582,27 +582,51 @@
             transform: translateY(-1px);
         }
 
-        /* Social Links Glow Effect */
-        .social-links.glow-effect .social-link {
-            animation: socialGlow 2s ease-in-out;
+        /* Social Links Wave Effect */
+        .social-link {
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes socialGlow {
+        .social-link.wave-glow {
+            animation: waveGlow 0.8s ease-in-out;
+        }
+
+        @keyframes waveGlow {
             0% {
-                background: rgba(212, 175, 55, 0.1);
+                background: rgba(212, 175, 55, 0.05);
                 box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
                 transform: scale(1);
             }
             50% {
-                background: rgba(212, 175, 55, 0.25);
+                background: rgba(212, 175, 55, 0.2);
                 box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
-                transform: scale(1.08);
+                transform: scale(1.06);
             }
             100% {
-                background: rgba(212, 175, 55, 0.15);
-                box-shadow: 0 2px 12px rgba(212, 175, 55, 0.2);
+                background: rgba(212, 175, 55, 0.08);
+                box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);
                 transform: scale(1);
             }
+        }
+
+        /* Effet de lumière traversante */
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.3) 50%,
+                transparent 100%);
+            transition: left 0.6s ease;
+        }
+
+        .social-link.light-sweep::before {
+            left: 100%;
         }
 
         /* CTA Section */
@@ -1783,20 +1807,46 @@
         // SOCIAL LINKS GLOW EFFECT
         // ==========================================
 
-        // Observer pour déclencher l'effet glow des icônes sociales à la fin
+        // Observer pour déclencher l'effet vague des icônes sociales à la fin
         const socialLinks = document.querySelector('.social-links');
         const ctaSection = document.querySelector('.cta-section');
 
         if (socialLinks && ctaSection) {
+            const socialIcons = socialLinks.querySelectorAll('.social-link');
+
+            function triggerWaveEffect() {
+                console.log('🌊 Starting wave effect on social icons!');
+
+                // Séquence: Téléphone → LinkedIn → Email → LinkedIn → Téléphone
+                const sequence = [0, 1, 2, 1, 0]; // Index des icônes
+                const timings = [0, 600, 1200, 1800, 2400]; // Timing en ms
+
+                sequence.forEach((iconIndex, sequenceIndex) => {
+                    setTimeout(() => {
+                        const icon = socialIcons[iconIndex];
+                        if (icon) {
+                            console.log(`💫 Animating icon ${iconIndex}`);
+
+                            // Ajoute l'effet de sweep de lumière
+                            icon.classList.add('light-sweep');
+
+                            // Ajoute l'effet de glow
+                            icon.classList.add('wave-glow');
+
+                            // Retire les effets après animation
+                            setTimeout(() => {
+                                icon.classList.remove('light-sweep');
+                                icon.classList.remove('wave-glow');
+                            }, 800);
+                        }
+                    }, timings[sequenceIndex]);
+                });
+            }
+
             const socialObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Déclenche l'effet GLOW quand on arrive à la section CTA
-                        console.log('🎯 CTA section in view - triggering social icons glow!');
-                        socialLinks.classList.add('glow-effect');
-                        setTimeout(() => {
-                            socialLinks.classList.remove('glow-effect');
-                        }, 2000);
+                        triggerWaveEffect();
                     }
                 });
             }, { threshold: 0.3, rootMargin: '50px' });
