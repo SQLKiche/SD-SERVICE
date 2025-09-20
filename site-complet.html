@@ -7995,12 +7995,11 @@ RÉSERVER MON AUDIT GRATUIT
         
         let currentProject = 'tokyo';
         let chart;
-        
-        // Enregistrer plugins
-        Chart.register(ChartDataLabels);
-        
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            // Enregistrer plugins après chargement
+            Chart.register(ChartDataLabels);
             initChart();
             setupNavigation();
             setupCTA();
@@ -10195,7 +10194,7 @@ function initGoogleAnalyticsTracking() {
 
         // Test unique au premier chargement
         setTimeout(() => {
-            testGoogleSheetsIntegration();
+            // testGoogleSheetsIntegration(); // Désactivé pour améliorer PageSpeed
         }, 1000);
     }
 
