@@ -1,4 +1,5 @@
 {
+  "buildCommand": "echo 'Build completed'",
   "outputDirectory": ".",
   "rewrites": [
     {
