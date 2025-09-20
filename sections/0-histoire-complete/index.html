@@ -582,6 +582,29 @@
             transform: translateY(-1px);
         }
 
+        /* Social Links Glow Effect */
+        .social-links.glow-effect .social-link {
+            animation: socialGlow 2s ease-in-out;
+        }
+
+        @keyframes socialGlow {
+            0% {
+                background: rgba(212, 175, 55, 0.1);
+                box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
+                transform: scale(1);
+            }
+            50% {
+                background: rgba(212, 175, 55, 0.25);
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+                transform: scale(1.08);
+            }
+            100% {
+                background: rgba(212, 175, 55, 0.15);
+                box-shadow: 0 2px 12px rgba(212, 175, 55, 0.2);
+                transform: scale(1);
+            }
+        }
+
         /* CTA Section */
         .cta-section {
             background:
@@ -1755,6 +1778,31 @@
                 }
             });
         });
+
+        // ==========================================
+        // SOCIAL LINKS GLOW EFFECT
+        // ==========================================
+
+        // Observer pour déclencher l'effet glow des icônes sociales à la fin
+        const socialLinks = document.querySelector('.social-links');
+        const ctaSection = document.querySelector('.cta-section');
+
+        if (socialLinks && ctaSection) {
+            const socialObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Déclenche l'effet GLOW quand on arrive à la section CTA
+                        console.log('🎯 CTA section in view - triggering social icons glow!');
+                        socialLinks.classList.add('glow-effect');
+                        setTimeout(() => {
+                            socialLinks.classList.remove('glow-effect');
+                        }, 2000);
+                    }
+                });
+            }, { threshold: 0.3, rootMargin: '50px' });
+
+            socialObserver.observe(ctaSection);
+        }
     </script>
 </body>
 </html>
