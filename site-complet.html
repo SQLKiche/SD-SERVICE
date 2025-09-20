@@ -122,9 +122,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Chart.js pour section performance - defer mobile pour NO_LCP fix -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" defer></script>
+    <!-- Chart.js pour section performance -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     
     <style>
         /* === MOBILE SERVICES SECTION === */
@@ -7728,7 +7728,6 @@ RÉSERVER MON AUDIT GRATUIT
     </script>
 
     <!-- JavaScript Section 3: Performance Charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" defer></script>
     <script>
         // Données des projets
         const projectsData = {
@@ -7998,18 +7997,11 @@ RÉSERVER MON AUDIT GRATUIT
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Attendre que Chart.js soit chargé (defer)
-            function initWhenChartReady() {
-                if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
-                    Chart.register(ChartDataLabels);
-                    initChart();
-                    setupNavigation();
-                    setupCTA();
-                } else {
-                    setTimeout(initWhenChartReady, 50);
-                }
-            }
-            initWhenChartReady();
+            // Chart.js disponible directement (plus de defer)
+            Chart.register(ChartDataLabels);
+            initChart();
+            setupNavigation();
+            setupCTA();
         });
         
         function initChart() {
