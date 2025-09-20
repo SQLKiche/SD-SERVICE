@@ -1,6 +1,6 @@
 {
   "buildCommand": "echo 'Build completed'",
-  "outputDirectory": "project",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/",
