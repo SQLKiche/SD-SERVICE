@@ -80,7 +80,7 @@ ${userEmail ? `Email utilisateur : ${userEmail} - Utilise ce contexte dans tes r
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: messages,
         max_tokens: 200,
         temperature: 0.7
