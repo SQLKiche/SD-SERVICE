@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     let messages = [
       {
         role: "system",
-        content: `Tu es EVE, l'assistante IA de SD Service, expert en automatisation PME et intelligence artificielle.
+        content: `Tu es EVE, l'assistante IA de SD Service, spécialiste en automatisation PME et intelligence artificielle.
 
 SD Service aide les PME à automatiser leurs processus métier avec l'IA. Solutions sur-mesure pour entrepreneurs qui veulent gagner du temps.
 
