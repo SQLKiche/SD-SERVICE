@@ -19,7 +19,8 @@
       "WebFetch(domain:www.google.com)",
       "Bash(git config:*)",
       "Read(//c/Users/sofia/OneDrive/Documents/Portfolio Freelance Projet/Porfolio-Freelance/**)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
