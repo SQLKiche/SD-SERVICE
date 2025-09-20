@@ -7633,7 +7633,15 @@ RÉSERVER MON AUDIT GRATUIT
                         source: 'contact_form',
                         page: 'Site Principal',
                         details: 'Lead formulaire contact',
-                        timestamp: new Date().toLocaleString('fr-FR'),
+                        timestamp: new Date().toLocaleString('fr-FR', {
+                            timeZone: 'Europe/Paris',
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        }),
                         url: window.location.href,
                         email: email,
                         fullName: fullName,
@@ -7669,7 +7677,15 @@ RÉSERVER MON AUDIT GRATUIT
                         email: email,
                         sector: sector || 'Non spécifié',
                         priority: priority || 'Non spécifié',
-                        timestamp: new Date().toISOString()
+                        timestamp: new Date().toLocaleString('fr-FR', {
+                            timeZone: 'Europe/Paris',
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        })
                     });
                 })
                 .catch((error) => {
@@ -8491,7 +8507,15 @@ Rappel : TU ES SON ASSISTANTE - parle de Sofiane comme "IL fait", "IL propose", 
 
             async logToGoogleSheets(userQuestion, aiResponse) {
                 try {
-                    const timestamp = new Date().toLocaleString('fr-FR');
+                    const timestamp = new Date().toLocaleString('fr-FR', {
+                        timeZone: 'Europe/Paris',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
                     const responseStatus = this.detectResponseStatus(aiResponse);
                     const detectedIntent = this.detectIntent(userQuestion);
                     
@@ -9969,7 +9993,15 @@ function initGoogleAnalyticsTracking() {
             body: JSON.stringify({
                 ...eventData,
                 page: 'Site Principal', // Différenciation avec "Mon Histoire"
-                timestamp: new Date().toLocaleString('fr-FR'),
+                timestamp: new Date().toLocaleString('fr-FR', {
+                    timeZone: 'Europe/Paris',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }),
                 sessionId: sessionStorage.getItem('sessionId') || generateSessionId(),
                 url: window.location.href,
                 referrer: document.referrer || 'Direct',
