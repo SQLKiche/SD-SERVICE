@@ -625,8 +625,14 @@
             transition: left 0.6s ease;
         }
 
-        .social-link.light-sweep::before {
+        /* Lumière de gauche à droite */
+        .social-link.light-sweep-right::before {
             left: 100%;
+        }
+
+        /* Lumière de droite à gauche */
+        .social-link.light-sweep-left::before {
+            left: -200%;
         }
 
         /* CTA Section */
@@ -1815,31 +1821,54 @@
             const socialIcons = socialLinks.querySelectorAll('.social-link');
 
             function triggerWaveEffect() {
-                console.log('🌊 Starting sequential wave effect on social icons!');
+                console.log('🌊 Starting one-way wave effect on social icons!');
 
-                // Séquence: Téléphone → LinkedIn → Email → LinkedIn ← Téléphone
-                const sequence = [0, 1, 2, 1, 0];
+                // Phase 1: Aller (gauche → droite) : Téléphone → LinkedIn → Email
+                const phaseAller = [0, 1, 2];
+                // Phase 2: Retour (droite → gauche) : Email → LinkedIn → Téléphone
+                const phaseRetour = [2, 1, 0];
+
+                let currentPhase = 1; // 1 = aller, 2 = retour
                 let currentStep = 0;
 
                 function animateNextIcon() {
-                    if (currentStep >= sequence.length) return;
+                    const isPhaseAller = currentPhase === 1;
+                    const currentSequence = isPhaseAller ? phaseAller : phaseRetour;
 
-                    const iconIndex = sequence[currentStep];
+                    if (currentStep >= currentSequence.length) {
+                        if (currentPhase === 1) {
+                            // Passe à la phase retour
+                            currentPhase = 2;
+                            currentStep = 0;
+                            setTimeout(() => {
+                                animateNextIcon();
+                            }, 200); // Pause entre les phases
+                        }
+                        return;
+                    }
+
+                    const iconIndex = currentSequence[currentStep];
                     const icon = socialIcons[iconIndex];
-                    const direction = currentStep <= 2 ? 'aller' : 'retour';
+                    const direction = isPhaseAller ? 'droite' : 'gauche';
+                    const sweepClass = isPhaseAller ? 'light-sweep-right' : 'light-sweep-left';
 
                     if (icon) {
-                        console.log(`💫 Step ${currentStep + 1}: Animating icon ${iconIndex} (${direction})`);
+                        console.log(`💫 Phase ${currentPhase} - Step ${currentStep + 1}: Icon ${iconIndex} vers ${direction}`);
 
-                        // Ajoute l'effet de sweep de lumière
-                        icon.classList.add('light-sweep');
+                        // Reset position pour direction opposée
+                        if (!isPhaseAller) {
+                            icon.style.setProperty('--before-start', '100%');
+                        }
+
+                        // Ajoute l'effet de sweep de lumière dans la bonne direction
+                        icon.classList.add(sweepClass);
 
                         // Ajoute l'effet de glow
                         icon.classList.add('wave-glow');
 
                         // Retire les effets après animation ET lance la suivante
                         setTimeout(() => {
-                            icon.classList.remove('light-sweep');
+                            icon.classList.remove(sweepClass);
                             icon.classList.remove('wave-glow');
 
                             // Passe à l'icône suivante après que celle-ci soit finie
@@ -1847,7 +1876,7 @@
                             setTimeout(() => {
                                 animateNextIcon();
                             }, 100); // Petit délai entre les animations
-                        }, 800); // Durée de l'animation
+                        }, 700); // Durée de l'animation
                     }
                 }
 
