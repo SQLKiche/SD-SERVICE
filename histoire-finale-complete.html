@@ -581,6 +581,115 @@
             transform: translateY(-1px);
         }
 
+        /* Contact Icons Section */
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 60px 0 40px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-icons.pulse-effect {
+            animation: contactGlow 3s ease-in-out;
+        }
+
+        @keyframes contactGlow {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.1));
+            }
+            50% {
+                transform: scale(1.03);
+                filter: drop-shadow(0 4px 16px rgba(212, 175, 55, 0.3));
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.15));
+            }
+        }
+
+        .contact-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .contact-icon:hover {
+            color: var(--primary-gold);
+            transform: translateY(-4px) scale(1.05);
+            background: rgba(212, 175, 55, 0.12);
+            border-color: rgba(212, 175, 55, 0.25);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .contact-icon-symbol {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-warm));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .contact-icon:hover .contact-icon-symbol {
+            transform: rotate(12deg) scale(1.08);
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+        }
+
+        .contact-icon-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .contact-icon-info {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .contact-icons {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .contact-icon {
+                flex-direction: row;
+                width: 100%;
+                max-width: 300px;
+                text-align: left;
+                padding: 20px;
+            }
+
+            .contact-icon-symbol {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .contact-icon-text {
+                flex: 1;
+                text-align: left;
+            }
+        }
+
         /* CTA Section */
         .cta-section {
             background:
@@ -1219,6 +1328,33 @@
             </div>
         </section>
 
+        <!-- Contact Icons -->
+        <div class="contact-icons" id="contactIcons">
+            <a href="tel:+33783362491" class="contact-icon">
+                <div class="contact-icon-symbol">📞</div>
+                <div class="contact-icon-text">
+                    <div class="contact-icon-label">Téléphone</div>
+                    <div class="contact-icon-info">+33 7 83 36 24 91</div>
+                </div>
+            </a>
+
+            <a href="mailto:sofiane.dehaffreingue@gmail.com" class="contact-icon">
+                <div class="contact-icon-symbol">✉️</div>
+                <div class="contact-icon-text">
+                    <div class="contact-icon-label">Email</div>
+                    <div class="contact-icon-info">sofiane.dehaffreingue@gmail.com</div>
+                </div>
+            </a>
+
+            <a href="https://linkedin.com/in/sofiane-dehaffreingue" target="_blank" class="contact-icon">
+                <div class="contact-icon-symbol">💼</div>
+                <div class="contact-icon-text">
+                    <div class="contact-icon-label">LinkedIn</div>
+                    <div class="contact-icon-info">Connectons-nous</div>
+                </div>
+            </a>
+        </div>
+
         <!-- CTA Section -->
         <section class="cta-section">
             <h2 class="cta-title" data-translate="cta-title">Et Si Le Prochain Chapitre Parlait De Vous ?</h2>
@@ -1516,6 +1652,27 @@
         document.querySelectorAll('.chapter').forEach(chapter => {
             observer.observe(chapter);
         });
+
+        // Observer les icônes contact pour l'effet BOOM
+        const contactIcons = document.getElementById('contactIcons');
+        if (contactIcons) {
+            const contactObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Déclenche l'effet BOOM pulse quand on arrive à la fin
+                        entry.target.classList.add('pulse-effect');
+                        setTimeout(() => {
+                            entry.target.classList.remove('pulse-effect');
+                        }, 3000);
+                    } else {
+                        // Retire l'effet quand on remonte
+                        entry.target.classList.remove('pulse-effect');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            contactObserver.observe(contactIcons);
+        }
 
         // Observer les stats pour les animer
         const statsObserver = new IntersectionObserver((entries) => {
