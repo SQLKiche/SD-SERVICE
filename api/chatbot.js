@@ -65,7 +65,7 @@ STYLE DE RÉPONSE :
 - Réponses COURTES (2-3 phrases max)
 - Focus sur les bénéfices concrets
 - GARDE le contexte de la conversation
-- NE POSE JAMAIS de questions fermées - donne l'info directement
+- NE POSE JAMAIS de questions - donne l'info directement
 - MENTIONNE formulaire SEULEMENT si client exprime intérêt concret ("interessé", "comment faire", "réserver")
 - Sinon termine naturellement sans redirection systématique
 
@@ -92,7 +92,7 @@ ${userEmail ? `Email utilisateur : ${userEmail} - Utilise ce contexte dans tes r
         model: 'gpt-3.5-turbo',
         messages: messages,
         max_tokens: 120,
-        temperature: 0.4
+        temperature: 0.7
       })
     });
 
