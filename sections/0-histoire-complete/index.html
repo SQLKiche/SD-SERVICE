@@ -582,73 +582,52 @@
             transform: translateY(-1px);
         }
 
-        /* Social Links Pulse Effect (Option 2) */
+        /* Social Links Wave Effect */
         .social-link {
             position: relative;
             overflow: hidden;
         }
 
-        .social-link.pulse-glow {
-            animation: pulseGlow 1.2s ease-in-out;
+        .social-link.wave-glow {
+            animation: waveGlow 0.8s ease-in-out;
         }
 
-        @keyframes pulseGlow {
+        @keyframes waveGlow {
             0% {
                 background: rgba(212, 175, 55, 0.05);
                 box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
                 transform: scale(1);
             }
-            25% {
-                background: rgba(212, 175, 55, 0.15);
-                box-shadow: 0 6px 24px rgba(212, 175, 55, 0.3);
-                transform: scale(1.08);
-            }
             50% {
-                background: rgba(212, 175, 55, 0.25);
-                box-shadow: 0 8px 32px rgba(212, 175, 55, 0.5);
-                transform: scale(1.12);
-            }
-            75% {
-                background: rgba(212, 175, 55, 0.15);
-                box-shadow: 0 6px 24px rgba(212, 175, 55, 0.3);
-                transform: scale(1.08);
+                background: rgba(212, 175, 55, 0.2);
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+                transform: scale(1.06);
             }
             100% {
                 background: rgba(212, 175, 55, 0.08);
-                box-shadow: 0 3px 16px rgba(212, 175, 55, 0.2);
+                box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);
                 transform: scale(1);
             }
         }
 
-        /* Effet de ring lumineux */
+        /* Effet de lumière traversante */
         .social-link::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border: 2px solid transparent;
-            border-radius: inherit;
-            opacity: 0;
-            transition: all 0.6s ease;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.3) 50%,
+                transparent 100%);
+            transition: left 0.6s ease;
         }
 
-        .social-link.ring-glow::before {
-            border-color: rgba(212, 175, 55, 0.6);
-            opacity: 1;
-            animation: ringPulse 1.2s ease-in-out;
-        }
-
-        @keyframes ringPulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
+        /* Lumière de gauche à droite */
+        .social-link.light-sweep-right::before {
+            left: 100%;
         }
 
         /* CTA Section */
@@ -1837,15 +1816,15 @@
             const socialIcons = socialLinks.querySelectorAll('.social-link');
 
             function triggerWaveEffect() {
-                console.log('💎 Starting sequential pulse effect (Option 2)!');
+                console.log('🌊 Starting simple sequential wave effect!');
 
-                // Séquence : Téléphone → LinkedIn → Email (chacun leur tour)
+                // Séquence simple : Téléphone → LinkedIn → Email (FINI)
                 const sequence = [0, 1, 2];
                 let currentStep = 0;
 
                 function animateNextIcon() {
                     if (currentStep >= sequence.length) {
-                        console.log('✅ Pulse effect completed!');
+                        console.log('✅ Wave effect completed!');
                         return;
                     }
 
@@ -1853,23 +1832,25 @@
                     const icon = socialIcons[iconIndex];
 
                     if (icon) {
-                        console.log(`💫 Step ${currentStep + 1}: Pulsing icon ${iconIndex}`);
+                        console.log(`💫 Step ${currentStep + 1}: Animating icon ${iconIndex}`);
 
-                        // Ajoute l'effet de pulse + ring lumineux
-                        icon.classList.add('pulse-glow');
-                        icon.classList.add('ring-glow');
+                        // Ajoute l'effet de sweep de lumière (gauche → droite)
+                        icon.classList.add('light-sweep-right');
+
+                        // Ajoute l'effet de glow
+                        icon.classList.add('wave-glow');
 
                         // Retire les effets après animation ET lance la suivante
                         setTimeout(() => {
-                            icon.classList.remove('pulse-glow');
-                            icon.classList.remove('ring-glow');
+                            icon.classList.remove('light-sweep-right');
+                            icon.classList.remove('wave-glow');
 
                             // Passe à l'icône suivante
                             currentStep++;
                             setTimeout(() => {
                                 animateNextIcon();
-                            }, 200); // Délai entre les animations
-                        }, 1200); // Durée de l'animation (1.2s)
+                            }, 150); // Délai entre les animations
+                        }, 700); // Durée de l'animation
                     }
                 }
 
