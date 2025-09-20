@@ -681,7 +681,7 @@
         /* Notification de copie */
         .copy-notification {
             position: fixed;
-            top: 30px;
+            top: 80px;
             right: 30px;
             background: linear-gradient(135deg, var(--primary-gold), var(--accent-warm));
             color: white;
@@ -1973,7 +1973,7 @@
             if (!notification) {
                 notification = document.createElement('div');
                 notification.className = 'copy-notification';
-                notification.innerHTML = '📞 Numéro copié !';
+                notification.innerHTML = '📞 0699213447';
                 document.body.appendChild(notification);
             }
 
@@ -1991,7 +1991,7 @@
                         notification.parentNode.removeChild(notification);
                     }
                 }, 400);
-            }, 2500);
+            }, 5000);
         }
 
         // Fallback pour copier sans clipboard API
