@@ -1610,11 +1610,15 @@
             document.getElementById('progressBar').style.width = scrolled + '%';
         });
 
-        // Smooth scroll pour les ancres
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Smooth scroll pour les ancres (exclut les liens téléphone)
+        document.querySelectorAll('a[href^="#"]:not([data-phone])').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                // Ignore les liens vides ou juste "#"
+                if (href === '#' || href.length <= 1) return;
+
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
