@@ -122,9 +122,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Chart.js pour section performance -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Chart.js pour section performance - defer loading -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" defer></script>
     
     <style>
         /* === MOBILE SERVICES SECTION === */
@@ -5724,7 +5724,7 @@
          ================================ -->
 
     <!-- Mobile Navigation Toggle -->
-    <button class="mobile-nav-toggle" id="mobileNavToggle">
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu de navigation mobile">
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -6834,7 +6834,7 @@ RÉSERVER MON AUDIT GRATUIT
                     </div>
 
                     <div class="contact-phone-alternative">
-                        <h4 data-translate="contact-phone-text">Vous préférez appeler directement ?</h4>
+                        <h3 data-translate="contact-phone-text">Vous préférez appeler directement ?</h3>
                         <a href="tel:+33699213447" class="contact-phone-link">06.99.21.34.47</a>
                         <p class="contact-phone-hours" data-translate="contact-phone-hours">Disponible 7j/7 • Réponse garantie</p>
                     </div>
@@ -7728,7 +7728,7 @@ RÉSERVER MON AUDIT GRATUIT
     </script>
 
     <!-- JavaScript Section 3: Performance Charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" defer></script>
     <script>
         // Données des projets
         const projectsData = {
