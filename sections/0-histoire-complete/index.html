@@ -1815,32 +1815,44 @@
             const socialIcons = socialLinks.querySelectorAll('.social-link');
 
             function triggerWaveEffect() {
-                console.log('🌊 Starting wave effect on social icons!');
+                console.log('🌊 Starting sequential wave effect on social icons!');
 
-                // Séquence: Téléphone → LinkedIn → Email → LinkedIn → Téléphone
-                const sequence = [0, 1, 2, 1, 0]; // Index des icônes
-                const timings = [0, 600, 1200, 1800, 2400]; // Timing en ms
+                // Séquence: Téléphone → LinkedIn → Email → LinkedIn ← Téléphone
+                const sequence = [0, 1, 2, 1, 0];
+                let currentStep = 0;
 
-                sequence.forEach((iconIndex, sequenceIndex) => {
-                    setTimeout(() => {
-                        const icon = socialIcons[iconIndex];
-                        if (icon) {
-                            console.log(`💫 Animating icon ${iconIndex}`);
+                function animateNextIcon() {
+                    if (currentStep >= sequence.length) return;
 
-                            // Ajoute l'effet de sweep de lumière
-                            icon.classList.add('light-sweep');
+                    const iconIndex = sequence[currentStep];
+                    const icon = socialIcons[iconIndex];
+                    const direction = currentStep <= 2 ? 'aller' : 'retour';
 
-                            // Ajoute l'effet de glow
-                            icon.classList.add('wave-glow');
+                    if (icon) {
+                        console.log(`💫 Step ${currentStep + 1}: Animating icon ${iconIndex} (${direction})`);
 
-                            // Retire les effets après animation
+                        // Ajoute l'effet de sweep de lumière
+                        icon.classList.add('light-sweep');
+
+                        // Ajoute l'effet de glow
+                        icon.classList.add('wave-glow');
+
+                        // Retire les effets après animation ET lance la suivante
+                        setTimeout(() => {
+                            icon.classList.remove('light-sweep');
+                            icon.classList.remove('wave-glow');
+
+                            // Passe à l'icône suivante après que celle-ci soit finie
+                            currentStep++;
                             setTimeout(() => {
-                                icon.classList.remove('light-sweep');
-                                icon.classList.remove('wave-glow');
-                            }, 800);
-                        }
-                    }, timings[sequenceIndex]);
-                });
+                                animateNextIcon();
+                            }, 100); // Petit délai entre les animations
+                        }, 800); // Durée de l'animation
+                    }
+                }
+
+                // Commence la séquence
+                animateNextIcon();
             }
 
             const socialObserver = new IntersectionObserver((entries) => {
