@@ -122,9 +122,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Chart.js pour section performance -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Chart.js pour section performance - defer mobile pour NO_LCP fix -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" defer></script>
     
     <style>
         /* === MOBILE SERVICES SECTION === */
@@ -7998,11 +7998,18 @@ RÉSERVER MON AUDIT GRATUIT
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Enregistrer plugins après chargement
-            Chart.register(ChartDataLabels);
-            initChart();
-            setupNavigation();
-            setupCTA();
+            // Attendre que Chart.js soit chargé (defer)
+            function initWhenChartReady() {
+                if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
+                    Chart.register(ChartDataLabels);
+                    initChart();
+                    setupNavigation();
+                    setupCTA();
+                } else {
+                    setTimeout(initWhenChartReady, 50);
+                }
+            }
+            initWhenChartReady();
         });
         
         function initChart() {
