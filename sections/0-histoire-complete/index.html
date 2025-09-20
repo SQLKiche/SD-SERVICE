@@ -426,14 +426,19 @@
             justify-content: center;
             gap: 30px;
             margin: 40px 0 20px;
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 1;
+            transform: translateY(0);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .contact-icons.animate {
-            opacity: 1;
-            transform: translateY(0);
+        .contact-icons.pulse-effect {
+            animation: contactPulse 2s ease-in-out;
+        }
+
+        @keyframes contactPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.6)); }
+            100% { transform: scale(1); }
         }
 
         .contact-icon {
@@ -1328,15 +1333,20 @@
             observer.observe(chapter);
         });
 
-        // Observe contact icons for animation
+        // Observe contact icons for pulse effect
         const contactIcons = document.getElementById('contactIcons');
         if (contactIcons) {
             const contactObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        // Déclenche l'effet pulse quand on arrive à la fin
+                        entry.target.classList.add('pulse-effect');
                         setTimeout(() => {
-                            entry.target.classList.add('animate');
-                        }, 300);
+                            entry.target.classList.remove('pulse-effect');
+                        }, 2000);
+                    } else {
+                        // Retire l'effet quand on remonte
+                        entry.target.classList.remove('pulse-effect');
                     }
                 });
             }, { threshold: 0.3 });
