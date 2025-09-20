@@ -635,31 +635,46 @@
             position: relative;
         }
 
-        .social-link[data-phone]::after {
-            content: attr(data-phone);
+        .phone-tooltip {
             position: absolute;
-            bottom: -45px;
+            bottom: -50px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) scale(0.8);
             background: rgba(26, 29, 35, 0.95);
             color: var(--primary-gold);
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.4);
             z-index: 1000;
+            pointer-events: none;
         }
 
-        .social-link[data-phone]:hover::after {
+        .phone-tooltip.show {
             opacity: 1;
             visibility: visible;
-            bottom: -40px;
+            transform: translateX(-50%) scale(1);
+            bottom: -45px;
+        }
+
+        /* Petite flèche pour le tooltip */
+        .phone-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid rgba(26, 29, 35, 0.95);
         }
 
         /* Notification de copie */
@@ -673,14 +688,21 @@
             border-radius: 12px;
             font-weight: 500;
             font-size: 0.9rem;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(120%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10000;
             box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+            opacity: 0;
         }
 
         .copy-notification.show {
             transform: translateX(0);
+            opacity: 1;
+        }
+
+        .copy-notification.hide {
+            transform: translateX(120%);
+            opacity: 0;
         }
 
         /* CTA Section */
@@ -1002,6 +1024,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
+            <div class="phone-tooltip">+33 6 99 21 34 47</div>
         </a>
         <a href="https://www.linkedin.com/in/sofianedehaffreingueprofil" target="_blank" class="social-link" title="LinkedIn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1949,13 +1972,21 @@
                 document.body.appendChild(notification);
             }
 
-            // Afficher la notification
-            notification.classList.add('show');
+            // Reset classes
+            notification.className = 'copy-notification show';
 
-            // Masquer après 3 secondes
+            // Masquer après 2.5 secondes
             setTimeout(() => {
+                notification.classList.add('hide');
                 notification.classList.remove('show');
-            }, 3000);
+
+                // Supprimer complètement après l'animation
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 400);
+            }, 2500);
         }
 
         // Fallback pour copier sans clipboard API
@@ -1980,14 +2011,26 @@
             document.body.removeChild(textArea);
         }
 
-        // Event listener pour le lien téléphone
+        // Event listeners pour le lien téléphone
         document.addEventListener('DOMContentLoaded', () => {
             const phoneLink = document.querySelector('[data-phone]');
-            if (phoneLink) {
+            const tooltip = document.querySelector('.phone-tooltip');
+
+            if (phoneLink && tooltip) {
+                // Gestion du clic pour copier
                 phoneLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     const phoneNumber = phoneLink.getAttribute('data-phone');
                     copyPhoneNumber(phoneNumber);
+                });
+
+                // Gestion du hover pour le tooltip
+                phoneLink.addEventListener('mouseenter', () => {
+                    tooltip.classList.add('show');
+                });
+
+                phoneLink.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('show');
                 });
             }
         });
