@@ -11,6 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
+    <!-- Preload critical resources -->
+    <link rel="preload" href="shared/assets/videos/hero-background.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="shared/assets/images/identité.jpg" as="image">
+
     <!-- Security Meta Tags -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -120,11 +124,12 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Chart.js pour section performance -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Chart.js pour section performance - Chargement différé -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     
     <style>
         /* === MOBILE SERVICES SECTION === */
@@ -5799,7 +5804,7 @@
     <section class="hero" id="hero">
         <div id="main-content"></div>
         <div class="hero-background">
-            <video class="hero-video" muted loop playsinline preload="auto">
+            <video class="hero-video" muted loop playsinline preload="metadata" poster="shared/assets/images/identité.jpg">
                 <source src="shared/assets/videos/hero-background.mp4" type="video/mp4">
             </video>
             <div class="video-fallback" style="display: none;"></div>
@@ -5860,7 +5865,7 @@
             <!-- Swipe Instruction Overlay -->
             <div class="swipe-instruction" id="swipeInstruction">
                 <div class="hand-gesture">
-                    <img src="svg-swipe-2.png" alt="Swipe gesture" width="50" height="50" class="hand-icon" loading="lazy">
+                    <img src="svg-swipe-2.png" alt="Swipe gesture" width="50" height="50" class="hand-icon" loading="lazy" decoding="async">
                 </div>
                 <div class="swipe-text">Balayez pour naviguer</div>
             </div>
@@ -8201,7 +8206,7 @@ RÉSERVER MON AUDIT GRATUIT
     
     <!-- BOULE FLOTTANTE -->
     <div class="floating-chat-ball" id="chatBall">
-        <img src="eve.png" alt="EVE Assistant" style="width: 50px; height: auto; filter: brightness(1.1);" loading="lazy">
+        <img src="eve.png" alt="EVE Assistant" style="width: 50px; height: auto; filter: brightness(1.1);" loading="lazy" decoding="async">
         <div class="notification-badge" id="notificationBadge">!</div>
     </div>
 
